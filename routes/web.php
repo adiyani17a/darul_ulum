@@ -19,4 +19,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('storage/uploads/user/thumbnail')->name('thumbnail');
 	Route::get('/', 'HomeController@index')->name('home');
 	Route::get('home', 'HomeController@index');
+	Route::get('setting/jabatan', 'setting_controller@jabatan');
+
 });

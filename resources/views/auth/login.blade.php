@@ -51,20 +51,13 @@
           <div class="wrap-input100 validate-input" data-validate = "Enter Username">
             <input required="" class="input100" autocomplete="off" value="" type="text" name="username" id="username" placeholder="Username" autofocus="">
             <span class="focus-input100" data-placeholder="&#xf207;"></span>
-            @if ($errors->has('email'))
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
+            @if ($errors->has('username'))
+                    <strong style="color: grey">{{ $errors->first('username') }}</strong>
             @endif
           </div>
           <div class="wrap-input100 validate-input" data-validate="Enter password">
             <input required="" class="input100" autocomplete="off" value="" type="password" name="password" id="password" placeholder="Password">
             <span class="focus-input100" data-placeholder="&#xf191;"></span>
-            @if ($errors->has('password'))
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
-            @endif
           </div>
           <div class="container-login100-form-btn">
             <button type="submit" class="login100-form-btn">
