@@ -11,6 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes();
+
+
+Route::group(['middleware' => 'auth'], function () {
+
+	Route::get('storage/uploads/user/thumbnail')->name('thumbnail');
+	Route::get('/', 'HomeController@index')->name('home');
+	Route::get('home', 'HomeController@index');
 });
