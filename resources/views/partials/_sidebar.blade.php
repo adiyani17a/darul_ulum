@@ -20,16 +20,6 @@
               <input id="filterInput" type="text" class="form-control bg-transparent border-0" onchange="myFunction()" onfocus="myFunction()" onkeyup="myFunction()" placeholder="Search Menu">
               <div class="input-group-btn">
                 <button id="btn-reset" type="button" class="btn bg-transparent px-0 d-none" onclick="btnReset()" style="cursor: pointer;"><i class="fa fa-times"></i></button>
-                <!-- <button type="button" class="btn bg-transparent dropdown-toggle px-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="mdi mdi-earth"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#">Today</a>
-                  <a class="dropdown-item" href="#">This week</a>
-                  <a class="dropdown-item" href="#">This month</a>
-                  <div role="separator" class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Month and older</a>
-                </div> -->
               </div>
               <div class="input-group-addon bg-transparent border-0 search-button">
                 <button type="button" class="btn btn-sm bg-transparent px-0">
@@ -100,8 +90,8 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle nav-profile" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              {{-- <img src="{{route('thumbnail').'/'.Auth::user()->m_image}}" alt="image"> --}}
-              {{-- <span class="d-none d-lg-inline">{{Auth::user()->m_name}}</span> --}}
+              <img src="{{route('thumbnail').'/'.Auth::user()->image}}" alt="image">
+              <span class="d-none d-lg-inline">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="profileDropdown">
               <a class="dropdown-item" href="#">
@@ -140,15 +130,15 @@
         <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
           <ul class="nav" id="ayaysir">
-            <li class="nav-item {{Request::is('home') ? 'active' : ''}}">
+            <li class="nav-item  {{Request::is('home') ? 'active' : ''}}">
               <a class="nav-link" href="{{url('/home')}}">
                 <span class="menu-title">Dashboard</span>
                 <span class="menu-sub-title">( 2 new updates )</span>
                 <i class="mdi mdi-home menu-icon"></i>
               </a>
             </li>
-            <li class="nav-item {{Request::is('setting') ? 'active' : '' || Request::is('setting/*') ? 'active' : '' }}">
-              <a class="nav-link" data-toggle="collapse" href="#setting" aria-expanded="false" aria-controls="ui-basic">
+            <li class="nav-item   {{Request::is('setting') ? 'active' : '' || Request::is('setting/*') ? 'active' : '' }}">
+              <a class="nav-link " data-toggle="collapse" href="#setting" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-title">Setting</span>
                 <span class="d-none">
                   Setting Level Account
@@ -159,15 +149,34 @@
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-settings menu-icon mdi-spin"></i>
               </a>
-              <div class="collapse" id="setting">
+              <div class="collapse {{Request::is('setting') ? 'show' : '' || Request::is('setting/*') ? 'show' : '' }}" id="setting">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="" class="nav-link">Setting Level Account</a></li>
+                  <li class="nav-item" > <a href="{{ url('/setting/jabatan/') }}" class="nav-link {{Request::is('setting/jabatan') ? 'active' : '' || Request::is('setting/jabatan/*') ? 'active' : '' }}">Setting Jabatan</a></li>
 
-                  <li class="nav-item"> <a class="nav-link">Setting Account </a></li>
+                  <li class="nav-item"> <a href="{{ url('/setting/akun/') }}" class="nav-link {{Request::is('setting/akun') ? 'active' : '' || Request::is('setting/akun/*') ? 'active' : '' }}">Setting User </a></li>
 
-                  <li class="nav-item"> <a class="nav-link">Setting Hak Akses</a></li>
+                  <li class="nav-item"> <a href="{{ url('/setting/hak_akses/') }}" class="nav-link {{Request::is('setting/hak_akses') ? 'active' : '' || Request::is('setting/hak_akses/*') ? 'active' : '' }}">Setting Hak Akses</a></li>
 
-                  <li class="nav-item"> <a class="nav-link">Setting Daftar Menu</a></li>
+                  <li class="nav-item"> <a href="{{ url('/setting/daftar_menu/') }}" class="nav-link {{Request::is('setting/daftar_menu') ? 'active' : '' || Request::is('setting/daftar_menu/*') ? 'active' : '' }}">Setting Daftar Menu</a></li>
+                </ul>
+                </div>
+            </li>
+            {{-- MASTER --}}
+            <li class="nav-item   {{Request::is('master') ? 'active' : '' || Request::is('master/*') ? 'active' : '' }}">
+              <a class="nav-link " data-toggle="collapse" href="#master" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">Master</span>
+                <span class="d-none">
+                  Master Data Sekolah
+                  Master Data Murid
+                  Master Data Akun
+                  Master Data Pegawai
+                </span>
+                <i class="menu-arrow"></i>
+                <i class="mdi menu-icon mdi-archive"></i>
+              </a>
+              <div class="collapse {{Request::is('master') ? 'show' : '' || Request::is('master/*') ? 'show' : '' }}" id="master">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item" > <a href="{{ url('/master/sekolah/') }}" class="nav-link {{Request::is('master/sekolah') ? 'active' : '' || Request::is('master/sekolah/*') ? 'active' : '' }}">Master Sekolah</a></li>
                 </ul>
                 </div>
             </li>

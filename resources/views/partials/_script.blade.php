@@ -109,6 +109,7 @@
     $('select').select2({ 
       width: '100%' 
     });
+
     $('.data-table').dataTable({
           //"responsive":true,
 
@@ -299,6 +300,16 @@
     input.value=null;
     input.focus();
   }
+
+
+  $('.wajib').focus(function(){
+    $(this).removeClass('error');
+  })
+
+  $('.option').change(function(){
+    var par = $(this).parents('td');
+    par.find('span').eq(0).removeClass('error');
+  })
 
 
 </script>

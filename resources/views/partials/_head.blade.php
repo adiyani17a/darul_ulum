@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Atonergi</title>
+  <title>Yayasan Darul Ulum</title>
   <!-- plugin css for this page -->
   <link rel="stylesheet" href="{{asset('assets/node_modules/jquery-bar-rating/dist/themes/css-stars.css')}}">
   {{-- <link rel="stylesheet" href="{{asset('assets/node_modules/jquery-ui/jquery-ui.min.css')}}"> --}}
@@ -173,6 +173,9 @@ body.modal-open{
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+.error{
+  border :1px solid red;
 }
 </style>
 </head>

@@ -15,8 +15,18 @@ class User extends Authenticatable
      *
      * @var array
      */
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
     protected $fillable = [
-        'name', 'email', 'password',
+        'id',
+        'name',
+        'username', 
+        'email', 
+        'password',
+        'jabatan_id',
+        'image',
+        'remember_token',
+        'last_login'
     ];
 
     /**
@@ -24,7 +34,37 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function jabatan($value='')
+    {
+        return $this->belongsTo('App\child\jabatan','jabatan_id','j_id');
+    }
+
+    public function akses($fitur,$aksi){
+      // select * from  join  on = where ubah =true
+
+        $cek = DB::table('d_mem')
+                ->join('d_hak_akses', 'm_jabatan', '=', 'ha_level')
+                ->where('ha_menu', '=', $fitur)
+                ->where($aksi, '=', 1) 
+                ->where('m_id', '=', Auth::user()->m_id)             
+                ->get();  
+
+        $cek = App\User::join('d_hak_akses', 'jabatan_id', '=', 'ha_level')
+                           ->where('ha_menu', '=', $fitur)
+                           ->where($aksi, '=', 1) 
+                           ->where('id', '=', Auth::user()->id)             
+                           ->get();  
+
+
+        if(count($cek) != 0)
+            return true;
+        else
+            return false;
+    }
 }

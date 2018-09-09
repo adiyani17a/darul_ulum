@@ -52,7 +52,7 @@
             <input required="" class="input100" autocomplete="off" value="" type="text" name="username" id="username" placeholder="Username" autofocus="">
             <span class="focus-input100" data-placeholder="&#xf207;"></span>
             @if ($errors->has('username'))
-                    <strong style="color: grey">{{ $errors->first('username') }}</strong>
+                    <strong style="color: yellow">{{ $errors->first('username') }}</strong>
             @endif
           </div>
           <div class="wrap-input100 validate-input" data-validate="Enter password">
