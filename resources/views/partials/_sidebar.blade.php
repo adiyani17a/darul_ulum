@@ -1,8 +1,11 @@
 <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo" href="{{url('/home')}}">
-          <img src="{{asset('assets/atonergi.png')}}" alt="logo" style="margin-left: auto;">
+        <a class="navbar-brand brand-logo" href="{{url('/home')}}" >
+          <h3 style="width: 100%">
+            <img style="width: 30px;height: 30px;margin: 0" src="{{asset('assets/images/logo1.png')}}" alt="logo"/>
+            <label style="margin-top: 10px;margin-bottom: 0px">DARUL ULUM</label>
+          </h3>
           <!-- <h1 style="margin:auto; ">Kinaya</h1> -->
         </a>
         <a class="navbar-brand brand-logo-mini" href="{{url('/home')}}">
@@ -177,6 +180,42 @@
               <div class="collapse {{Request::is('master') ? 'show' : '' || Request::is('master/*') ? 'show' : '' }}" id="master">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item" > <a href="{{ url('/master/sekolah/') }}" class="nav-link {{Request::is('master/sekolah') ? 'active' : '' || Request::is('master/sekolah/*') ? 'active' : '' }}">Master Sekolah</a></li>
+                </ul>
+                </div>
+            </li>
+            {{-- OPERATIONAL --}}
+            <li class="nav-item   {{Request::is('operational') ? 'active' : '' || Request::is('operational/*') ? 'active' : '' }}">
+              <a class="nav-link " data-toggle="collapse" href="#operational" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">Operational</span>
+                <span class="d-none">
+                  Data Siswa
+                  Petty Cash
+                  Pembayaran Spp
+                </span>
+                <i class="menu-arrow"></i>
+                <i class="mdi menu-icon mdi-animation"></i>
+              </a>
+              <div class="collapse {{Request::is('operational') ? 'show' : '' || Request::is('operational/*') ? 'show' : '' }}" id="operational">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item" > <a href="{{ url('/operational/sekolah/') }}" class="nav-link {{Request::is('operational/sekolah') ? 'active' : '' || Request::is('operational/sekolah/*') ? 'active' : '' }}">Data Siswa</a></li>
+                </ul>
+                </div>
+            </li>
+            {{-- LAPORAN --}}
+            <li class="nav-item   {{Request::is('laporan') ? 'active' : '' || Request::is('laporan/*') ? 'active' : '' }}">
+              <a class="nav-link " data-toggle="collapse" href="#laporan" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">Laporan</span>
+                <span class="d-none">
+                  LAPORAN PETTY CASH
+                  LAPORAN PIUTANG
+                  LAPORAN 
+                </span>
+                <i class="menu-arrow"></i>
+                <i class="mdi menu-icon mdi-book"></i>
+              </a>
+              <div class="collapse {{Request::is('laporan') ? 'show' : '' || Request::is('laporan/*') ? 'show' : '' }}" id="laporan">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item" > <a href="{{ url('/laporan/sekolah/') }}" class="nav-link {{Request::is('laporan/sekolah') ? 'active' : '' || Request::is('laporan/sekolah/*') ? 'active' : '' }}">Laporan Petty Cash</a></li>
                 </ul>
                 </div>
             </li>

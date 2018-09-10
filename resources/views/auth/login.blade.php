@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Yayasan Darul Ulum</title>
+  <title>YAYASAN DARUL ULUM</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->  
-  <link rel="icon" type="image/png" href="{{asset('assets/login-v3/images/icons/favicon.ico')}}"/>
+  <link rel="icon" type="image/png" href="{{asset('assets/images/logo1.png')}}"/>
 <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="{{asset('assets/login-v3/vendor/bootstrap/css/bootstrap.min.css')}}">
 <!--===============================================================================================-->
@@ -43,10 +43,10 @@
             <i class="zmdi zmdi-landscape"></i>
           </span> -->
           <div class="login100-form-title p-b-34 p-t-27">
-            <img src="{{asset('assets/atonergi.png')}}" width="256px" height="64px">
+            <img src="{{asset('assets/images/logo1.png')}}" width="200px" height="200px">
           </div>
           <span class="login100-form-title p-b-34 p-t-27">
-            Login
+            YAYASAN DARUL ULUM
           </span>
           <div class="wrap-input100 validate-input" data-validate = "Enter Username">
             <input required="" class="input100" autocomplete="off" value="" type="text" name="username" id="username" placeholder="Username" autofocus="">

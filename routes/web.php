@@ -43,6 +43,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/setting/hak_akses/centang', 'setting_controller@centang');
     // MASTER
         Route::get('/master/sekolah', 'master_controller@sekolah');
+    // OPERATIONAL
+        Route::get('/operational/siswa', 'siswa_controller@siswa');
+        Route::get('/operational/petty_cash', 'kas_keluar@petty_cash');
+        Route::get('/operational/bukti_kas_keluar', 'kas_keluar@bukti_kas_keluar');
+    // LAPORAN
 
 
 });
