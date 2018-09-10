@@ -16,6 +16,6 @@ class grup_menu extends Model
 
 	public function daftar_menu()
 	{
-        return $this->hasMany('App\daftar_menu','dm_group');
+        return $this->hasMany('App\child\daftar_menu','dm_group');
 	}
 }

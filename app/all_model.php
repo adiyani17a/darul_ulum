@@ -8,6 +8,9 @@ use App\child\jabatan;
 use App\child\hak_akses;
 use App\child\daftar_menu;
 use App\child\grup_menu;
+use App\child\sekolah;
+use App\child\posisi;
+use App\child\staff;
 use App\Repositories\TestRepo;
 
 class all_model extends Model
@@ -40,5 +43,23 @@ class all_model extends Model
 	{
 		$grup_menu = new grup_menu();
         return $grup_menu = new TestRepo($grup_menu);
+	}
+
+	public function sekolah()
+	{
+		$sekolah = new sekolah();
+        return $sekolah = new TestRepo($sekolah);
+	}
+
+	public function posisi()
+	{
+		$posisi = new posisi();
+        return $posisi = new TestRepo($posisi);
+	}
+
+	public function staff()
+	{
+		$staff = new staff();
+        return $staff = new TestRepo($staff);
 	}
 }

@@ -170,9 +170,9 @@
                 <span class="menu-title">Master</span>
                 <span class="d-none">
                   Master Data Sekolah
-                  Master Data Murid
-                  Master Data Akun
-                  Master Data Pegawai
+                  Master Data Posisi
+                  Master Data Staff
+                  Master Data Akun Keuangan
                 </span>
                 <i class="menu-arrow"></i>
                 <i class="mdi menu-icon mdi-archive"></i>
@@ -180,6 +180,29 @@
               <div class="collapse {{Request::is('master') ? 'show' : '' || Request::is('master/*') ? 'show' : '' }}" id="master">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item" > <a href="{{ url('/master/sekolah/') }}" class="nav-link {{Request::is('master/sekolah') ? 'active' : '' || Request::is('master/sekolah/*') ? 'active' : '' }}">Master Sekolah</a></li>
+                  <li class="nav-item" > <a href="{{ url('/master/posisi/') }}" class="nav-link {{Request::is('master/posisi') ? 'active' : '' || Request::is('master/posisi/*') ? 'active' : '' }}">Master Posisi</a></li>
+                  <li class="nav-item" > <a href="{{ url('/master/staff/') }}" class="nav-link {{Request::is('master/staff') ? 'active' : '' || Request::is('master/staff/*') ? 'active' : '' }}">Master Staff</a></li>
+                  <li class="nav-item" > <a href="{{ url('/master/keuangan/') }}" class="nav-link {{Request::is('master/keuangan') ? 'active' : '' || Request::is('master/keuangan/*') ? 'active' : '' }}">Master Akun Keuangan</a></li>
+                </ul>
+                </div>
+            </li>
+            {{-- KESISWAAN --}}
+            <li class="nav-item   {{Request::is('penerimaaan') ? 'active' : '' || Request::is('penerimaaan/*') ? 'active' : '' }}">
+              <a class="nav-link " data-toggle="collapse" href="#penerimaan" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">Kesiswaan</span>
+                <span class="d-none">
+                  Penerimaan Siswa Baru
+                  Alumni Siswa
+                </span>
+                <i class="menu-arrow"></i>
+                <i class="mdi menu-icon mdi-account-multiple"></i>
+              </a>
+              <div class="collapse {{Request::is('penerimaan') ? 'show' : '' || Request::is('penerimaan/*') ? 'show' : '' }}" id="penerimaan">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item" > <a href="{{ url('/penerimaan/siswa/') }}" class="nav-link {{Request::is('penerimaan/siswa') ? 'active' : '' || Request::is('penerimaan/siswa/*') ? 'active' : '' }}">Penerimaan Siswa Baru</a></li>
+                  <li class="nav-item" > <a href="{{ url('/penerimaan/konfirmasi/') }}" class="nav-link {{Request::is('penerimaan/konfirmasi') ? 'active' : '' || Request::is('penerimaan/konfirmasi/*') ? 'active' : '' }}">Konfirmasi Siswa Baru</a></li>
+                  <li class="nav-item" > <a href="{{ url('/penerimaan/rekap_siswa/') }}" class="nav-link {{Request::is('penerimaan/rekap_siswa') ? 'active' : '' || Request::is('penerimaan/rekap_siswa/*') ? 'active' : '' }}">Data Siswa</a></li>
+                  <li class="nav-item" > <a href="{{ url('/penerimaan/alumni/') }}" class="nav-link {{Request::is('penerimaan/alumni') ? 'active' : '' || Request::is('penerimaan/alumni/*') ? 'active' : '' }}">Alumni Siswa</a></li>
                 </ul>
                 </div>
             </li>
@@ -188,7 +211,6 @@
               <a class="nav-link " data-toggle="collapse" href="#operational" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-title">Operational</span>
                 <span class="d-none">
-                  Data Siswa
                   Petty Cash
                   Pembayaran Spp
                 </span>
@@ -197,7 +219,8 @@
               </a>
               <div class="collapse {{Request::is('operational') ? 'show' : '' || Request::is('operational/*') ? 'show' : '' }}" id="operational">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="{{ url('/operational/sekolah/') }}" class="nav-link {{Request::is('operational/sekolah') ? 'active' : '' || Request::is('operational/sekolah/*') ? 'active' : '' }}">Data Siswa</a></li>
+                  <li class="nav-item" > <a href="{{ url('/operational/petty_cash/') }}" class="nav-link {{Request::is('operational/petty_cash') ? 'active' : '' || Request::is('operational/petty_cash/*') ? 'active' : '' }}">Petty Cash</a></li>
+                  <li class="nav-item" > <a href="{{ url('/operational/spp/') }}" class="nav-link {{Request::is('operational/spp') ? 'active' : '' || Request::is('operational/spp/*') ? 'active' : '' }}">Pembayaran SPP</a></li>
                 </ul>
                 </div>
             </li>

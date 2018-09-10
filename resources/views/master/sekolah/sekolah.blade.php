@@ -26,11 +26,10 @@
                   <thead class="bg-gradient-info">
                     <tr>
                       <th>No</th>
-                      <th>Username</th>
-                      <th>Nama</th>
-                      <th>Level</th>
-                      <th>Photo</th>
-                      <th>Last Login</th>
+                      <th>Nama Sekolah</th>
+                      <th>Alamat</th>
+                      <th>Telfon</th>
+                      <th>Logo</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -54,7 +53,7 @@
           processing: true,
           serverSide: true,
           ajax: {
-              url:'{{ route('datatable_akun') }}',
+              url:'{{ route('datatable_sekolah') }}',
           },
           columnDefs: [
 
@@ -63,27 +62,20 @@
                      className: 'center d_id'
                   },
                   {
-                     targets: 1 ,
-                     className: ' user_id'
-                  },
-                  {
-                     targets: 6 ,
-                     className: 'center'
-                  },
-                  {
                      targets: 4 ,
                      className: 'center'
                   },
-                  
-                  
+                  {
+                     targets: 5 ,
+                     className: 'center'
+                  },
                 ],
           columns: [
-            {data: 'id', name: 'id'},
-            {data: 'username', name: 'username'},
-            {data: 'name', name: 'name'},
-            {data: 'jabatan', name: 'jabatan'},
+            {data: 's_id', name: 's_id'},
+            {data: 's_nama', name: 's_nama'},
+            {data: 's_alamat', name: 's_alamat'},
+            {data: 's_telpon', name: 's_telpon'},
             {data: 'image', name: 'image'},
-            {data: 'last_login', name: 'last_login'},
             {data: 'aksi', name: 'aksi'}
           ]
 
@@ -120,7 +112,7 @@ $('#chooseFile').bind('change', function () {
 
 var loadFile = function(event) {
   var fsize = $('#chooseFile')[0].files[0].size;
-  if(fsize>1048576) //do something if file size more than 1 mb (1048576)
+  if(fsize>5048576) //do something if file size more than 1 mb (1048576)
   {
       iziToast.warning({
         icon: 'fa fa-times',
@@ -180,7 +172,7 @@ $('.simpan').click(function(){
       formdata.append( 'files', $('#chooseFile')[0].files[0]);
       $.ajax({
          type: "POST",
-         url: baseUrl +'/setting/simpan_akun?'+$('.tabel_modal :input').serialize(),
+         url: baseUrl +'/master/simpan_sekolah?'+$('.tabel_modal :input').serialize(),
          data: formdata,
          dataType:'json',
          processData: false,
@@ -227,25 +219,19 @@ $('.simpan').click(function(){
     var par   = $(a).parents('tr');
     var id    = $(par).find('.d_id').text();
     $.ajax({
-        url:baseUrl +'/setting/edit_akun',
+        url:baseUrl +'/master/edit_sekolah',
         type:'get',
         data:{id},
         dataType:'json',
         success:function(res){
           $('.id').val(id);
-          $('.username').val(res.data.username);
-          $('.nama').val(res.data.name);
-          $('.email').val(res.data.email);
-          $('.level').val(res.data.jabatan_id).trigger('change');
-          $('#output').attr("src", '{{ route('thumbnail') }}'+'/'+res.data.image)
+          $('.s_nama').val(res.data.s_nama);
+          $('.s_alamat').val(res.data.s_alamat);
+          $('.s_telpon').val(res.data.s_telpon);
+          $('#output').attr("src", '{{ asset('storage/uploads/sekolah/thumbnail') }}'+'/'+res.data.s_logo+'?'+Math.random())
           $('.file-upload').addClass('active');
-          $("#noFile").text(res.data.image); 
+          $("#noFile").text(res.data.s_logo); 
           $('#tambah-akun').modal('show');
-          if (res.data.username == 'superuser' || res.data.username == 'SUPERUSER') {
-            $('.username').prop('readonly',true);
-          }else{
-            $('.username').prop('readonly',false);
-          }
         },
         error:function(){
           iziToast.warning({
@@ -265,7 +251,7 @@ $('.simpan').click(function(){
     var par   = $(a).parents('tr');
     var id    = $(par).find('.d_id').text();
     $.ajax({
-        url:baseUrl +'/setting/hapus_akun',
+        url:baseUrl +'/master/hapus_sekolah',
         type:'get',
         data:{id},
         dataType:'json',

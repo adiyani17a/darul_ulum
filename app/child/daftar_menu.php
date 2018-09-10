@@ -20,7 +20,7 @@ class daftar_menu extends Model
 
 	public function hak_akses()
 	{
-        return $this->hasMany('App\hak_akses','ha_menu');
+        return $this->hasMany('App\child\hak_akses','ha_menu');
 	}
 
 	public function grup_menu()

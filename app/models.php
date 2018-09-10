@@ -8,6 +8,9 @@ use App\child\jabatan;
 use App\child\hak_akses;
 use App\child\daftar_menu;
 use App\child\grup_menu;
+use App\child\sekolah;
+use App\child\posisi;
+use App\child\staff;
 
 class models extends Model
 {
@@ -34,5 +37,20 @@ class models extends Model
 	public function grup_menu()
 	{
 		return $grup_menu = new grup_menu();
+	}
+
+	public function sekolah()
+	{
+		return $sekolah = new sekolah();
+	}
+
+	public function posisi()
+	{
+		return $posisi = new posisi();
+	}
+
+	public function staff()
+	{
+		return $staff = new staff();
 	}
 }

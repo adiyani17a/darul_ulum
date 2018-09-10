@@ -11,34 +11,28 @@
         <div class="row">
             <table class="table tabel_modal">
               <tr>
-                <td>Username</td>
+                <td>Nama Sekolah</td>
                 <td>
                   {{ csrf_field() }}
                   {{-- <input type="hidden" name="_token" class="token" value=""> --}}
-                  <input type="text" name="username"  placeholder="username" class="username wajib form-control form-control-sm">
+                  <input type="text" name="s_nama"  placeholder="Nama Sekolah" class="s_nama wajib huruf_besar form-control form-control-sm">
                   <input type="hidden" name="id" class="id " >
                 </td>
               </tr>
               <tr>
-                <td>Password</td>
+                <td>Alamat</td>
                 <td>
-                  <input type="text" name="password" placeholder="password" class="password wajib form-control form-control-sm">
+                  <input type="text" name="s_alamat" placeholder="Alamat" class="s_alamat wajib form-control huruf_besar form-control-sm">
                 </td>
               </tr>
               <tr>
-                <td>Email</td>
+                <td>Telpon</td>
                 <td>
-                  <input type="email" name="email" placeholder="email" class="email form-control wajib form-control-sm">
+                  <input type="text" name="s_telpon" placeholder="Telpon" class="s_telpon form-control wajib form-control-sm">
                 </td>
               </tr>
               <tr>
-                <td>Nama</td>
-                <td>
-                  <input type="text" name="name" placeholder="nama" class="nama huruf_besar wajib form-control form-control-sm">
-                </td>
-              </tr>
-              <tr>
-                <td>Foto</td>
+                <td>Logo</td>
                 <td>
                   <div class="file-upload">
                     <div class="file-select">
