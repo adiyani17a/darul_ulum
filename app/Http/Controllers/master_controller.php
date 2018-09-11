@@ -174,7 +174,6 @@ class master_controller extends Controller
 
   public function posisi(Request $req)
   {
-    
   	return view('master.posisi.posisi');
   }
 
@@ -385,34 +384,5 @@ class master_controller extends Controller
     return response()->json(['status' => 1]);
   }
 
-  public function keuangan()
-  {
-    return view('keuangan.keuangan.keuangan');
-  }
 
-  public function datatable_staff()
-  {
-    $data = $this->model->staff()->all();
-    
-    
-    // return $data;
-    $data = collect($data);
-    return Datatables::of($data)
-                    ->addColumn('aksi', function ($data) {
-                      return   '<div class="btn-group">'.
-                               '<button type="button" onclick="edit(\''.$data->st_id.'\')" class="btn btn-info btn-lg" title="detail">'.
-                               '<label class="fa fa-pencil-alt"></label></button>'.
-                               '<button type="button" onclick="hapus(\''.$data->st_id.'\')" class="btn btn-danger btn-lg" title="hapus">'.
-                               '<label class="fa fa-trash"></label></button>'.
-                               '</div>';
-                    })
-                    ->addColumn('none', function ($data) {
-                        return '-';
-                    })->addColumn('posisi', function ($data) {
-                        return $data->posisi->p_nama;
-                    })
-                    ->rawColumns(['aksi', 'none'])
-                    ->addIndexColumn()
-                    ->make(true);
-  }
 }

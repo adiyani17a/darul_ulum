@@ -5,7 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use DB;
+use Auth;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -45,17 +46,15 @@ class User extends Authenticatable
         return $this->belongsTo('App\child\jabatan','jabatan_id','j_id');
     }
 
+    public function sekolah($value='')
+    {
+        return $this->belongsTo('App\child\sekolah','sekolah_id','s_id');
+    }
+
     public function akses($fitur,$aksi){
       // select * from  join  on = where ubah =true
 
-        $cek = DB::table('d_mem')
-                ->join('d_hak_akses', 'm_jabatan', '=', 'ha_level')
-                ->where('ha_menu', '=', $fitur)
-                ->where($aksi, '=', 1) 
-                ->where('m_id', '=', Auth::user()->m_id)             
-                ->get();  
-
-        $cek = App\User::join('d_hak_akses', 'jabatan_id', '=', 'ha_level')
+        $cek = User::join('d_hak_akses', 'jabatan_id', '=', 'ha_level')
                            ->where('ha_menu', '=', $fitur)
                            ->where($aksi, '=', 1) 
                            ->where('id', '=', Auth::user()->id)             

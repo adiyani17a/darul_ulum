@@ -182,7 +182,24 @@
                   <li class="nav-item" > <a href="{{ url('/master/sekolah/') }}" class="nav-link {{Request::is('master/sekolah') ? 'active' : '' || Request::is('master/sekolah/*') ? 'active' : '' }}">Master Sekolah</a></li>
                   <li class="nav-item" > <a href="{{ url('/master/posisi/') }}" class="nav-link {{Request::is('master/posisi') ? 'active' : '' || Request::is('master/posisi/*') ? 'active' : '' }}">Master Posisi</a></li>
                   <li class="nav-item" > <a href="{{ url('/master/staff/') }}" class="nav-link {{Request::is('master/staff') ? 'active' : '' || Request::is('master/staff/*') ? 'active' : '' }}">Master Staff</a></li>
-                  <li class="nav-item" > <a href="{{ url('/master/keuangan/') }}" class="nav-link {{Request::is('master/keuangan') ? 'active' : '' || Request::is('master/keuangan/*') ? 'active' : '' }}">Master Akun Keuangan</a></li>
+                </ul>
+                </div>
+            </li>
+            {{-- KEUANGAN --}}
+            <li class="nav-item   {{Request::is('keuangan/keuangan') ? 'active' : '' || Request::is('keuangan/*') ? 'active' : '' }}">
+              <a class="nav-link " data-toggle="collapse" href="#keuangan" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">Keuangan</span>
+                <span class="d-none">
+                  keuangan Data Akun Keuangan
+                  keuangan Group Akun
+                </span>
+                <i class="menu-arrow"></i>
+                <i class="mdi menu-icon mdi-cash"></i>
+              </a>
+              <div class="collapse {{Request::is('keuangan') ? 'show' : '' || Request::is('keuangan/*') ? 'show' : '' }}" id="keuangan">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item" > <a href="{{ url('/keuangan/group_akun/') }}" class="nav-link {{Request::is('keuangan/group_akun') ? 'active' : '' || Request::is('keuangan/group_akun/*') ? 'active' : '' }}">Group Akun Keuangan</a></li>
+                  <li class="nav-item" > <a href="{{ url('/keuangan/keuangan/') }}" class="nav-link {{Request::is('keuangan/keuangan') ? 'active' : '' || Request::is('keuangan/keuangan/*') ? 'active' : '' }}">Master Akun Keuangan</a></li>
                 </ul>
                 </div>
             </li>
@@ -206,21 +223,40 @@
                 </ul>
                 </div>
             </li>
-            {{-- OPERATIONAL --}}
-            <li class="nav-item   {{Request::is('operational') ? 'active' : '' || Request::is('operational/*') ? 'active' : '' }}">
-              <a class="nav-link " data-toggle="collapse" href="#operational" aria-expanded="false" aria-controls="ui-basic">
-                <span class="menu-title">Operational</span>
+            {{-- KAS MASUK --}}
+            <li class="nav-item   {{Request::is('kas_masuk') ? 'active' : '' || Request::is('kas_masuk/*') ? 'active' : '' }}">
+              <a class="nav-link " data-toggle="collapse" href="#kas_masuk" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">Kas Masuk</span>
                 <span class="d-none">
-                  Petty Cash
+                  Pemasukan Lain
                   Pembayaran Spp
                 </span>
                 <i class="menu-arrow"></i>
-                <i class="mdi menu-icon mdi-animation"></i>
+                <i class="mdi menu-icon mdi-arrow-up"></i>
               </a>
-              <div class="collapse {{Request::is('operational') ? 'show' : '' || Request::is('operational/*') ? 'show' : '' }}" id="operational">
+              <div class="collapse {{Request::is('kas_masuk') ? 'show' : '' || Request::is('kas_masuk/*') ? 'show' : '' }}" id="kas_masuk">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="{{ url('/operational/petty_cash/') }}" class="nav-link {{Request::is('operational/petty_cash') ? 'active' : '' || Request::is('operational/petty_cash/*') ? 'active' : '' }}">Petty Cash</a></li>
-                  <li class="nav-item" > <a href="{{ url('/operational/spp/') }}" class="nav-link {{Request::is('operational/spp') ? 'active' : '' || Request::is('operational/spp/*') ? 'active' : '' }}">Pembayaran SPP</a></li>
+                  <li class="nav-item" > <a href="{{ url('/kas_masuk/pemasukan_lain/') }}" class="nav-link {{Request::is('kas_masuk/pemasukan_lain') ? 'active' : '' || Request::is('kas_masuk/pemasukan_lain/*') ? 'active' : '' }}">Pemasukan Lain</a></li>
+                  <li class="nav-item" > <a href="{{ url('/kas_masuk/spp/') }}" class="nav-link {{Request::is('kas_masuk/spp') ? 'active' : '' || Request::is('kas_masuk/spp/*') ? 'active' : '' }}">Pembayaran SPP</a></li>
+                </ul>
+                </div>
+            </li>
+
+            {{-- KAS KELUAR --}}
+            <li class="nav-item   {{Request::is('kas_keluar') ? 'active' : '' || Request::is('kas_keluar/*') ? 'active' : '' }}">
+              <a class="nav-link " data-toggle="collapse" href="#kas_keluar" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">Kas Keluar</span>
+                <span class="d-none">
+                  Petty Cash
+                  Bukti Kas Keluar
+                </span>
+                <i class="menu-arrow"></i>
+                <i class="mdi menu-icon mdi-arrow-down"></i>
+              </a>
+              <div class="collapse {{Request::is('kas_keluar') ? 'show' : '' || Request::is('kas_keluar/*') ? 'show' : '' }}" id="kas_keluar">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item" > <a href="{{ url('/kas_keluar/petty_cash/') }}" class="nav-link {{Request::is('kas_keluar/petty_cash') ? 'active' : '' || Request::is('kas_keluar/petty_cash/*') ? 'active' : '' }}">Petty Cash</a></li>
+                  <li class="nav-item" > <a href="{{ url('/kas_keluar/bukti_kas_keluar/') }}" class="nav-link {{Request::is('kas_keluar/bukti_kas_keluar') ? 'active' : '' || Request::is('kas_keluar/bukti_kas_keluar/*') ? 'active' : '' }}">Bukti Kas Keluar</a></li>
                 </ul>
                 </div>
             </li>
@@ -234,7 +270,7 @@
                   LAPORAN 
                 </span>
                 <i class="menu-arrow"></i>
-                <i class="mdi menu-icon mdi-book"></i>
+                <i class="mdi menu-icon mdi-chart-areaspline"></i>
               </a>
               <div class="collapse {{Request::is('laporan') ? 'show' : '' || Request::is('laporan/*') ? 'show' : '' }}" id="laporan">
                 <ul class="nav flex-column sub-menu">

@@ -64,12 +64,24 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/master/simpan_staff', 'master_controller@simpan_staff');
         Route::get('/master/hapus_staff', 'master_controller@hapus_staff');
         Route::get('/master/edit_staff', 'master_controller@edit_staff');
-        // KEUANGAN
-        Route::get('/master/keuangan', 'master_controller@keuangan');
-        Route::get('/master/datatable_keuangan', 'master_controller@datatable_keuangan')->name('datatable_keuangan');
-        Route::post('/master/simpan_keuangan', 'master_controller@simpan_keuangan');
-        Route::get('/master/hapus_keuangan', 'master_controller@hapus_keuangan');
-        Route::get('/master/edit_keuangan', 'master_controller@edit_keuangan');
+    // KEUANGAN
+        // MASTER AKUN KEUANGAN
+        Route::get('/keuangan/keuangan', 'keuangan_controller@keuangan');
+        Route::get('/keuangan/datatable_keuangan', 'keuangan_controller@datatable_keuangan')->name('datatable_keuangan');
+        Route::post('/keuangan/simpan_keuangan', 'keuangan_controller@simpan_keuangan');
+        Route::get('/keuangan/hapus_keuangan', 'keuangan_controller@hapus_keuangan');
+        Route::get('/keuangan/edit_keuangan', 'keuangan_controller@edit_keuangan');
+        Route::post('/keuangan/update_keuangan', 'keuangan_controller@update_keuangan');
+        // GROUP AKUN KEUANGAN
+        Route::get('/keuangan/group_akun', 'keuangan_controller@group_akun');
+        Route::get('/keuangan/datatable_group_akun', 'keuangan_controller@datatable_group_akun')->name('datatable_group_akun');
+        Route::post('/keuangan/simpan_group_akun', 'keuangan_controller@simpan_group_akun');
+        Route::get('/keuangan/hapus_group_akun', 'keuangan_controller@hapus_group_akun');
+        Route::get('/keuangan/edit_group_akun', 'keuangan_controller@edit_group_akun');
+        Route::get('/keuangan/lihat_group_akun', 'keuangan_controller@lihat_group_akun');
+        Route::post('/keuangan/update_group_akun', 'keuangan_controller@update_group_akun');
+        Route::get('/keuangan/ajax_table_akun', 'keuangan_controller@ajax_table_akun');
+        Route::get('/keuangan/jurnal', 'keuangan_controller@jurnal');
     // PENERIMAAN
         // SISWA
         Route::get('/penerimaan/siswa', 'penerimaan_controller@siswa');
@@ -95,19 +107,29 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/penerimaan/simpan_alumni', 'penerimaan_controller@simpan_alumni');
         Route::get('/penerimaan/hapus_alumni', 'penerimaan_controller@hapus_alumni');
         Route::get('/penerimaan/edit_alumni', 'penerimaan_controller@edit_alumni');
-    // OPERATIONAL
-        // PETTY CASH
-        Route::get('/operational/petty_cash', 'operational_controller@petty_cash');
-        Route::get('/operational/datatable_petty_cash', 'operational_controller@datatable_petty_cash')->name('datatable_petty_cash');
-        Route::post('/operational/simpan_petty_cash', 'operational_controller@simpan_petty_cash');
-        Route::get('/operational/hapus_petty_cash', 'operational_controller@hapus_petty_cash');
-        Route::get('/operational/edit_petty_cash', 'operational_controller@edit_petty_cash');
+    // KAS MASUK
+        // PEMASUKAN LAIN
+        Route::get('/kas_masuk/petty_cash', 'kas_masuk_controller@petty_cash');
+        Route::get('/kas_masuk/datatable_petty_cash', 'kas_masuk_controller@datatable_petty_cash')->name('datatable_petty_cash');
+        Route::post('/kas_masuk/simpan_petty_cash', 'kas_masuk_controller@simpan_petty_cash');
+        Route::get('/kas_masuk/hapus_petty_cash', 'kas_masuk_controller@hapus_petty_cash');
+        Route::get('/kas_masuk/edit_petty_cash', 'kas_masuk_controller@edit_petty_cash');
         // PEMBAYARAN SPP
-        Route::get('/operational/spp', 'operational_controller@spp');
-        Route::get('/operational/datatable_spp', 'operational_controller@datatable_spp')->name('datatable_spp');
-        Route::post('/operational/simpan_spp', 'operational_controller@simpan_spp');
-        Route::get('/operational/hapus_spp', 'operational_controller@hapus_spp');
-        Route::get('/operational/edit_spp', 'operational_controller@edit_petty_cash');
+        Route::get('/kas_masuk/spp', 'kas_masuk_controller@spp');
+        Route::get('/kas_masuk/datatable_spp', 'kas_masuk_controller@datatable_spp')->name('datatable_spp');
+        Route::post('/kas_masuk/simpan_spp', 'kas_masuk_controller@simpan_spp');
+        Route::get('/kas_masuk/hapus_spp', 'kas_masuk_controller@hapus_spp');
+        Route::get('/kas_masuk/edit_spp', 'kas_masuk_controller@edit_petty_cash');
+    // KAS KELUAR
+        // PETTY CASH
+        Route::get('/kas_keluar/petty_cash', 'kas_keluar_controller@petty_cash');
+        Route::get('/kas_keluar/create_petty_cash', 'kas_keluar_controller@create_petty_cash');
+        Route::get('/kas_keluar/datatable_petty_cash', 'kas_keluar_controller@datatable_petty_cash')->name('datatable_petty_cash');
+        Route::post('/kas_keluar/simpan_petty_cash', 'kas_keluar_controller@simpan_petty_cash');
+        Route::get('/kas_keluar/hapus_petty_cash', 'kas_keluar_controller@hapus_petty_cash');
+        Route::get('/kas_keluar/edit_petty_cash', 'kas_keluar_controller@edit_petty_cash');
+        Route::get('/kas_keluar/nota_petty_cash', 'kas_keluar_controller@nota_petty_cash');
+        Route::post('/kas_keluar/update_petty_cash', 'kas_keluar_controller@update_petty_cash');
     // LAPORAN
 
 

@@ -29,10 +29,6 @@
   <link href="{{asset('assets/jp-list/css/jplist.textbox-filter.min.css')}}" rel="stylesheet" type="text/css" />
   <link href="{{asset('assets/jp-list/css/jplist.pagination-bundle.min.css')}}" rel="stylesheet" type="text/css" /> 
 
-  <!-- demo pages styles -->
-  <link rel="stylesheet" href="{{asset('assets/jp-list/css/jplist.bootstrap-demo.min.css')}}" />
-  <!-- <link href="{{asset('assets/jp-list/css/jplist.demo-pages.min.css')}}" rel="stylesheet" type="text/css" /> -->
-
   <!-- inject:css -->
   <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
   <!-- endinject -->
@@ -176,6 +172,26 @@ body.modal-open{
 }
 .error{
   border :1px solid red;
+}
+
+.col-sm-6{
+  margin: 0px !important;
+}
+#table_data{
+  width: 100% !important;
+}
+#table_data th{
+  font-size: 11px;
+}
+#table_data td{
+  font-size: 11px;
+}
+a{
+  cursor: pointer !important;
+}
+.inline{
+  display: inline-block;
+  padding: 0px !important;
 }
 </style>
 </head>

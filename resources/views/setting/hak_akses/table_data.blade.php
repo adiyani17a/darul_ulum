@@ -17,6 +17,8 @@
               <th>Aksi</th>
               <th>Tambah</th>
               <th>Ubah</th>
+              <th>Sekolah</th>
+              <th>Global</th>
               <th>Print</th>
               <th>Hapus</th>
             </tr>
@@ -62,6 +64,26 @@
               <td align="center">
                 <label class="label">
                   <input @if($val->hapus == 1) checked="" @endif  class="label__checkbox hapus" name="hapus" type="checkbox" />
+                  <span class="label__text">
+                    <span class="label__check">
+                      <i class="fa fa-check icon"></i>
+                    </span>
+                  </span>
+                </label>
+              </td>
+              <td align="center">
+                <label class="label">
+                  <input @if($val->sekolah == 1) checked="" @endif  class="label__checkbox sekolah" name="sekolah" type="checkbox" />
+                  <span class="label__text">
+                    <span class="label__check">
+                      <i class="fa fa-check icon"></i>
+                    </span>
+                  </span>
+                </label>
+              </td>
+              <td align="center">
+                <label class="label">
+                  <input @if($val->global == 1) checked="" @endif  class="label__checkbox global" name="global" type="checkbox" />
                   <span class="label__text">
                     <span class="label__check">
                       <i class="fa fa-check icon"></i>
@@ -156,6 +178,34 @@
     $.ajax({
       url:baseUrl + '/setting/hak_akses/centang',
       data:{level,tanda,hapus},
+      success:function(data){
+        
+      }
+    });
+  })
+
+  $('.sekolah').change(function(){
+    var level = $('.level').val();
+    var par = $(this).parents('tr');  
+    var tanda = $(par).find('.penanda').val();
+    var sekolah = $(this).is(':checked');
+    $.ajax({
+      url:baseUrl + '/setting/hak_akses/centang',
+      data:{level,tanda,sekolah},
+      success:function(data){
+        
+      }
+    });
+  })
+
+  $('.global').change(function(){
+    var level = $('.level').val();
+    var par = $(this).parents('tr');  
+    var tanda = $(par).find('.penanda').val();
+    var global = $(this).is(':checked');
+    $.ajax({
+      url:baseUrl + '/setting/hak_akses/centang',
+      data:{level,tanda,global},
       success:function(data){
         
       }

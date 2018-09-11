@@ -354,11 +354,13 @@ class setting_controller extends Controller
                             'ha_menu'  => strtoupper($req->dm_nama),
                          );
             if ($jabatan[$i]->j_nama == 'SUPERUSER') {
-              $save['aktif']  = 1;
-              $save['tambah'] = 1;
-              $save['ubah']   = 1;
-              $save['hapus']  = 1;
-              $save['print']  = 1;
+              $save['aktif']    = 1;
+              $save['tambah']   = 1;
+              $save['ubah']     = 1;
+              $save['hapus']    = 1;
+              $save['sekolah']  = 1;
+              $save['global']   = 1;
+              $save['print']    = 1;
             }
             $this->model->hak_akses()->create($save);
           }
@@ -383,11 +385,13 @@ class setting_controller extends Controller
                             'ha_menu'  => strtoupper($req->dm_nama),
                          );
             if ($jabatan[$i]->j_nama == 'SUPERUSER') {
-              $save['aktif']  = 1;
-              $save['tambah'] = 1;
-              $save['ubah']   = 1;
-              $save['hapus']  = 1;
-              $save['print']  = 1;
+              $save['aktif']    = 1;
+              $save['tambah']   = 1;
+              $save['ubah']     = 1;
+              $save['hapus']    = 1;
+              $save['sekolah']  = 1;
+              $save['global']   = 1;
+              $save['print']    = 1;
             }
             $this->model->hak_akses()->create($save);
           }
@@ -465,6 +469,32 @@ class setting_controller extends Controller
                         ->where('ha_menu',$req->tanda)
                         ->update([
                           'ubah' =>$ubah
+                        ]);
+    }  
+
+    if (isset($req->sekolah)) {
+      if ($req->sekolah == 'true') {
+        $sekolah = 1;
+      }else{
+        $sekolah = 0;
+      }
+      hak_akses::where('ha_level',$req->level)
+                        ->where('ha_menu',$req->tanda)
+                        ->update([
+                          'sekolah' =>$sekolah
+                        ]);
+    }  
+
+    if (isset($req->global)) {
+      if ($req->global == 'true') {
+        $global = 1;
+      }else{
+        $global = 0;
+      }
+      hak_akses::where('ha_level',$req->level)
+                        ->where('ha_menu',$req->tanda)
+                        ->update([
+                          'global' =>$global
                         ]);
     }  
 

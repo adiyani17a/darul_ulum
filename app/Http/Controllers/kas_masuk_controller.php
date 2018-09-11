@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class operational_controller extends Controller
+class kas_masuk_controller extends Controller
 {
     //
 }

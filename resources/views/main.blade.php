@@ -12,6 +12,7 @@
 
 		@include('partials._footer')
 	</div>
+@include('modal_global')
 @include('partials._script')
 
 @yield('extra_script')

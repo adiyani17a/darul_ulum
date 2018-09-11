@@ -2,7 +2,7 @@
   <script src="{{asset('assets/node_modules/jquery/dist/jquery.min.js')}}"></script>
   {{-- <script src="{{asset('assets/node_modules/jquery-ui/jquery-ui.js')}}"></script> --}}
   <script src="{{asset('assets/node_modules/popper.js/dist/umd/popper.min.js')}}"></script>
-  <script src="{{asset('assets/node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+  <script src="{{asset('assets/node_modules/bootstrap-4/js/bootstrap.min.js')}}"></script>
   <script src="{{asset('assets/node_modules/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.min.js')}}"></script>
   <script src="{{asset('assets/node_modules/select2/dist/js/select2.min.js')}}"></script>
   <script src="{{asset('assets/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
@@ -310,5 +310,23 @@
     par.find('span').eq(0).removeClass('error');
   })
 
+  function jurnal(nota) {
+    $.ajax({
+        url:baseUrl +'/keuangan/jurnal',
+        type:'get',
+        data:{nota},
+        success:function(data){
+      
+          $('.append_jurnal').html(data);
+          $('#jurnal').modal('show');
+        },
+        error:function(){
+          iziToast.warning({
+            icon: 'fa fa-times',
+            message: 'Terjadi Kesalahan!',
+          });
+        }
+    });
+  }
 
 </script>

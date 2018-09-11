@@ -25,6 +25,6 @@ class sekolah extends Model
 
 	public function hak_akses()
 	{
-        return $this->hasMany('App\hak_akses','ha_level');
+        return $this->hasMany('App\child\hak_akses','ha_level');
 	}
 }

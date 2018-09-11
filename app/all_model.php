@@ -11,6 +11,12 @@ use App\child\grup_menu;
 use App\child\sekolah;
 use App\child\posisi;
 use App\child\staff;
+use App\child\jurnal;
+use App\child\jurnal_dt;
+use App\child\akun;
+use App\child\group_akun;
+use App\child\petty_cash;
+use App\child\petty_cash_detail;
 use App\Repositories\TestRepo;
 
 class all_model extends Model
@@ -61,5 +67,41 @@ class all_model extends Model
 	{
 		$staff = new staff();
         return $staff = new TestRepo($staff);
+	}
+
+	public function akun()
+	{
+		$akun = new akun();
+        return $akun = new TestRepo($akun);
+	}
+
+	public function jurnal()
+	{
+		$jurnal = new jurnal();
+        return $jurnal = new TestRepo($jurnal);
+	}
+
+	public function jurnal_dt()
+	{
+		$jurnal_dt = new jurnal_dt();
+        return $jurnal_dt = new TestRepo($jurnal_dt);
+	}
+
+	public function group_akun()
+	{
+		$group_akun = new group_akun();
+        return $group_akun = new TestRepo($group_akun);
+	}
+
+	public function petty_cash()
+	{
+		$petty_cash = new petty_cash();
+        return $petty_cash = new TestRepo($petty_cash);
+	}
+
+	public function petty_cash_detail()
+	{
+		$petty_cash_detail = new petty_cash_detail();
+        return $petty_cash_detail = new TestRepo($petty_cash_detail);
 	}
 }
