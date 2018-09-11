@@ -1,7 +1,7 @@
 @extends('main')
 @section('content')
 
-@include('setting.jabatan.tambah')
+@include('master.posisi.tambah')
 
 <!-- partial -->
 <div class="content-wrapper">
@@ -28,7 +28,7 @@
                     <tr>
                       <th style="width: 10%">No</th>
                       <th style="width: 40%">Nama Posisi</th>
-                      <th style="width: 40%">Keterangan</th>
+                      <th style="width: 40%">Gaji</th>
                       <th style="width: 10%">Aksi</th>
                     </tr>
                   </thead>
@@ -51,7 +51,7 @@
           processing: true,
           serverSide: true,
           ajax: {
-              url:'{{ route('datatable_jabatan') }}',
+              url:'{{ route('datatable_posisi') }}',
           },
           columnDefs: [
 
@@ -65,7 +65,7 @@
                   },
                   {
                      targets: 2 ,
-                     className: 'd_keterangan'
+                     className: 'right d_gaji'
                   },
                   {
                      targets: 3 ,
@@ -75,13 +75,14 @@
                   
                 ],
           columns: [
-            {data: 'j_id', name: 'j_id'},
-            {data: 'j_nama', name: 'j_nama'},
-            {data: 'j_keterangan', name: 'j_keterangan'},
+            {data: 'p_id', name: 'p_id'},
+            {data: 'p_nama', name: 'p_nama'},
+            {data: 'p_gaji', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
             {data: 'aksi', name: 'aksi'}
           ]
 
     });
+    $('.p_gaji').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
   })
 
   $('.btn_modal').click(function(){
@@ -89,9 +90,14 @@
   })
 
   $('.simpan').click(function(){
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $.ajax({
-        url:baseUrl +'/setting/simpan_jabatan',
-        type:'get',
+        url:baseUrl +'/master/simpan_posisi',
+        type:'post',
         data:$('.tabel_modal :input').serialize(),
         dataType:'json',
         success:function(data){
@@ -149,7 +155,7 @@
     var par   = $(a).parents('tr');
     var id    = $(par).find('.d_id').text();
     $.ajax({
-        url:baseUrl +'/setting/hapus_jabatan',
+        url:baseUrl +'/master/hapus_posisi',
         type:'get',
         data:{id},
         dataType:'json',

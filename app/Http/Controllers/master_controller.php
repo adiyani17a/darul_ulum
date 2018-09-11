@@ -195,11 +195,33 @@ class master_controller extends Controller
                       ->addColumn('none', function ($data) {
                           return '-';
                       })
-                      ->addColumn('image', function ($data) {
-                          $thumb = asset('storage/uploads/sekolah/thumbnail').'/'.$data->s_logo;
-                          return '<img style="width:50px;height:50px;" class="img-fluid img-thumbnail" src="'.$thumb.'">';
-                      })
-                      ->rawColumns(['aksi', 'none','image'])
+                      ->rawColumns(['aksi', 'none'])
                       ->make(true);
+  }
+
+  public function simpan_posisi(Request $req)
+  {
+
+    DB::BeginTransaction();
+    try{
+      if ($req->id == null) {
+        $id = $this->model->posisi()->max('p_id');
+        $save = array(
+                     'p_id'     => $id,
+                     'p_nama'   => strtoupper($req->p_nama),
+                     'p_gaji'   => filter_var($req->p_gaji,FILTER_SANITIZE_NUMBER_INT),
+                    );
+        $this->model->posisi()->create($save);
+        DB::commit();
+        return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+      }else{
+       
+        DB::commit();
+        return Response::json(['status'=>1,'pesan'=>'Update Data!']);
+      }
+    }catch(Exception $er){
+      dd($er);
+      DB::rollBack();
+    }
   }
 }

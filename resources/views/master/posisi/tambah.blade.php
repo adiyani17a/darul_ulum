@@ -11,15 +11,15 @@
         <div class="row">
             <table class="table tabel_modal">
               <tr>
-                <td>Nama Level</td>
+                <td>Nama Posisi</td>
                 <td>
-                  <input type="text" name="j_nama"  placeholder="level" class="nama huruf_besar form-control form-control-sm">
+                  <input type="text" name="p_nama"  placeholder="Posisi" class="p_nama huruf_besar form-control form-control-sm">
                   <input type="hidden" name="id" class="id">
                 </td>
               </tr>
               <tr>
-                <td>Keterangan</td>
-                <td><input type="text" name="j_keterangan" placeholder="keterangan" class="keterangan huruf_besar form-control form-control-sm"></td>
+                <td>Gaji</td>
+                <td><input type="text" name="p_gaji" placeholder="Gaji" class="p_gaji huruf_besar form-control form-control-sm"></td>
               </tr>
             </table>
         </div>
