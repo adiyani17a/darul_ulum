@@ -140,11 +140,12 @@
     var par   = $(a).parents('tr');
     var id    = $(par).find('.d_id').text();
     var nama  = $(par).find('.d_nama').text();
-    var ket   = $(par).find('.d_keterangan').text();
+    var ket   = $(par).find('.d_gaji').text();
+    ket       = ket.replace(/[^0-9\-]+/g,"")/100;
 
     $('.id').val(id);
-    $('.nama').val(nama);
-    $('.keterangan').val(ket);
+    $('.p_nama').val(nama);
+    $('.p_gaji').maskMoney('mask',ket);
     $('#tambah-jabatan').modal('show');
 
 

@@ -136,7 +136,6 @@
         return false;
     }
    });
-
   });
   var t ;
   var baseUrl = '{{ url('/') }}';

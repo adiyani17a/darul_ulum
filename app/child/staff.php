@@ -26,7 +26,7 @@ class staff extends Model
 
 	public function posisi()
     {
-        return $this->belongsTo('App\child\posisi','st_posisi','p_i');
+        return $this->belongsTo('App\child\posisi','st_posisi','p_id');
     }
 
 }

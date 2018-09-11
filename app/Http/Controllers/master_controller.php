@@ -24,7 +24,7 @@ class master_controller extends Controller
 
 	public function __construct()
 	{
-    	$this->model = new all_model();
+    $this->model = new all_model();
 		$this->models = new models();
 	}
 
@@ -165,8 +165,11 @@ class master_controller extends Controller
 
   public function hapus_sekolah(Request $req)
   {
+    $data = $this->model->sekolah()->cari('s_id',$req->id);
+    unlink(storage_path('uploads/sekolah/thumbnail').'/'.$data->s_logo);
+    unlink(storage_path('uploads/sekolah/original').'/'.$data->s_logo);
   	$data = $this->model->sekolah()->delete('s_id',$req->id);
-    return response()->json(['data' => $data]);
+    return response()->json(['status' => 1]);
   }
 
   public function posisi(Request $req)
@@ -215,7 +218,13 @@ class master_controller extends Controller
         DB::commit();
         return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
       }else{
-       
+        $id = $req->id;
+        $save = array(
+                     'p_id'     => $id,
+                     'p_nama'   => strtoupper($req->p_nama),
+                     'p_gaji'   => filter_var($req->p_gaji,FILTER_SANITIZE_NUMBER_INT),
+                    );
+        $this->model->posisi()->update($save,'p_id',$id);
         DB::commit();
         return Response::json(['status'=>1,'pesan'=>'Update Data!']);
       }
@@ -223,5 +232,187 @@ class master_controller extends Controller
       dd($er);
       DB::rollBack();
     }
+  }
+
+  public function hapus_posisi(Request $req)
+  {
+    $data = $this->model->posisi()->delete('p_id',$req->id);
+    return response()->json(['status' => 1]);
+  }
+
+  public function staff()
+  {
+    $posisi = $this->model->posisi()->all();
+    return view('master.staff.staff',compact('posisi'));
+  }
+
+  public function datatable_staff()
+  {
+    $data = $this->model->staff()->all();
+    
+    
+    // return $data;
+    $data = collect($data);
+    return Datatables::of($data)
+                    ->addColumn('aksi', function ($data) {
+                      return   '<div class="btn-group">'.
+                               '<button type="button" onclick="edit(\''.$data->st_id.'\')" class="btn btn-info btn-lg" title="detail">'.
+                               '<label class="fa fa-pencil-alt"></label></button>'.
+                               '<button type="button" onclick="hapus(\''.$data->st_id.'\')" class="btn btn-danger btn-lg" title="hapus">'.
+                               '<label class="fa fa-trash"></label></button>'.
+                               '</div>';
+                    })
+                    ->addColumn('none', function ($data) {
+                        return '-';
+                    })->addColumn('posisi', function ($data) {
+                        return $data->posisi->p_nama;
+                    })
+                    ->rawColumns(['aksi', 'none'])
+                    ->addIndexColumn()
+                    ->make(true);
+  }
+
+  public function simpan_staff(request $req)
+  {
+    DB::BeginTransaction();
+    try{
+      if ($req->id == null) {
+        $id = $this->model->staff()->max('st_id');
+        $file = $req->file('files');
+        if ($file != null) {
+          $file_name = 'staff_'. $id .'_' . '.' . $file->getClientOriginalExtension();
+          if (!is_dir(storage_path('uploads/staff/thumbnail/'))) {
+            mkdir(storage_path('uploads/staff/thumbnail/'), 0777, true);
+          }
+
+          if (!is_dir(storage_path('uploads/staff/original/'))) {
+            mkdir(storage_path('uploads/staff/original/'), 0777, true);
+          }
+
+          $thumbnail_path = storage_path('uploads/staff/thumbnail/');
+          $original_path = storage_path('uploads/staff/original/');
+          // return $original_path;
+          Image::make($file)
+                  ->resize(261,null,function ($constraint) {
+                    $constraint->aspectRatio();
+                     })
+                  ->save($original_path . $file_name)
+                  ->resize(90, 90)
+                  ->save($thumbnail_path . $file_name);
+        }else{
+          $file_name ='TIDAK ADA';
+        }
+
+
+        $save = array(
+                   'st_id'              => $id,
+                   'st_nama'            => $req->st_nama,
+                   'st_alamat'          => $req->st_alamat,
+                   'st_tanggal_lahir'   => carbon::parse(str_replace('/','-',$req->st_tanggal_lahir))->format('Y-m-d'),
+                   'st_tempat_lahir'    => $req->st_tempat_lahir,
+                   'st_telpon'          => $req->st_telpon,
+                   'st_image'           => $file_name,
+                   'st_posisi'          => $req->st_posisi,
+                   'created_by'         => Auth::user()->name,
+                   'updated_by'         => Auth::user()->name,
+                 );
+        $this->model->staff()->create($save);
+        DB::commit();
+        return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+      }else{
+        $id = $req->id;
+        $file = $req->file('files');
+        if ($file != null) {
+          $file_name = 'staff_'. $id .'_' . '.' . $file->getClientOriginalExtension();
+          if (!is_dir(storage_path('uploads/staff/thumbnail/'))) {
+            mkdir(storage_path('uploads/staff/thumbnail/'), 0777, true);
+          }
+
+          if (!is_dir(storage_path('uploads/staff/original/'))) {
+            mkdir(storage_path('uploads/staff/original/'), 0777, true);
+          }
+
+          $thumbnail_path = storage_path('uploads/staff/thumbnail/');
+          $original_path = storage_path('uploads/staff/original/');
+          // return $original_path;
+          Image::make($file)
+                  ->resize(261,null,function ($constraint) {
+                    $constraint->aspectRatio();
+                     })
+                  ->save($original_path . $file_name)
+                  ->resize(90, 90)
+                  ->save($thumbnail_path . $file_name);
+        }else{
+          $image = $this->model->staff()->cari('st_id',$req->id);
+          $file_name = $image->st_image;
+        }
+
+        $save = array(
+                   'st_nama'            => $req->st_nama,
+                   'st_alamat'          => $req->st_alamat,
+                   'st_tanggal_lahir'   => carbon::parse(str_replace('/','-',$req->st_tanggal_lahir))->format('Y-m-d'),
+                   'st_tempat_lahir'    => $req->st_tempat_lahir,
+                   'st_telpon'          => $req->st_telpon,
+                   'st_image'           => $file_name,
+                   'st_posisi'          => $req->st_posisi,
+                   'updated_by'         => Auth::user()->name,
+                 );
+
+        $this->model->staff()->update($save,'st_id',$req->id);
+        DB::commit();
+        return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+      }
+      
+    }catch(Exception $er){
+      dd($er);
+      DB::rollBack();
+    }
+  }
+
+  public function edit_staff(request $req)
+  {
+    $data = $this->model->staff()->cari('st_id',$req->id);
+    $tanggal = carbon::parse($data->st_tanggal_lahir)->format('d/m/Y');
+    return response()->json(['data' => $data,'tanggal' => $tanggal]);
+  }
+
+  public function hapus_staff(Request $req)
+  {
+    $data = $this->model->staff()->cari('st_id',$req->id);
+    unlink(storage_path('uploads/staff/thumbnail').'/'.$data->st_image);
+    unlink(storage_path('uploads/staff/original').'/'.$data->st_image);
+    $data = $this->model->staff()->delete('st_id',$req->id);
+    return response()->json(['status' => 1]);
+  }
+
+  public function keuangan()
+  {
+    return view('keuangan.keuangan.keuangan');
+  }
+
+  public function datatable_staff()
+  {
+    $data = $this->model->staff()->all();
+    
+    
+    // return $data;
+    $data = collect($data);
+    return Datatables::of($data)
+                    ->addColumn('aksi', function ($data) {
+                      return   '<div class="btn-group">'.
+                               '<button type="button" onclick="edit(\''.$data->st_id.'\')" class="btn btn-info btn-lg" title="detail">'.
+                               '<label class="fa fa-pencil-alt"></label></button>'.
+                               '<button type="button" onclick="hapus(\''.$data->st_id.'\')" class="btn btn-danger btn-lg" title="hapus">'.
+                               '<label class="fa fa-trash"></label></button>'.
+                               '</div>';
+                    })
+                    ->addColumn('none', function ($data) {
+                        return '-';
+                    })->addColumn('posisi', function ($data) {
+                        return $data->posisi->p_nama;
+                    })
+                    ->rawColumns(['aksi', 'none'])
+                    ->addIndexColumn()
+                    ->make(true);
   }
 }
