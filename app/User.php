@@ -27,7 +27,8 @@ class User extends Authenticatable
         'jabatan_id',
         'image',
         'remember_token',
-        'last_login'
+        'last_login',
+        'sekolah_id'
     ];
 
     /**

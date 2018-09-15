@@ -121,7 +121,8 @@ class setting_controller extends Controller
   public function akun()
   {
     $jabatan = $this->model->jabatan()->all();
-    return view('setting.user.akun',compact('jabatan'));
+    $sekolah = $this->model->sekolah()->all();
+    return view('setting.user.akun',compact('jabatan','sekolah'));
   }
 
   public function datatable_akun()
@@ -213,6 +214,7 @@ class setting_controller extends Controller
                   'password'        => Hash::make($req->password),
                   'jabatan_id'      => $req->jabatan_id,
                   'image'           => $file_name,
+                  'sekolah_id'      => $req->sekolah_id,
                   'remember_token'  => bin2hex(random_bytes(30)),
                  );
         $this->model->user()->create($save);
