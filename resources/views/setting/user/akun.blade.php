@@ -29,6 +29,7 @@
                       <th>Username</th>
                       <th>Nama</th>
                       <th>Level</th>
+                      <th>Sekolah</th>
                       <th>Photo</th>
                       <th>Last Login</th>
                       <th>Aksi</th>
@@ -67,11 +68,11 @@
                      className: ' user_id'
                   },
                   {
-                     targets: 6 ,
+                     targets: 5 ,
                      className: 'center'
                   },
                   {
-                     targets: 4 ,
+                     targets: 7 ,
                      className: 'center'
                   },
                   
@@ -82,6 +83,7 @@
             {data: 'username', name: 'username'},
             {data: 'name', name: 'name'},
             {data: 'jabatan', name: 'jabatan'},
+            {data: 'sekolah', name: 'sekolah'},
             {data: 'image', name: 'image'},
             {data: 'last_login', name: 'last_login'},
             {data: 'aksi', name: 'aksi'}
@@ -237,6 +239,7 @@ $('.simpan').click(function(){
           $('.nama').val(res.data.name);
           $('.email').val(res.data.email);
           $('.level').val(res.data.jabatan_id).trigger('change');
+          $('.sekolah_id').val(res.data.sekolah_id).trigger('change');
           $('#output').attr("src", '{{ route('thumbnail') }}'+'/'+res.data.image)
           $('.file-upload').addClass('active');
           $("#noFile").text(res.data.image); 

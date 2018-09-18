@@ -156,7 +156,10 @@ class setting_controller extends Controller
                       ->addColumn('jabatan', function ($data) {
                           return $data->jabatan->j_nama;
                       })
-                      ->rawColumns(['aksi', 'image','jabatan'])
+                      ->addColumn('sekolah', function ($data) {
+                          return $data->sekolah->s_nama;
+                      })
+                      ->rawColumns(['aksi', 'image','jabatan','sekolah'])
                       ->make(true);
   }
 
@@ -267,6 +270,7 @@ class setting_controller extends Controller
                   'email'           => $req->email, 
                   'password'        => Hash::make($req->password),
                   'jabatan_id'      => $req->jabatan_id,
+                  'sekolah_id'      => $req->sekolah_id,
                   'image'           => $file_name
                  );
 
