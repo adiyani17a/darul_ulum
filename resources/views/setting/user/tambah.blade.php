@@ -41,7 +41,7 @@
                 <td>Jabatan</td>
                 <td class="level_td">
                   <select class="level form-control option " name="jabatan_id">
-                    <option selected="" value="">Choose - Level</option>
+                    <option selected="" value="">Pilih - Jabatan</option>
                     @foreach($jabatan as $val)
                       <option value="{{$val->j_id}}">{{$val->j_nama}}</option>
                     @endforeach
@@ -52,7 +52,7 @@
                 <td>Sekolah</td>
                 <td class="level_td">
                   <select class="sekolah_id form-control option " name="sekolah_id">
-                    <option selected="" value="">Choose - Level</option>
+                    <option selected="" value="">Pilih Sekolah</option>
                     @foreach($sekolah as $val)
                       <option value="{{$val->s_id}}">{{$val->s_nama}}</option>
                     @endforeach

@@ -172,7 +172,7 @@
                   Master Data Sekolah
                   Master Data Posisi
                   Master Data Staff
-                  Master Data Akun Keuangan
+                  Master Data Barang
                 </span>
                 <i class="menu-arrow"></i>
                 <i class="mdi menu-icon mdi-archive"></i>
@@ -182,6 +182,7 @@
                   <li class="nav-item" > <a href="{{ url('/master/sekolah/') }}" class="nav-link {{Request::is('master/sekolah') ? 'active' : '' || Request::is('master/sekolah/*') ? 'active' : '' }}">Master Sekolah</a></li>
                   <li class="nav-item" > <a href="{{ url('/master/posisi/') }}" class="nav-link {{Request::is('master/posisi') ? 'active' : '' || Request::is('master/posisi/*') ? 'active' : '' }}">Master Posisi</a></li>
                   <li class="nav-item" > <a href="{{ url('/master/staff/') }}" class="nav-link {{Request::is('master/staff') ? 'active' : '' || Request::is('master/staff/*') ? 'active' : '' }}">Master Staff</a></li>
+                  <li class="nav-item" > <a href="{{ url('/master/barang/') }}" class="nav-link {{Request::is('master/barang') ? 'active' : '' || Request::is('master/barang/*') ? 'active' : '' }}">Master Staff</a></li>
                 </ul>
                 </div>
             </li>
@@ -247,6 +248,8 @@
               <a class="nav-link " data-toggle="collapse" href="#kas_keluar" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-title">Kas Keluar</span>
                 <span class="d-none">
+                  Rencana Pembelian
+                  Konfirmasi Pembelian
                   Petty Cash
                   Bukti Kas Keluar
                 </span>
@@ -255,7 +258,10 @@
               </a>
               <div class="collapse {{Request::is('kas_keluar') ? 'show' : '' || Request::is('kas_keluar/*') ? 'show' : '' }}" id="kas_keluar">
                 <ul class="nav flex-column sub-menu">
+                  <li class="nav-item" > <a href="{{ url('/kas_keluar/rencana_pembelian/') }}" class="nav-link {{Request::is('kas_keluar/rencana_pembelian') ? 'active' : '' || Request::is('kas_keluar/rencana_pembelian/*') ? 'active' : '' }}">Petty Cash</a></li>
                   <li class="nav-item" > <a href="{{ url('/kas_keluar/petty_cash/') }}" class="nav-link {{Request::is('kas_keluar/petty_cash') ? 'active' : '' || Request::is('kas_keluar/petty_cash/*') ? 'active' : '' }}">Petty Cash</a></li>
+                  <li class="nav-item" > <a href="{{ url('/kas_keluar/konfirmasi_pembelian/') }}" class="nav-link {{Request::is('kas_keluar/konfirmasi_pembelian') ? 'active' : '' || Request::is('kas_keluar/konfirmasi_pembelian/*') ? 'active' : '' }}">Petty Cash</a></li>
+
                   <li class="nav-item" > <a href="{{ url('/kas_keluar/bukti_kas_keluar/') }}" class="nav-link {{Request::is('kas_keluar/bukti_kas_keluar') ? 'active' : '' || Request::is('kas_keluar/bukti_kas_keluar/*') ? 'active' : '' }}">Bukti Kas Keluar</a></li>
                 </ul>
                 </div>

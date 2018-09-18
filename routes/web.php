@@ -64,6 +64,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/master/simpan_staff', 'master_controller@simpan_staff');
         Route::get('/master/hapus_staff', 'master_controller@hapus_staff');
         Route::get('/master/edit_staff', 'master_controller@edit_staff');
+        // BARANG
+        Route::get('/master/barang', 'master_controller@barang');
+        Route::get('/master/datatable_barang', 'master_controller@datatable_barang')->name('datatable_barang');
+        Route::post('/master/simpan_barang', 'master_controller@simpan_barang');
+        Route::get('/master/hapus_barang', 'master_controller@hapus_barang');
+        Route::get('/master/edit_barang', 'master_controller@edit_barang');
     // KEUANGAN
         // MASTER AKUN KEUANGAN
         Route::get('/keuangan/keuangan', 'keuangan_controller@keuangan');
@@ -121,6 +127,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_masuk/hapus_spp', 'kas_masuk_controller@hapus_spp');
         Route::get('/kas_masuk/edit_spp', 'kas_masuk_controller@edit_petty_cash');
     // KAS KELUAR
+        // RENCANA PEMBELIAN
+        Route::get('/kas_keluar/rencana_pembelian', 'kas_keluar_controller@rencana_pembelian');
+        Route::get('/kas_keluar/create_rencana_pembelian', 'kas_keluar_controller@create_rencana_pembelian');
+        Route::get('/kas_keluar/datatable_rencana_pembelian', 'kas_keluar_controller@datatable_rencana_pembelian')->name('datatable_rencana_pembelian');
+        Route::post('/kas_keluar/simpan_rencana_pembelian', 'kas_keluar_controller@simpan_rencana_pembelian');
+        Route::get('/kas_keluar/hapus_rencana_pembelian', 'kas_keluar_controller@hapus_rencana_pembelian');
+        Route::get('/kas_keluar/edit_rencana_pembelian', 'kas_keluar_controller@edit_rencana_pembelian');
+        Route::get('/kas_keluar/nota_rencana_pembelian', 'kas_keluar_controller@nota_rencana_pembelian');
+        Route::post('/kas_keluar/update_rencana_pembelian', 'kas_keluar_controller@update_rencana_pembelian');
         // PETTY CASH
         Route::get('/kas_keluar/petty_cash', 'kas_keluar_controller@petty_cash');
         Route::get('/kas_keluar/create_petty_cash', 'kas_keluar_controller@create_petty_cash');

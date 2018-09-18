@@ -29,6 +29,8 @@
                       <th>Nama Staff</th>
                       <th>Alamat</th>
                       <th>Posisi</th>
+                      <th>Sekolah</th>
+                      <th>Foto</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -69,7 +71,11 @@
                      className: 'left'
                   },
                   {
-                     targets: 4 ,
+                     targets: 5 ,
+                     className: 'center'
+                  },
+                  {
+                     targets: 6 ,
                      className: 'center'
                   },
                   
@@ -80,6 +86,8 @@
             {data: 'st_nama', name: 'st_nama'},
             {data: 'st_alamat', name: 'st_alamat'},
             {data: 'posisi', name: 'posisi'},
+            {data: 'sekolah', name: 'sekolah'},
+            {data: 'foto', name: 'foto'},
             {data: 'aksi', name: 'aksi'}
           ]
 
@@ -236,6 +244,7 @@ $('.simpan').click(function(){
           $('.st_tempat_lahir').val(res.data.st_tempat_lahir);
           $('.st_tanggal_lahir').val(res.tanggal);
           $('.st_telpon').val(res.data.st_telpon);
+          $('.st_sekolah').val(res.data.st_sekolah).trigger('change');
           $('.st_posisi').val(res.data.st_posisi).trigger('change');
           $('#output').attr("src", '{{ asset('storage/uploads/staff/original') }}'+'/'+res.data.st_image+'?'+Math.random())
           $('.file-upload').addClass('active');

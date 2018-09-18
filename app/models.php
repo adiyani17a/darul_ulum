@@ -16,6 +16,9 @@ use App\child\jurnal_dt;
 use App\child\akun;
 use App\child\petty_cash;
 use App\child\petty_cash_detail;
+use App\child\barang;
+use App\child\rencana_pembelian;
+use App\child\rencana_pembelian_d;
 
 class models extends Model
 {
@@ -77,6 +80,21 @@ class models extends Model
 	public function petty_cash()
 	{
 		return $petty_cash = new petty_cash();
+	}
+
+	public function petty_cash_detail()
+	{
+		return $petty_cash_detail = new petty_cash_detail();
+	}
+
+	public function barang()
+	{
+		return $barang = new barang();
+	}
+
+	public function petty_cash_detail()
+	{
+		return $petty_cash_detail = new petty_cash_detail();
 	}
 
 	public function petty_cash_detail()

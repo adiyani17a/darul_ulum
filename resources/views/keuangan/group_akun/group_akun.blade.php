@@ -90,7 +90,6 @@ $('.ga_jenis_group').change(function(){
 })
 
 $(document).on('change','.ga_jenis_group1',function(){
-  console.log($(this).val());
   if ($(this).val() == 'neraca') {
     $('.group_neraca1').prop('hidden',false);
   }else{
@@ -176,11 +175,14 @@ $('.selesai').click(function(){
       if (index == -1) {
         simpan_akun.push(a_id);
       }      
-    }else{
+    }else if($(this).is(':checked') == false){
       var index = simpan_akun.indexOf(a_id);
-      simpan_akun.splice(index,1);
+        if (index != -1) {
+          simpan_akun.splice(index,1);
+        }
     }
   })
+        console.log(simpan_akun);
   $('.count_akun').html((simpan_akun.length-1)+' Akun Yang Ditambahkan')
 })
 

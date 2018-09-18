@@ -46,27 +46,40 @@ class kas_keluar_controller extends Controller
 		                	$a = '<div class="btn-group"><button type="button" onclick="jurnal(\''.$data->pc_nota.'\')" class="btn btn-primary btn-lg" title="Check Jurnal"><label class="fa fa-book"></label></button>';
 		                	$b = '';
 		                	$c = '';
+		                	$c1 = '';
 		                	$d = '</div>';
 		                	if (Auth::user()->akses('PETTY CASH','ubah')) {
-		                		if ($data->pc_status == 'BELUM POSTING') {
+		                		if ($data->pc_status == 'RELEASED') {
 		                			$b = '<button type="button" onclick="edit(\''.$data->pc_id.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
 		                		}
 		                	}
 
 		                	if (Auth::user()->akses('PETTY CASH','hapus')) {
-		                		if ($data->pc_status == 'BELUM POSTING') {
+		                		if ($data->pc_status == 'RELEASED') {
 		                			$c = '<button type="button" onclick="hapus(\''.$data->pc_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
 		                		}
 		                	}
-		                         
-		                    return $a.$b.$c.$d;
+
+							if ($data->pc_status == 'APPROVED') {
+								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
+							}
+
+		                    return $a.$b.$c.$c1.$d;
 		                })
 		                ->addColumn('none', function ($data) {
 		                    return '-';
 		                })->addColumn('sekolah', function ($data) {
 		                    return $data->sekolah->s_nama;
+		                })->addColumn('status', function ($data) {
+		                   	if ($data->pc_status == 'RELEASED') {
+								return '<label class="badge badge-warning">RELEASED</label>';
+		                   	}else if ($data->pc_status == 'APPROVED') {
+								return '<label class="badge badge-primary">APPROVED</label>';
+		                   	}if ($data->pc_status == 'POSTING') {
+								return '<label class="label label-success">POSTING</label>';
+		                   	}
 		                })
-		                ->rawColumns(['aksi', 'none','sekolah'])
+		                ->rawColumns(['aksi', 'none','sekolah','status'])
 		                ->addIndexColumn()
 		                ->make(true);
 	}

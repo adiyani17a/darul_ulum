@@ -55,6 +55,17 @@
                 </td>
               </tr>
               <tr>
+                <td>Sekolah</td>
+                <td class="level_td">
+                  <select class="st_sekolah form-control option " name="st_sekolah">
+                    <option selected="" value="">Pilih - Sekolah</option>
+                    @foreach($sekolah as $val)
+                      <option value="{{$val->s_id}}">{{$val->s_nama}}</option>
+                    @endforeach
+                  </select>
+                </td>
+              </tr>
+              <tr>
                 <td>Foto</td>
                 <td>
                   <div class="file-upload">

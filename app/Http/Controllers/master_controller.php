@@ -242,13 +242,13 @@ class master_controller extends Controller
   public function staff()
   {
     $posisi = $this->model->posisi()->all();
-    return view('master.staff.staff',compact('posisi'));
+    $sekolah = $this->model->sekolah()->all();
+    return view('master.staff.staff',compact('posisi','sekolah'));
   }
 
   public function datatable_staff()
   {
     $data = $this->model->staff()->all();
-    
     
     // return $data;
     $data = collect($data);
@@ -265,8 +265,13 @@ class master_controller extends Controller
                         return '-';
                     })->addColumn('posisi', function ($data) {
                         return $data->posisi->p_nama;
-                    })
-                    ->rawColumns(['aksi', 'none'])
+                    })->addColumn('sekolah', function ($data) {
+                        return $data->sekolah->s_nama;
+                    })->addColumn('foto', function ($data) {
+                          $thumb = asset('storage/uploads/staff/thumbnail').'/'.$data->st_image;
+                          return '<img style="width:50px;height:50px;" class="img-fluid img-thumbnail" src="'.$thumb.'">';
+                      })
+                    ->rawColumns(['aksi', 'none','sekolah','foto'])
                     ->addIndexColumn()
                     ->make(true);
   }
@@ -312,6 +317,7 @@ class master_controller extends Controller
                    'st_telpon'          => $req->st_telpon,
                    'st_image'           => $file_name,
                    'st_posisi'          => $req->st_posisi,
+                   'st_sekolah'         => $req->st_sekolah,
                    'created_by'         => Auth::user()->name,
                    'updated_by'         => Auth::user()->name,
                  );
@@ -354,6 +360,7 @@ class master_controller extends Controller
                    'st_telpon'          => $req->st_telpon,
                    'st_image'           => $file_name,
                    'st_posisi'          => $req->st_posisi,
+                   'st_sekolah'         => $req->st_sekolah,
                    'updated_by'         => Auth::user()->name,
                  );
 
@@ -376,6 +383,164 @@ class master_controller extends Controller
   }
 
   public function hapus_staff(Request $req)
+  {
+    $data = $this->model->staff()->cari('st_id',$req->id);
+    unlink(storage_path('uploads/staff/thumbnail').'/'.$data->st_image);
+    unlink(storage_path('uploads/staff/original').'/'.$data->st_image);
+    $data = $this->model->staff()->delete('st_id',$req->id);
+    return response()->json(['status' => 1]);
+  }
+
+  public function hapus_posisi(Request $req)
+  {
+    $data = $this->model->posisi()->delete('p_id',$req->id);
+    return response()->json(['status' => 1]);
+  }
+
+  public function barang()
+  {
+    $posisi = $this->model->posisi()->all();
+    $sekolah = $this->model->sekolah()->all();
+    return view('master.barang.barang',compact('posisi','sekolah'));
+  }
+
+  public function datatable_barang()
+  {
+    $data = $this->model->barang()->all();
+    
+    // return $data;
+    $data = collect($data);
+    return Datatables::of($data)
+                    ->addColumn('aksi', function ($data) {
+                      return   '<div class="btn-group">'.
+                               '<button type="button" onclick="edit(\''.$data->st_id.'\')" class="btn btn-info btn-lg" title="detail">'.
+                               '<label class="fa fa-pencil-alt"></label></button>'.
+                               '<button type="button" onclick="hapus(\''.$data->st_id.'\')" class="btn btn-danger btn-lg" title="hapus">'.
+                               '<label class="fa fa-trash"></label></button>'.
+                               '</div>';
+                    })
+                    ->addColumn('none', function ($data) {
+                        return '-';
+                    })->addColumn('posisi', function ($data) {
+                        return $data->posisi->p_nama;
+                    })->addColumn('sekolah', function ($data) {
+                        return $data->sekolah->s_nama;
+                    })->addColumn('foto', function ($data) {
+                          $thumb = asset('storage/uploads/barang/thumbnail').'/'.$data->st_image;
+                          return '<img style="width:50px;height:50px;" class="img-fluid img-thumbnail" src="'.$thumb.'">';
+                      })
+                    ->rawColumns(['aksi', 'none','sekolah','foto'])
+                    ->addIndexColumn()
+                    ->make(true);
+  }
+
+  public function simpan_barang(request $req)
+  {
+    DB::BeginTransaction();
+    try{
+      if ($req->id == null) {
+        $id = $this->model->barang()->max('st_id');
+        $file = $req->file('files');
+        if ($file != null) {
+          $file_name = 'barang_'. $id .'_' . '.' . $file->getClientOriginalExtension();
+          if (!is_dir(storage_path('uploads/barang/thumbnail/'))) {
+            mkdir(storage_path('uploads/barang/thumbnail/'), 0777, true);
+          }
+
+          if (!is_dir(storage_path('uploads/barang/original/'))) {
+            mkdir(storage_path('uploads/barang/original/'), 0777, true);
+          }
+
+          $thumbnail_path = storage_path('uploads/barang/thumbnail/');
+          $original_path = storage_path('uploads/barang/original/');
+          // return $original_path;
+          Image::make($file)
+                  ->resize(261,null,function ($constraint) {
+                    $constraint->aspectRatio();
+                     })
+                  ->save($original_path . $file_name)
+                  ->resize(90, 90)
+                  ->save($thumbnail_path . $file_name);
+        }else{
+          $file_name ='TIDAK ADA';
+        }
+
+
+        $save = array(
+                   'st_id'              => $id,
+                   'st_nama'            => $req->st_nama,
+                   'st_alamat'          => $req->st_alamat,
+                   'st_tanggal_lahir'   => carbon::parse(str_replace('/','-',$req->st_tanggal_lahir))->format('Y-m-d'),
+                   'st_tempat_lahir'    => $req->st_tempat_lahir,
+                   'st_telpon'          => $req->st_telpon,
+                   'st_image'           => $file_name,
+                   'st_posisi'          => $req->st_posisi,
+                   'st_sekolah'         => $req->st_sekolah,
+                   'created_by'         => Auth::user()->name,
+                   'updated_by'         => Auth::user()->name,
+                 );
+        $this->model->barang()->create($save);
+        DB::commit();
+        return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+      }else{
+        $id = $req->id;
+        $file = $req->file('files');
+        if ($file != null) {
+          $file_name = 'barang_'. $id .'_' . '.' . $file->getClientOriginalExtension();
+          if (!is_dir(storage_path('uploads/barang/thumbnail/'))) {
+            mkdir(storage_path('uploads/barang/thumbnail/'), 0777, true);
+          }
+
+          if (!is_dir(storage_path('uploads/barang/original/'))) {
+            mkdir(storage_path('uploads/barang/original/'), 0777, true);
+          }
+
+          $thumbnail_path = storage_path('uploads/barang/thumbnail/');
+          $original_path = storage_path('uploads/barang/original/');
+          // return $original_path;
+          Image::make($file)
+                  ->resize(261,null,function ($constraint) {
+                    $constraint->aspectRatio();
+                     })
+                  ->save($original_path . $file_name)
+                  ->resize(90, 90)
+                  ->save($thumbnail_path . $file_name);
+        }else{
+          $image = $this->model->barang()->cari('st_id',$req->id);
+          $file_name = $image->st_image;
+        }
+
+        $save = array(
+                   'st_nama'            => $req->st_nama,
+                   'st_alamat'          => $req->st_alamat,
+                   'st_tanggal_lahir'   => carbon::parse(str_replace('/','-',$req->st_tanggal_lahir))->format('Y-m-d'),
+                   'st_tempat_lahir'    => $req->st_tempat_lahir,
+                   'st_telpon'          => $req->st_telpon,
+                   'st_image'           => $file_name,
+                   'st_posisi'          => $req->st_posisi,
+                   'st_sekolah'         => $req->st_sekolah,
+                   'updated_by'         => Auth::user()->name,
+                 );
+
+        $this->model->barang()->update($save,'st_id',$req->id);
+        DB::commit();
+        return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+      }
+      
+    }catch(Exception $er){
+      dd($er);
+      DB::rollBack();
+    }
+  }
+
+  public function edit_barang(request $req)
+  {
+    $data = $this->model->barang()->cari('st_id',$req->id);
+    $tanggal = carbon::parse($data->st_tanggal_lahir)->format('d/m/Y');
+    return response()->json(['data' => $data,'tanggal' => $tanggal]);
+  }
+
+  public function hapus_barang(Request $req)
   {
     $data = $this->model->staff()->cari('st_id',$req->id);
     unlink(storage_path('uploads/staff/thumbnail').'/'.$data->st_image);

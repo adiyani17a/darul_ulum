@@ -20,6 +20,7 @@ class staff extends Model
 						   'st_telpon',
 						   'st_image',
 						   'st_posisi',
+						   'st_sekolah',
 						   'created_by',
 						   'updated_by',
 						];
@@ -27,6 +28,11 @@ class staff extends Model
 	public function posisi()
     {
         return $this->belongsTo('App\child\posisi','st_posisi','p_id');
+    }
+
+    public function sekolah()
+    {
+        return $this->belongsTo('App\child\sekolah','st_sekolah','s_id');
     }
 
 }
