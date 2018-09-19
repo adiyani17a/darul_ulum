@@ -17,6 +17,9 @@ use App\child\akun;
 use App\child\group_akun;
 use App\child\petty_cash;
 use App\child\petty_cash_detail;
+use App\child\barang;
+use App\child\rencana_pembelian;
+use App\child\rencana_pembelian_d;
 use App\Repositories\TestRepo;
 
 class all_model extends Model
@@ -103,5 +106,23 @@ class all_model extends Model
 	{
 		$petty_cash_detail = new petty_cash_detail();
         return $petty_cash_detail = new TestRepo($petty_cash_detail);
+	}
+
+	public function barang()
+	{
+		$barang = new barang();
+        return $barang = new TestRepo($barang);
+	}
+
+	public function rencana_pembelian()
+	{
+		$rencana_pembelian = new rencana_pembelian();
+        return $rencana_pembelian = new TestRepo($rencana_pembelian);
+	}
+
+	public function rencana_pembelian_d()
+	{
+		$rencana_pembelian_d = new rencana_pembelian_d();
+        return $rencana_pembelian_d = new TestRepo($rencana_pembelian_d);
 	}
 }

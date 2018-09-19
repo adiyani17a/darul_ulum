@@ -20,14 +20,185 @@ class kas_keluar_controller extends Controller
 {
     protected $model;
 	protected $models;
-	// JABATAN]
 
 	public function __construct()
 	{
     	$this->model = new all_model();
 		$this->models = new models();
 	}
+	// RENCANA PEMBELIAN
+	public function rencana_pembelian($value='')
+	{
+		return view('kas_keluar.rencana_pembelian.rencana_pembelian');
+	}
 
+	public function datatable_rencana_pembelian()
+	{
+		$data = $this->model->rencana_pembelian()->all();
+		// return $data;
+		$data = collect($data);
+		return Datatables::of($data)
+		                ->addColumn('aksi', function ($data) {
+		                	$a = '<div class="btn-group">';
+		                	$b = '';
+		                	$c = '';
+		                	$c1 = '';
+		                	$c2 = '';
+		                	$d = '</div>';
+		                	if (Auth::user()->akses('RENCANA PEMBELIAN','ubah')) {
+		                		if ($data->rp_status == 'Release') {
+		                			$b = '<button type="button" onclick="edit(\''.$data->rp_id.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
+		                		}
+		                	}
+
+		                	if (Auth::user()->akses('RENCANA PEMBELIAN','hapus')) {
+		                		if ($data->rp_status != 'Selesai') {
+		                			$c = '<button type="button" onclick="hapus(\''.$data->rp_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
+		                		}
+		                	}
+
+		                	if (Auth::user()->akses('APPROVE PEMBELIAN','aktif')) {
+		                		if ($data->rp_status == 'Release') {
+		                			$c2 = '<button type="button"  title="approve rencana pembelian" onclick="approve(\''.$data->rp_id.'\')" class="btn btn-info btn-lg" ><label class="fa fa-check"></label></button>';
+		                		}
+		                	}
+
+							if ($data->rp_status == 'Berjalan') {
+								$c1 = '<button type="button" onclick="cetak(\''.$data->rp_id.'\')" class="btn btn-info btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
+							}
+
+		                    return $a.$b.$c.$c1.$c2.$d;
+		                })
+		                ->addColumn('nota', function ($data) {
+		                    return '<a class="btn_modal" onclick="detail(\''.$data->rp_id.'\')" style="color:blue">'.$data->rp_kode.'</a>';
+		                })->addColumn('sekolah', function ($data) {
+		                    return $data->sekolah->s_nama;
+		                })->addColumn('status', function ($data) {
+		                   	if ($data->rp_status == 'Release') {
+								return '<label class="badge badge-warning">RELEASED</label>';
+		                   	}else if ($data->rp_status == 'Berjalan') {
+								return '<label class="badge badge-primary">APPROVED</label>';
+		                   	}if ($data->rp_status == 'Selesai') {
+								return '<label class="label label-success">SELESAI</label>';
+		                   	}
+		                })
+		                ->rawColumns(['aksi', 'nota','sekolah','status'])
+		                ->addIndexColumn()
+		                ->make(true);
+	}
+
+	public function create_rencana_pembelian()
+	{
+		$sekolah = $this->model->sekolah()->all();
+		$barang = $this->model->barang()->all();
+		return view('kas_keluar.rencana_pembelian.create_rencana_pembelian',compact('sekolah','barang'));
+	}
+
+	public function nota_rencana_pembelian(Request $req)
+	{
+		$bulan = carbon::now()->format('m');
+		$tahun = carbon::now()->format('Y');
+
+		$cari = $this->models->rencana_pembelian()
+							   ->selectRaw("substring(max(rp_kode),13,3) as id")
+							   ->whereRaw("MONTH(rp_tanggal) = '$bulan' and YEAR(rp_tanggal) = '$tahun'")
+							   ->where('rp_sekolah',$req->rp_sekolah)
+							   ->first();
+
+        $index = (integer)$cari->id + 1;
+        $index = str_pad($index, 3, '0', STR_PAD_LEFT);
+        $nota = 'RP-'. $bulan . $tahun . '/' . $req->rp_sekolah . '/' . $index;
+
+        return Response::json(['nota'=>$nota]);
+	}
+
+	public function simpan_rencana_pembelian(Request $req)
+	{
+		DB::BeginTransaction();
+		try {
+			// dd($req->all());
+			$cari = $this->model->rencana_pembelian()->cari('rp_kode',$req->rp_kode);
+			if ($cari != null) {
+				DB::rollBack();
+				return Response::json(['status'=>0,'pesan'=>'Kode Anggaran Telah Digunakan']);
+			}
+
+			$id = $this->model->rencana_pembelian()->max('rp_id');
+			$save = array(
+						   'rp_id'			=> $id,
+						   'rp_kode'		=> strtoupper($req->rp_kode),
+						   'rp_tahun'		=> carbon::parse($req->rp_tanggal)->format('Y'),
+						   'rp_tanggal'		=> carbon::parse($req->rp_tanggal)->format('Y-m-d'),
+						   'rp_keterangan'	=> strtoupper($req->rp_keterangan),
+						   'rp_total'		=> filter_var($req->rp_total,FILTER_SANITIZE_NUMBER_INT),
+						   'rp_sekolah'		=> $req->rp_sekolah,
+						   'created_by'		=> Auth::user()->name,
+						   'updated_by'		=> Auth::user()->name,
+						 );
+
+			$this->model->rencana_pembelian()->create($save);
+
+			for ($i=0; $i < count($req->rpd_barang); $i++) { 
+				if ($req->rpd_jumlah[$i] == '') {
+					$jumlah = 0;
+				}else{
+					$jumlah = $req->rpd_jumlah[$i];
+				}
+				$save = array(
+						   'rpd_id'		=> $id,
+						   'rpd_detail'	=> $i+1,
+						   'rpd_barang'	=> $req->rpd_barang[$i],
+						   'rpd_jumlah'	=> $jumlah,
+						   'rpd_sisa'	=> $jumlah,
+						 );
+				$this->model->rencana_pembelian_d()->create($save);
+			}
+			DB::commit();
+			return Response::json(['status'=>1]);
+		} catch (Exception $e) {
+			DB::rollBack();
+			dd($e);
+		}
+	}
+
+	public function edit_rencana_pembelian(Request $req)
+	{
+		$data = $this->model->rencana_pembelian()->cari('rp_id',$req->id);
+		$sekolah = $this->model->sekolah()->all();
+		$barang = $this->model->barang()->all();
+		return view('kas_keluar.rencana_pembelian.edit_rencana_pembelian',compact('data','sekolah','barang'));
+	}
+
+	public function update_rencana_pembelian(Request $req)
+	{
+		try{
+		    $this->model->rencana_pembelian()->delete('rp_id',$req->id);
+			return $this->simpan_rencana_pembelian($req);
+		}catch(Exception $er){
+		  dd($er);
+		  DB::rollBack();
+		}
+	}
+
+	public function approve_rencana_pembelian(Request $req)
+	{
+		$save = array('rp_status'=>'Berjalan');
+		$this->model->rencana_pembelian()->update($save,'rp_id',$req->id);
+		return Response::json(['status'=>1]);
+	}
+
+	public function hapus_rencana_pembelian(Request $req)
+	{
+		$this->model->rencana_pembelian()->delete('rp_id',$req->id);
+		return Response::json(['status'=>1]);
+	}
+
+	public function detail_rencana_pembelian(Request $req)
+	{
+		$data = $this->model->rencana_pembelian()->cari('rp_id',$req->id);
+		return view('kas_keluar.rencana_pembelian.table_modal',compact('data'));
+	}
+	// PETTY CASH
 	public function petty_cash(Request $req)
 	{
 		if (isset($req->simpan)) {

@@ -11,15 +11,21 @@
         <div class="row">
             <table class="table tabel_modal">
               <tr>
-                <td>Nama Posisi</td>
+                <td>Nama Barang</td>
                 <td>
-                  <input type="text" name="p_nama"  placeholder="Posisi" class="p_nama huruf_besar form-control form-control-sm">
+                  <input type="text" name="b_nama"  placeholder="Harus diisi" class="b_nama huruf_besar form-control form-control-sm">
                   <input type="hidden" name="id" class="id">
                 </td>
               </tr>
               <tr>
-                <td>Gaji</td>
-                <td><input type="text" name="p_gaji" placeholder="Gaji" class="p_gaji huruf_besar form-control form-control-sm"></td>
+                <td>Keterangan</td>
+                <td>
+                  <input type="text" name="b_keterangan"  placeholder="Harus diisi" class="b_keterangan huruf_besar form-control form-control-sm">
+                </td>
+              </tr>
+              <tr>
+                <td>Harga Tertinggi</td>
+                <td><input type="text" name="b_harga_tertinggi" placeholder="Harus diisi" class="b_harga_tertinggi mask huruf_besar form-control form-control-sm"></td>
               </tr>
             </table>
         </div>

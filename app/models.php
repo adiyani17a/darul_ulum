@@ -92,14 +92,14 @@ class models extends Model
 		return $barang = new barang();
 	}
 
-	public function petty_cash_detail()
+	public function rencana_pembelian()
 	{
-		return $petty_cash_detail = new petty_cash_detail();
+		return $rencana_pembelian = new rencana_pembelian();
 	}
 
-	public function petty_cash_detail()
+	public function rencana_pembelian_d()
 	{
-		return $petty_cash_detail = new petty_cash_detail();
+		return $rencana_pembelian_d = new rencana_pembelian_d();
 	}
 
 	public function check_jurnal($nota)

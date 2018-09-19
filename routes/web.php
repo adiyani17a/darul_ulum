@@ -136,6 +136,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_keluar/edit_rencana_pembelian', 'kas_keluar_controller@edit_rencana_pembelian');
         Route::get('/kas_keluar/nota_rencana_pembelian', 'kas_keluar_controller@nota_rencana_pembelian');
         Route::post('/kas_keluar/update_rencana_pembelian', 'kas_keluar_controller@update_rencana_pembelian');
+        Route::post('/kas_keluar/approve_rencana_pembelian', 'kas_keluar_controller@approve_rencana_pembelian');
+        Route::get('/kas_keluar/detail_rencana_pembelian', 'kas_keluar_controller@detail_rencana_pembelian');
         // PETTY CASH
         Route::get('/kas_keluar/petty_cash', 'kas_keluar_controller@petty_cash');
         Route::get('/kas_keluar/create_petty_cash', 'kas_keluar_controller@create_petty_cash');

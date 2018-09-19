@@ -49,8 +49,6 @@
 
 
 
-
-
 <style type="text/css">
 small.text-muted {
   position: absolute;

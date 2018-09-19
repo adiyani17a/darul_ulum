@@ -1,7 +1,7 @@
 @extends('main')
 @section('content')
 
-@include('master.posisi.tambah')
+@include('master.barang.tambah')
 
 <!-- partial -->
 <div class="content-wrapper">
@@ -27,8 +27,9 @@
                   <thead class="bg-gradient-info">
                     <tr>
                       <th style="width: 10%">No</th>
-                      <th style="width: 40%">Nama Posisi</th>
-                      <th style="width: 40%">Gaji</th>
+                      <th style="width: 20%">Nama Barang</th>
+                      <th style="width: 40%">Keterangan</th>
+                      <th style="width: 40%">Harga Tertinggi</th>
                       <th style="width: 10%">Aksi</th>
                     </tr>
                   </thead>
@@ -51,7 +52,7 @@
           processing: true,
           serverSide: true,
           ajax: {
-              url:'{{ route('datatable_posisi') }}',
+              url:'{{ route('datatable_barang') }}',
           },
           columnDefs: [
 
@@ -65,27 +66,32 @@
                   },
                   {
                      targets: 2 ,
-                     className: 'right d_gaji'
+                     className: 'right d_keterangan'
                   },
                   {
                      targets: 3 ,
+                     className: 'right d_harga'
+                  },
+                  {
+                     targets: 4 ,
                      className: 'center'
                   },
                   
-                  
                 ],
           columns: [
-            {data: 'p_id', name: 'p_id'},
-            {data: 'p_nama', name: 'p_nama'},
-            {data: 'p_gaji', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
+            {data: 'b_id', name: 'b_id'},
+            {data: 'b_nama', name: 'b_nama'},
+            {data: 'b_keterangan', name: 'b_keterangan'},
+            {data: 'b_harga_tertinggi', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
             {data: 'aksi', name: 'aksi'}
           ]
 
     });
-    $('.p_gaji').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
+    $('.b_harga_tertinggi').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
   })
 
   $('.btn_modal').click(function(){
+    $('.tabel_modal input').val('');
     $('.nama').focus();
   })
 
@@ -96,7 +102,7 @@
         }
     });
     $.ajax({
-        url:baseUrl +'/master/simpan_posisi',
+        url:baseUrl +'/master/simpan_barang',
         type:'post',
         data:$('.tabel_modal :input').serialize(),
         dataType:'json',
@@ -140,12 +146,14 @@
     var par   = $(a).parents('tr');
     var id    = $(par).find('.d_id').text();
     var nama  = $(par).find('.d_nama').text();
-    var ket   = $(par).find('.d_gaji').text();
-    ket       = ket.replace(/[^0-9\-]+/g,"")/100;
+    var ket   = $(par).find('.d_keterangan').text();
+    var harga   = $(par).find('.d_harga').text();
+    harga       = harga.replace(/[^0-9\-]+/g,"")/100;
 
     $('.id').val(id);
-    $('.p_nama').val(nama);
-    $('.p_gaji').maskMoney('mask',ket);
+    $('.b_nama').val(nama);
+    $('.b_keterangan').val(ket);
+    $('.b_harga_tertinggi').maskMoney('mask',harga);
     $('#tambah-jabatan').modal('show');
 
 
@@ -156,7 +164,7 @@
     var par   = $(a).parents('tr');
     var id    = $(par).find('.d_id').text();
     $.ajax({
-        url:baseUrl +'/master/hapus_posisi',
+        url:baseUrl +'/master/hapus_barang',
         type:'get',
         data:{id},
         dataType:'json',
