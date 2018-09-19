@@ -258,7 +258,7 @@
               </a>
               <div class="collapse {{Request::is('kas_keluar') ? 'show' : '' || Request::is('kas_keluar/*') ? 'show' : '' }}" id="kas_keluar">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="{{ url('/kas_keluar/rencana_pembelian/') }}" class="nav-link {{Request::is('kas_keluar/rencana_pembelian') ? 'active' : '' || Request::is('kas_keluar/rencana_pembelian/*') ? 'active' : '' }}">Petty Cash</a></li>
+                  <li class="nav-item" > <a href="{{ url('/kas_keluar/rencana_pembelian/') }}" class="nav-link {{Request::is('kas_keluar/rencana_pembelian') ? 'active' : '' || Request::is('kas_keluar/rencana_pembelian/*') ? 'active' : '' }}">Rencana Pembelian</a></li>
                   <li class="nav-item" > <a href="{{ url('/kas_keluar/petty_cash/') }}" class="nav-link {{Request::is('kas_keluar/petty_cash') ? 'active' : '' || Request::is('kas_keluar/petty_cash/*') ? 'active' : '' }}">Petty Cash</a></li>
                   <li class="nav-item" > <a href="{{ url('/kas_keluar/konfirmasi_pembelian/') }}" class="nav-link {{Request::is('kas_keluar/konfirmasi_pembelian') ? 'active' : '' || Request::is('kas_keluar/konfirmasi_pembelian/*') ? 'active' : '' }}">Petty Cash</a></li>
 
