@@ -198,6 +198,119 @@ class kas_keluar_controller extends Controller
 		$data = $this->model->rencana_pembelian()->cari('rp_id',$req->id);
 		return view('kas_keluar.rencana_pembelian.table_modal',compact('data'));
 	}
+	// PENGELUARAN ANGGARAN
+	public function pengeluaran_anggaran()
+	{
+		if (isset($req->simpan)) {
+			Session::flash('message','Data Berhasil Dimpan');
+		}
+		return view('kas_keluar.pengeluaran_anggaran.pengeluaran_anggaran');
+	}
+
+	public function datatable_pengeluaran_anggaran()
+	{
+		$data = $this->model->petty_cash()->show('pc_jenis','ANGGARAN');
+		// return $data;
+		$data = collect($data);
+		return Datatables::of($data)
+		                ->addColumn('aksi', function ($data) {
+		                	$a = '<div class="btn-group"><button type="button" onclick="jurnal(\''.$data->pc_nota.'\')" class="btn btn-primary btn-lg" title="Check Jurnal"><label class="fa fa-book"></label></button>';
+		                	$b = '';
+		                	$c = '';
+		                	$c1 = '';
+		                	$d = '</div>';
+		                	if (Auth::user()->akses('PETTY CASH','ubah')) {
+		                		if ($data->pc_status == 'RELEASED') {
+		                			$b = '<button type="button" onclick="edit(\''.$data->pc_id.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
+		                		}
+		                	}
+
+		                	if (Auth::user()->akses('PETTY CASH','hapus')) {
+		                		if ($data->pc_status == 'RELEASED') {
+		                			$c = '<button type="button" onclick="hapus(\''.$data->pc_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
+		                		}
+		                	}
+
+							if ($data->pc_status == 'APPROVED') {
+								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
+							}
+
+		                    return $a.$b.$c.$c1.$d;
+		                })
+		                ->addColumn('none', function ($data) {
+		                    return '-';
+		                })->addColumn('sekolah', function ($data) {
+		                    return $data->sekolah->s_nama;
+		                })->addColumn('status', function ($data) {
+		                   	if ($data->pc_status == 'RELEASED') {
+								return '<label class="badge badge-warning">RELEASED</label>';
+		                   	}else if ($data->pc_status == 'APPROVED') {
+								return '<label class="badge badge-primary">APPROVED</label>';
+		                   	}if ($data->pc_status == 'POSTING') {
+								return '<label class="label label-success">POSTING</label>';
+		                   	}
+		                })
+		                ->rawColumns(['aksi', 'none','sekolah','status'])
+		                ->addIndexColumn()
+		                ->make(true);
+	}
+
+	public function create_pengeluaran_anggaran()
+	{
+		$sekolah = $this->model->sekolah()->all();
+		$akun = $this->models->akun()->select('a_master_akun','a_master_nama')
+									 ->where('a_master_akun','like','5%')
+									 ->orWhere('a_master_akun','like','6%')
+									 ->orWhere('a_master_akun','like','7%')
+									 ->groupBy('a_master_akun','a_master_nama')
+									 ->get();
+
+		$akun_kas = $this->models->akun()->select('a_master_akun','a_master_nama')
+									 ->where('a_master_akun','like','11110%')
+									 ->groupBy('a_master_akun','a_master_nama')
+									 ->get();
+		return view('kas_keluar.pengeluaran_anggaran.create_pengeluaran_anggaran',compact('sekolah','akun','akun_kas'));
+	}
+
+	public function cari_pengeluaran_barang(Request $req)
+	{
+		$data = $this->models->rencana_pembelian()
+							 ->where('rp_status','!=','Selesai')
+							 ->where('rp_sekolah',$req->sekolah)
+							 ->get();
+
+		return view('kas_keluar.pengeluaran_anggaran.table_modal',compact('data'));
+	}
+
+	public function pilih_pengeluaran_barang(Request $req)
+	{
+		$data = $this->model->rencana_pembelian()->cari('rp_kode',$req->id);
+		$data = $data->rencana_pembelian_d;
+		for ($i=0; $i < count($data); $i++) { 
+			$data[$i]->nama_barang = $data[$i]->barang->b_nama;
+			$data[$i]->harga_barang = $data[$i]->barang->b_harga_tertinggi;
+		}
+		return Response::json(['data'=>$data]);
+	}
+
+	public function simpan_pengeluaran_anggaran(Request $req)
+	{
+		DB::BeginTransaction();
+		try{
+			$cari = $this->model->petty_cash()->cari('pc_nota',$req->pc_nota);
+		  	if ($cari != null) {
+		  		DB::rollBack();
+				return Response::json(['status'=>0,'pesan'=>'Ops, Nota Sudah Digunakan Silakan Refresh Browser Anda']);
+		  	}
+			
+			
+			DB::commit();
+		    return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+		} catch (Exception $e) {
+			DB::rollBack();
+			dd($e);
+		}
+	}
 	// PETTY CASH
 	public function petty_cash(Request $req)
 	{
@@ -209,7 +322,7 @@ class kas_keluar_controller extends Controller
 
 	public function datatable_petty_cash()
 	{
-		$data = $this->model->petty_cash()->all();
+		$data = $this->model->petty_cash()->show('pc_jenis','PETTY');
 		// return $data;
 		$data = collect($data);
 		return Datatables::of($data)
@@ -310,6 +423,7 @@ class kas_keluar_controller extends Controller
 						   'pc_sekolah'		=> $req->pc_sekolah,
 						   'pc_total'		=> filter_var($req->pc_total,FILTER_SANITIZE_NUMBER_INT),
 						   'pc_tanggal'		=> carbon::parse($req->pc_tanggal)->format('Y-m-d'),
+						   'pc_jenis'		=> 'PETTY',
 						   'created_by'		=> Auth::user()->name,
 						   'updated_by'		=> Auth::user()->name,
             		);
@@ -421,7 +535,7 @@ class kas_keluar_controller extends Controller
 
 	public function edit_petty_cash(Request $req)
 	{
-		$data = $this->model->petty_cash()->cari('pc_id',$req->id);
+		$data = $this->model->petty_cash()->cari('pc_nota',$req->id);
 		$sekolah = $this->model->sekolah()->all();
 		$akun = $this->models->akun()->select('a_master_akun','a_master_nama')
 									 ->where('a_master_akun','like','5%')
@@ -439,7 +553,7 @@ class kas_keluar_controller extends Controller
 
 	public function hapus_petty_cash(Request $req)
 	{
-		$data = $this->model->petty_cash()->delete('pc_id',$req->id);
+		$data = $this->model->petty_cash()->delete('pc_nota',$req->id);
 		return Response::json(['status'=>1,'pesan'=>'Hapus Data!']);
 	}
 
@@ -453,5 +567,6 @@ class kas_keluar_controller extends Controller
 		  DB::rollBack();
 		}
 	}
+
 
 }

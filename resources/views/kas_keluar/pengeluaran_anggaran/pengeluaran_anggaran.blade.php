@@ -9,11 +9,11 @@
         <ol class="breadcrumb bg-info">
           <li class="breadcrumb-item"><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a></li>
           <li class="breadcrumb-item">Kas Keluar</li>
-          <li class="breadcrumb-item active" aria-current="page">Petty Cash</li>
+          <li class="breadcrumb-item active" aria-current="page">Pengeluaran Anggaran</li>
         </ol>
       </nav>
     </div>
-  	<div class="col-lg-12 grid-margin stretch-card">
+    <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
           @if (Session::has('message'))
@@ -23,13 +23,13 @@
               Simpan Data.
             </div>
           @endif
-          <h4 class="card-title">Petty Cash</h4>
+          <h4 class="card-title">Pengeluaran Anggaran</h4>
           <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-          	<a href="{{ url('kas_keluar/create_petty_cash') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
+            <a href="{{ url('kas_keluar/create_pengeluaran_anggaran') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
           </div>
 
           <div class="table-responsive">
-			        <table id="table_data" class="table table-striped table-hover" cellspacing="0">
+              <table id="table_data" class="table table-striped table-hover" cellspacing="0">
                   <thead class="bg-gradient-info">
                     <tr>
                       <th>No</th>
@@ -52,6 +52,28 @@
     </div>
   </div>
 </div>
+
+<div id="modal_rencana" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" style="width: 60% !important">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-gradient-info">
+        <h4 class="modal-title">Modal Rencana Pembelian</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row table_append">
+            
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- content-wrapper ends -->
 @endsection
 @section('extra_script')
@@ -63,7 +85,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url:'{{ route('datatable_petty_cash') }}',
+            url:'{{ route('datatable_pengeluaran_anggaran') }}',
             data:{_token:'{{ csrf_token() }}'}
         },
         columnDefs: [

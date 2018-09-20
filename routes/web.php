@@ -138,6 +138,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/kas_keluar/update_rencana_pembelian', 'kas_keluar_controller@update_rencana_pembelian');
         Route::post('/kas_keluar/approve_rencana_pembelian', 'kas_keluar_controller@approve_rencana_pembelian');
         Route::get('/kas_keluar/detail_rencana_pembelian', 'kas_keluar_controller@detail_rencana_pembelian');
+        // PENGELUARAN ANGGARAN
+        Route::get('/kas_keluar/pengeluaran_anggaran', 'kas_keluar_controller@pengeluaran_anggaran');
+        Route::get('/kas_keluar/datatable_pengeluaran_anggaran', 'kas_keluar_controller@datatable_pengeluaran_anggaran')->name('datatable_pengeluaran_anggaran');
+        Route::get('/kas_keluar/create_pengeluaran_anggaran', 'kas_keluar_controller@create_pengeluaran_anggaran');
+        Route::get('/kas_keluar/cari_pengeluaran_barang', 'kas_keluar_controller@cari_pengeluaran_barang');
+        Route::get('/kas_keluar/pilih_pengeluaran_barang', 'kas_keluar_controller@pilih_pengeluaran_barang');
+        Route::get('/kas_keluar/simpan_pengeluaran_barang', 'kas_keluar_controller@simpan_pengeluaran_barang');
+
         // PETTY CASH
         Route::get('/kas_keluar/petty_cash', 'kas_keluar_controller@petty_cash');
         Route::get('/kas_keluar/create_petty_cash', 'kas_keluar_controller@create_petty_cash');

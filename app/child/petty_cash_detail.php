@@ -16,6 +16,7 @@ class petty_cash_detail extends Model
 						   'pcd_akun_biaya',
 						   'pcd_keterangan',
 						   'pcd_jumlah',
+						   'pcd_qty',
 						];
 
 	public function petty_cash()

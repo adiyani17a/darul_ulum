@@ -93,54 +93,31 @@
               </table>
             </div>
             <div class="col-sm-6 table-responsive">
-              <h5 align="center">INPUT DATA</h5>
+              <h5 align="center">KODE RENCANA PEMBELIAN</h5>
               <table class="table input_data">
                 <tr>
-                  <td>Akun Biaya</td>
                   <td>
-                    <select id="pcd_akun_biayas " class="form-control pcd_akun_biayas option" >
-                      <option value="">Pilih - Biaya</option>
-                      @foreach($akun as $val)
-                        <option value="{{$val->a_master_akun}}">{{$val->a_master_akun}} - {{$val->a_master_nama}}</option>
-                      @endforeach
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Keterangan</td>
-                  <td>
-                    <input type="text" id="pcd_keterangan" class="huruf_besar pcd_keterangans form-control wajib">
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nominal</td>
-                  <td>
-                    <input type="text" id="pcd_jumlahs " class="form-control pcd_jumlahs mask right wajib">
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <button class="btn btn-primary tambah"><i class="fa fa-plus"></i>Tambah</button>
+                    <input type="text"  id="kode_rencana" name="kode_rencana" readonly="" placeholder="Klik Untuk Memilih Rencana Pembelian" class="form-control wajib">
                   </td>
                 </tr>
               </table>
             </div>
           </div>
           <hr>
-          <div class="row">
+          <div class="row div_barang clearfix" hidden="">
             <div class="col-sm-12 table-responsive">
               <table class="table table-bordered table-data data_petty">
                 <thead class="bg-gradient-info">
                   <tr>
-                    <th>Nama Biaya</th>
-                    <th>Kode Biaya</th>
-                    <th>Keterangan</th>
+                    <th>Nama Barang</th>
+                    <th>Sisa Target Qty</th>
+                    <th>Harga Barang Tertinggi</th>
                     <th>Nominal</th>
-                    <th>Aksi</th>
+                    <th>Qty</th>
+                    <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  
                 </tbody>
               </table>
             </div>
@@ -150,6 +127,27 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="modal_rencana" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" style="width: 60% !important">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-gradient-info">
+        <h4 class="modal-title">Modal Rencana Pembelian</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row table_append">
+            
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -193,71 +191,113 @@ $('.pc_sekolah').change(function(){
   nota();
 })
 
-function total() {
-  var total = 0;
-  tables.$('.pcd_jumlah').each(function(){
-    temp       = $(this).val().replace(/[^0-9\-]+/g,"");
-    total     += temp
-  })
+function total(ch) {
+  var par       = $(ch).parents('tr');
+  var pcd_harga = par.find('.pcd_harga').val();
+  pcd_harga = pcd_harga.replace(/[^0-9\-]+/g,"")*1;
+  var pcd_sisa  = par.find('.pcd_jumlah').val()*1;
 
+  par.find('.pcd_total').val(accounting.formatMoney(pcd_harga * pcd_sisa,"", 0, ".",','));
+  var total = 0;
+  tables.$('.pcd_total').each(function(){
+    var pcd_total = $(this).val().replace(/[^0-9\-]+/g,"")*1;
+    total += pcd_total;
+  })
   $('.pc_total').val(accounting.formatMoney(total,"", 0, ".",','));
 }
 
+$('#kode_rencana').focus(function(){
+  var sekolah = $('.pc_sekolah ').val();
+  $.ajax({
+      url:baseUrl +'/kas_keluar/cari_pengeluaran_barang',
+      type:'get',
+      data:{sekolah},
+      success:function(data){
+        $('.table_append').html(data);
+        $('#modal_rencana').modal('show');
+      },
+      error:function(){
+        iziToast.warning({
+          icon: 'fa fa-times',
+          message: 'Terjadi Kesalahan!',
+        });
+      }
+  });
+})
+
 var indexs = 0;
-$('.tambah').click(function(){
-  var pcd_akun_biaya   = $('.pcd_akun_biayas').val();
-  var pcd_akun_biaya_t = $('.pcd_akun_biayas option:selected').text();
-  var pcd_keterangan   = $('.pcd_keterangans').val();
-  var pcd_jumlah       = $('.pcd_jumlahs').val();
-  var validator        = [];
-  $('.input_data').find('.wajib').each(function(){
-    if ($(this).val() == '') {
-      $(this).addClass('error');
-      validator.push(0);
-    }
-  })
+function pilih(id) {
+  $('#kode_rencana').val(id);
+  $.ajax({
+      url:baseUrl +'/kas_keluar/pilih_pengeluaran_barang',
+      type:'get',
+      data:{id},
+      dataType:'json',
+      success:function(data){
+        tables.clear();
+        for (var i = 0; i < data.data.length; i++) {
+          tables.row.add([
+            '<p class="pcd_nama_biaya_text">'+data.data[i].nama_barang+'</p>'+
+            '<input type="hidden" class="rpd_detail" name="rpd_detail[]" value="'+data.data[i].rpd_detail +'">',
 
-  $('.input_data').find('.option').each(function(){
-    if ($(this).val() == '') {
-      var par =$(this).parents('td');
-      par.find('span').eq(0).addClass('error');
-      validator.push(0);
-    }
-  })
+            '<p class="pcd_sisa_text" align="right">'+data.data[i].rpd_sisa+'</p>'+
+            '<input type="hidden" class="pcd_sisa" name="pcd_sisa[]" value="'+data.data[i].rpd_sisa +'">',
 
-  var index = validator.indexOf(0);
-  if (index != -1) {
+            '<p class="pcd_harga_tertinggi_text" align="right">'+accounting.formatMoney(data.data[i].harga_barang ,"", 0, ".",',')+'</p>'+
+            '<input type="hidden" class="pcd_harga_tertinggi" name="pcd_harga_tertinggi[]" value="'+data.data[i].harga_barang +'">',
+
+            '<input type="text" class="pcd_harga form-control mask right" name="pcd_harga[]" value="0">',
+
+            '<input type="text" class="hanya_angka pcd_jumlah form-control right" value="" name="pcd_jumlah[]">',
+
+            '<input type="text" readonly class="pcd_total form-control right" value="0" name="pcd_total[]">',
+          ]).draw();
+        }
+        $('.div_barang').prop('hidden',false);
+        $('.mask').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
+      },
+      error:function(){
+        iziToast.warning({
+          icon: 'fa fa-times',
+          message: 'Terjadi Kesalahan!',
+        });
+      }
+  });
+}
+
+$(document).on('keyup','.pcd_harga',function(){
+  var par   = $(this).parents('tr');
+  var ht    = par.find('.pcd_harga_tertinggi').val()*1;
+  var sisa  = par.find('.pcd_sisa').val();
+  pcd_harga = $(this).val().replace(/[^0-9\-]+/g,"")*1;
+
+  if (pcd_harga > ht) {
+    $(this).val(accounting.formatMoney(ht,"", 0, ".",','))
     iziToast.warning({
         icon: 'fa fa-times',
         title: 'Terjadi Kesalahan',
-        message: 'Semua Inputan Harus Diisi',
+        message: 'Harga Tidak Boleh Melebihi Harga Tertinggi!',
     });
-    return false;
   }
-
-  tables.row.add([
-    '<p class="pcd_nama_biaya_text">'+pcd_akun_biaya_t+'</p>'+
-    ' <input type="hidden" class="pcd_akun_biaya" name="pcd_akun_biaya[]" value="'+pcd_akun_biaya+'">'+
-    ' <input type="hidden" class="indexs indexs_'+indexs+'">',
-
-    '<p class="pcd_akun_biaya_t">'+pcd_akun_biaya+'</p>',
-
-    '<p class="pcd_keterangan_t">'+pcd_keterangan+'</p>'+
-    ' <input type="hidden" class="pcd_keterangan" name="pcd_keterangan[]" value="'+pcd_keterangan+'">',
-
-    ' <input type="text" readonly class="pcd_jumlah form-control right" value="'+pcd_jumlah+'" name="pcd_jumlah[]">',
-
-    '<div class="btn-group">'+
-    '<button type="button" onclick="hapus(this)" class="btn btn-danger btn-lg" title="hapus">'+
-    '<label class="fa fa-trash"></label></button>'+
-    '</div>',
-  ]).draw();
-  indexs++;
-  total();
-  $('.simpan').removeClass('disabled');
-  $('.input_data').find('.wajib').val('');
-  $('.input_data').find('.option').val('').trigger('change');
+  total(this);
 })
+
+$(document).on('keyup','.pcd_jumlah',function(){
+  var par   = $(this).parents('tr');
+  var sisa  = par.find('.pcd_sisa').val();
+  pcd_sisa = $(this).val().replace(/[^0-9\-]+/g,"")*1;
+
+  if (pcd_sisa > sisa) {
+    $(this).val(sisa)
+    iziToast.warning({
+        icon: 'fa fa-times',
+        title: 'Terjadi Kesalahan',
+        message: 'Qty Tidak Boleh Melebihi Sisa Target Qty!',
+    });
+  }
+  total(this);
+})
+
 
 function hapus(a) {
   var par = $(a).parents('tr');
@@ -282,7 +322,7 @@ $('.simpan').click(function(){
   var input =  $('.tabel_modal :input').length;
   var validator = [];
   var validator_name = [];
-
+  var kode_rencana = $('#kode_rencana').val();
   $('.header_petty').find('.wajib').each(function(){
     if ($(this).val() == '') {
       $(this).addClass('error');
@@ -316,9 +356,9 @@ $('.simpan').click(function(){
 
   $.ajax({
      type: "POST",
-     url: baseUrl +'/kas_keluar/simpan_petty_cash',
+     url: baseUrl +'/kas_keluar/simpan_pengeluaran_anggaran',
      data:$('.header_petty :input').serialize()+'&'+
-          $('.data_petty :input').serialize(),
+          $('.data_petty :input').serialize()+'&kode_rencana='+kode_rencana,
      dataType:'json',
      success: function(data){
         if (data.status == 0) {
@@ -328,7 +368,7 @@ $('.simpan').click(function(){
               message: data.pesan,
           });
         }else if(data.status == 1){
-          location.href = '{{ url('kas_keluar/petty_cash') }}?simpan=berhasil';
+          location.href = '{{ url('kas_keluar/pengeluaran_anggaran') }}?simpan=berhasil';
         }else{
           iziToast.success({
               icon: 'fa fa-pencil-alt',

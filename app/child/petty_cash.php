@@ -21,6 +21,7 @@ class petty_cash extends Model
 						   'pc_tanggal',
 						   'pc_total',
 						   'pc_status',
+						   'pc_jenis',
 						   'created_by',
 						   'updated_by',
 						];
