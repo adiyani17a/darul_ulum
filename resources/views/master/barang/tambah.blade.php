@@ -27,6 +27,17 @@
                 <td>Harga Tertinggi</td>
                 <td><input type="text" name="b_harga_tertinggi" placeholder="Harus diisi" class="b_harga_tertinggi mask huruf_besar form-control form-control-sm"></td>
               </tr>
+              <tr>
+                <td>Akun</td>
+                <td>
+                  <select class="form-control  option b_akun" name="b_akun">
+                    <option value="">Pilih - Akun Biaya</option>
+                    @foreach($akun as $val)
+                      <option value="{{$val->a_master_akun}}">{{$val->a_master_akun}} - {{$val->a_master_nama}}</option>
+                    @endforeach
+                  </select>
+                </td>
+              </tr>
             </table>
         </div>
       </div>

@@ -17,11 +17,18 @@ class petty_cash_detail extends Model
 						   'pcd_keterangan',
 						   'pcd_jumlah',
 						   'pcd_qty',
+						   'pcd_rpd_detail',
+						   'pcd_barang',
 						];
 
 	public function petty_cash()
     {
         return $this->belongsTo('App\child\petty_cash','pcd_id','pc_id');
+    }
+
+    public function barang()
+    {
+        return $this->belongsTo('App\child\barang','pcd_barang','b_id');
     }
 
     public function akun()

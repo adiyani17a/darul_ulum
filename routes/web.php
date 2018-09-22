@@ -142,9 +142,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_keluar/pengeluaran_anggaran', 'kas_keluar_controller@pengeluaran_anggaran');
         Route::get('/kas_keluar/datatable_pengeluaran_anggaran', 'kas_keluar_controller@datatable_pengeluaran_anggaran')->name('datatable_pengeluaran_anggaran');
         Route::get('/kas_keluar/create_pengeluaran_anggaran', 'kas_keluar_controller@create_pengeluaran_anggaran');
-        Route::get('/kas_keluar/cari_pengeluaran_barang', 'kas_keluar_controller@cari_pengeluaran_barang');
-        Route::get('/kas_keluar/pilih_pengeluaran_barang', 'kas_keluar_controller@pilih_pengeluaran_barang');
-        Route::get('/kas_keluar/simpan_pengeluaran_barang', 'kas_keluar_controller@simpan_pengeluaran_barang');
+        Route::get('/kas_keluar/cari_pengeluaran_anggaran', 'kas_keluar_controller@cari_pengeluaran_anggaran');
+        Route::get('/kas_keluar/pilih_pengeluaran_anggaran', 'kas_keluar_controller@pilih_pengeluaran_anggaran');
+        Route::post('/kas_keluar/simpan_pengeluaran_anggaran', 'kas_keluar_controller@simpan_pengeluaran_anggaran');
+        Route::get('/kas_keluar/edit_pengeluaran_anggaran', 'kas_keluar_controller@edit_pengeluaran_anggaran');
+        Route::post('/kas_keluar/update_pengeluaran_anggaran', 'kas_keluar_controller@update_pengeluaran_anggaran');
+        Route::get('/kas_keluar/hapus_pengeluaran_anggaran', 'kas_keluar_controller@hapus_pengeluaran_anggaran');
 
         // PETTY CASH
         Route::get('/kas_keluar/petty_cash', 'kas_keluar_controller@petty_cash');

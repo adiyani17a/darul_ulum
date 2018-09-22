@@ -30,6 +30,7 @@
                       <th style="width: 20%">Nama Barang</th>
                       <th style="width: 40%">Keterangan</th>
                       <th style="width: 40%">Harga Tertinggi</th>
+                      <th style="width: 40%">Akun</th>
                       <th style="width: 10%">Aksi</th>
                     </tr>
                   </thead>
@@ -74,6 +75,10 @@
                   },
                   {
                      targets: 4 ,
+                     className: 'right d_akun'
+                  },
+                  {
+                     targets: 5 ,
                      className: 'center'
                   },
                   
@@ -83,6 +88,7 @@
             {data: 'b_nama', name: 'b_nama'},
             {data: 'b_keterangan', name: 'b_keterangan'},
             {data: 'b_harga_tertinggi', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
+            {data: 'b_akun'},
             {data: 'aksi', name: 'aksi'}
           ]
 
@@ -92,6 +98,7 @@
 
   $('.btn_modal').click(function(){
     $('.tabel_modal input').val('');
+    $('.tabel_modal select').val('').trigger('change');
     $('.nama').focus();
   })
 
@@ -147,12 +154,15 @@
     var id    = $(par).find('.d_id').text();
     var nama  = $(par).find('.d_nama').text();
     var ket   = $(par).find('.d_keterangan').text();
-    var harga   = $(par).find('.d_harga').text();
-    harga       = harga.replace(/[^0-9\-]+/g,"")/100;
+    var harga = $(par).find('.d_harga').text();
+    var akun  = $(par).find('.d_akun').text();
+    harga     = harga.replace(/[^0-9\-]+/g,"")/100;
 
     $('.id').val(id);
     $('.b_nama').val(nama);
     $('.b_keterangan').val(ket);
+    console.log(akun);
+    $('.b_akun').val(akun).trigger('change');
     $('.b_harga_tertinggi').maskMoney('mask',harga);
     $('#tambah-jabatan').modal('show');
 

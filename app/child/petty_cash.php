@@ -22,6 +22,7 @@ class petty_cash extends Model
 						   'pc_total',
 						   'pc_status',
 						   'pc_jenis',
+						   'pc_ref',
 						   'created_by',
 						   'updated_by',
 						];
@@ -29,6 +30,11 @@ class petty_cash extends Model
 	public function petty_cash_detail()
     {
         return $this->hasMany('App\child\petty_cash_detail','pcd_id');
+    }
+
+    public function rencana_pembelian()
+    {
+        return $this->belongsTo('App\child\rencana_pembelian','pc_ref','rp_kode');
     }
 
     public function sekolah()

@@ -115,6 +115,7 @@
                     <th>Nominal</th>
                     <th>Qty</th>
                     <th>Total</th>
+                    <th>Keterangan</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -122,8 +123,8 @@
               </table>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-              <button type="button" class="btn btn-success simpan disabled"><i class="fa fa-save"></i>&nbsp;&nbsp;Simpan</button>
-              <a href="{{ url('kas_keluar/petty_cash') }}"><button type="button" class="btn btn-warning btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali</button></a>
+              <button type="button" class="btn btn-success simpan "><i class="fa fa-save"></i>&nbsp;&nbsp;Simpan</button>
+              <a href="{{ url('kas_keluar/pengeluaran_anggaran') }}"><button type="button" class="btn btn-warning btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali</button></a>
             </div>
           </div>
         </div>
@@ -209,7 +210,7 @@ function total(ch) {
 $('#kode_rencana').focus(function(){
   var sekolah = $('.pc_sekolah ').val();
   $.ajax({
-      url:baseUrl +'/kas_keluar/cari_pengeluaran_barang',
+      url:baseUrl +'/kas_keluar/cari_pengeluaran_anggaran',
       type:'get',
       data:{sekolah},
       success:function(data){
@@ -229,7 +230,7 @@ var indexs = 0;
 function pilih(id) {
   $('#kode_rencana').val(id);
   $.ajax({
-      url:baseUrl +'/kas_keluar/pilih_pengeluaran_barang',
+      url:baseUrl +'/kas_keluar/pilih_pengeluaran_anggaran',
       type:'get',
       data:{id},
       dataType:'json',
@@ -238,7 +239,8 @@ function pilih(id) {
         for (var i = 0; i < data.data.length; i++) {
           tables.row.add([
             '<p class="pcd_nama_biaya_text">'+data.data[i].nama_barang+'</p>'+
-            '<input type="hidden" class="rpd_detail" name="rpd_detail[]" value="'+data.data[i].rpd_detail +'">',
+            '<input type="hidden" class="rpd_detail" name="rpd_detail[]" value="'+data.data[i].rpd_detail +'">'+
+            '<input type="hidden" class="rpd_barang" name="rpd_barang[]" value="'+data.data[i].rpd_barang +'">',
 
             '<p class="pcd_sisa_text" align="right">'+data.data[i].rpd_sisa+'</p>'+
             '<input type="hidden" class="pcd_sisa" name="pcd_sisa[]" value="'+data.data[i].rpd_sisa +'">',
@@ -246,11 +248,14 @@ function pilih(id) {
             '<p class="pcd_harga_tertinggi_text" align="right">'+accounting.formatMoney(data.data[i].harga_barang ,"", 0, ".",',')+'</p>'+
             '<input type="hidden" class="pcd_harga_tertinggi" name="pcd_harga_tertinggi[]" value="'+data.data[i].harga_barang +'">',
 
-            '<input type="text" class="pcd_harga form-control mask right" name="pcd_harga[]" value="0">',
+            '<input type="text" class="pcd_harga form-control mask right" name="pcd_jumlah[]" value="0">',
 
-            '<input type="text" class="hanya_angka pcd_jumlah form-control right" value="" name="pcd_jumlah[]">',
+            '<input type="text" class="hanya_angka pcd_jumlah form-control right" value="" name="pcd_qty[]">',
 
             '<input type="text" readonly class="pcd_total form-control right" value="0" name="pcd_total[]">',
+
+            '<input type="text" class="pcd_keterangan form-control right" name="pcd_keterangan[]">',
+
           ]).draw();
         }
         $('.div_barang').prop('hidden',false);

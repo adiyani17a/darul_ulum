@@ -393,8 +393,13 @@ class master_controller extends Controller
 
   public function barang()
   {
-   
-    return view('master.barang.barang');
+    $akun = $this->models->akun()->select('a_master_akun','a_master_nama')
+                   ->where('a_master_akun','like','5%')
+                   ->orWhere('a_master_akun','like','6%')
+                   ->orWhere('a_master_akun','like','7%')
+                   ->groupBy('a_master_akun','a_master_nama')
+                   ->get();
+    return view('master.barang.barang',compact('akun'));
   }
 
   public function datatable_barang()
@@ -431,6 +436,7 @@ class master_controller extends Controller
                   'b_nama'            => strtoupper($req->b_nama),
                   'b_keterangan'      => strtoupper($req->b_keterangan),
                   'b_harga_tertinggi' => filter_var($req->b_harga_tertinggi,FILTER_SANITIZE_NUMBER_INT),
+                  'b_akun'            => $req->b_akun,
                   'created_by'        => Auth::user()->name,
                   'updated_by'        => Auth::user()->name,
                  );
@@ -443,6 +449,7 @@ class master_controller extends Controller
                   'b_nama'            => strtoupper($req->b_nama),
                   'b_keterangan'      => strtoupper($req->b_keterangan),
                   'b_harga_tertinggi' => filter_var($req->b_harga_tertinggi,FILTER_SANITIZE_NUMBER_INT),
+                  'b_akun'            => $req->b_akun,
                   'updated_by'        => Auth::user()->name,
                  );
         $this->model->barang()->update($save,'b_id',$id);

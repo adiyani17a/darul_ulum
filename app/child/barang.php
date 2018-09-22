@@ -16,6 +16,7 @@ class barang extends Model
 						   'b_nama',
 						   'b_keterangan',
 						   'b_harga_tertinggi',
+						   'b_akun',
 						   'created_by',
 						   'updated_by',
 						];

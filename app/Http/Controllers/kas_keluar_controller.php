@@ -199,10 +199,10 @@ class kas_keluar_controller extends Controller
 		return view('kas_keluar.rencana_pembelian.table_modal',compact('data'));
 	}
 	// PENGELUARAN ANGGARAN
-	public function pengeluaran_anggaran()
+	public function pengeluaran_anggaran(Request $req)
 	{
 		if (isset($req->simpan)) {
-			Session::flash('message','Data Berhasil Dimpan');
+			Session::flash('message','Data Berhasil Simpan');
 		}
 		return view('kas_keluar.pengeluaran_anggaran.pengeluaran_anggaran');
 	}
@@ -221,18 +221,18 @@ class kas_keluar_controller extends Controller
 		                	$d = '</div>';
 		                	if (Auth::user()->akses('PETTY CASH','ubah')) {
 		                		if ($data->pc_status == 'RELEASED') {
-		                			$b = '<button type="button" onclick="edit(\''.$data->pc_id.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
+		                			$b = '<button type="button" onclick="edit(\''.$data->pc_nota.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
 		                		}
 		                	}
 
 		                	if (Auth::user()->akses('PETTY CASH','hapus')) {
 		                		if ($data->pc_status == 'RELEASED') {
-		                			$c = '<button type="button" onclick="hapus(\''.$data->pc_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
+		                			$c = '<button type="button" onclick="hapus(\''.$data->pc_nota.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
 		                		}
 		                	}
 
 							if ($data->pc_status == 'APPROVED') {
-								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
+								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
 							}
 
 		                    return $a.$b.$c.$c1.$d;
@@ -272,7 +272,7 @@ class kas_keluar_controller extends Controller
 		return view('kas_keluar.pengeluaran_anggaran.create_pengeluaran_anggaran',compact('sekolah','akun','akun_kas'));
 	}
 
-	public function cari_pengeluaran_barang(Request $req)
+	public function cari_pengeluaran_anggaran(Request $req)
 	{
 		$data = $this->models->rencana_pembelian()
 							 ->where('rp_status','!=','Selesai')
@@ -282,7 +282,7 @@ class kas_keluar_controller extends Controller
 		return view('kas_keluar.pengeluaran_anggaran.table_modal',compact('data'));
 	}
 
-	public function pilih_pengeluaran_barang(Request $req)
+	public function pilih_pengeluaran_anggaran(Request $req)
 	{
 		$data = $this->model->rencana_pembelian()->cari('rp_kode',$req->id);
 		$data = $data->rencana_pembelian_d;
@@ -302,8 +302,223 @@ class kas_keluar_controller extends Controller
 		  		DB::rollBack();
 				return Response::json(['status'=>0,'pesan'=>'Ops, Nota Sudah Digunakan Silakan Refresh Browser Anda']);
 		  	}
+			// dd($req->all());
+
+			$id = $this->model->petty_cash()->max('pc_id');
+
+			$save = array(
+		                   'pc_id'			=> $id,
+						   'pc_nota'		=> $req->pc_nota,
+						   'pc_akun_kas'	=> $req->pc_akun_kas,
+						   'pc_keterangan'	=> strtoupper($req->pc_keterangan),
+						   'pc_pemohon'		=> strtoupper($req->pc_pemohon),
+						   'pc_sekolah'		=> $req->pc_sekolah,
+						   'pc_total'		=> filter_var($req->pc_total,FILTER_SANITIZE_NUMBER_INT),
+						   'pc_tanggal'		=> carbon::parse($req->pc_tanggal)->format('Y-m-d'),
+						   'pc_jenis'		=> 'ANGGARAN',
+						   'pc_ref'			=> $req->kode_rencana,
+						   'created_by'		=> Auth::user()->name,
+						   'updated_by'		=> Auth::user()->name,
+            			);
 			
+			$this->model->petty_cash()->create($save);
+
+			for ($i=0; $i < count($req->rpd_detail); $i++) { 
+				$barang = $this->model->barang()->cari('b_id',$req->rpd_barang[$i]);
+				$save = array(
+		                   'pcd_id'			=> $id,
+						   'pcd_detail'		=> $i+1,
+						   'pcd_akun_biaya'	=> $barang->b_akun,
+						   'pcd_keterangan'	=> $req->pcd_keterangan[$i],
+						   'pcd_jumlah'		=> filter_var($req->pcd_jumlah[$i],FILTER_SANITIZE_NUMBER_INT),
+						   'pcd_rpd_detail'	=> $req->rpd_detail[$i],
+						   'pcd_qty'		=> $req->pcd_qty[$i],
+						   'pcd_barang'		=> $req->rpd_barang[$i],
+            			);
+
+				$this->model->petty_cash_detail()->create($save);
+			}
+
+			$rencana = $this->model->rencana_pembelian()->cari('rp_kode',$req->kode_rencana);
+			$status = [];
+			for ($i=0; $i < count($rencana->rencana_pembelian_d); $i++) { 
+				for ($a=0; $a < count($req->rpd_detail); $a++) { 
+					if ($rencana->rencana_pembelian_d[$i]->rpd_detail == $req->rpd_detail[$a]) {
+						$sisa = $rencana->rencana_pembelian_d[$i]->rpd_sisa - $req->pcd_qty[$a];
+						if ($sisa == 0) {
+							array_push($status, '0');
+						}else{
+							array_push($status, '1');
+						}
+						$upd = array(
+										'rpd_sisa' => $sisa
+									);
+						$this->models->rencana_pembelian_d()->where('rpd_id',$rencana->rp_id)
+															->where('rpd_detail',$req->rpd_detail[$a])
+															->update($upd);
+					}
+				}
+			}
+
+			if (!in_array('1', $status)) {
+				$upd = array(
+								'rp_status' => 'Selesai'
+							);
+				$rencana = $this->model->rencana_pembelian()->update($upd,'rp_kode',$req->kode_rencana);
+			}
+			DB::commit();
+		    return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+		} catch (Exception $e) {
+			DB::rollBack();
+			dd($e);
+		}
+	}
+
+	public function edit_pengeluaran_anggaran(Request $req)
+	{
+		$sekolah = $this->model->sekolah()->all();
+		$akun = $this->models->akun()->select('a_master_akun','a_master_nama')
+									 ->where('a_master_akun','like','5%')
+									 ->orWhere('a_master_akun','like','6%')
+									 ->orWhere('a_master_akun','like','7%')
+									 ->groupBy('a_master_akun','a_master_nama')
+									 ->get();
+
+		$akun_kas = $this->models->akun()->select('a_master_akun','a_master_nama')
+									 ->where('a_master_akun','like','11110%')
+									 ->groupBy('a_master_akun','a_master_nama')
+									 ->get();
+		$data     = $this->model->petty_cash()->cari('pc_nota',$req->id);
+
+		$rencana  = $this->model->rencana_pembelian()->cari('rp_kode',$data->pc_ref);
+		return view('kas_keluar.pengeluaran_anggaran.edit_pengeluaran_anggaran',compact('sekolah','akun','akun_kas','data','rencana'));
+	}
+
+	public function update_pengeluaran_anggaran(Request $req)
+	{
+		DB::BeginTransaction();
+		try {
+			$cari = $this->model->petty_cash()->cari('pc_nota',$req->pc_nota);
+			foreach ($cari->rencana_pembelian->rencana_pembelian_d as $i => $val1) {
+				foreach ($cari->petty_cash_detail as $a => $val2) {
+					if ($val1->rpd_detail == $val2->pcd_rpd_detail) {
+						$sisa = $val1->rpd_sisa + $val2->pcd_qty;
+						$upd = array(
+										'rpd_sisa' => $sisa
+									);
+						$this->models->rencana_pembelian_d()->where('rpd_id',$val1->rpd_id)
+															->where('rpd_detail',$val1->rpd_detail)
+															->update($upd);
+					}
+				}
+			}
+
+			$upd = array(
+							'rp_status' => 'Berjalan'
+						);
+
+			$rencana = $this->model->rencana_pembelian()->update($upd,'rp_kode',$req->kode_rencana);
+
+
+			// dd($req->all());
+
+			$id = $cari->pc_id;
+
+			$save = array(
+		                   'pc_id'			=> $id,
+						   'pc_nota'		=> $req->pc_nota,
+						   'pc_akun_kas'	=> $req->pc_akun_kas,
+						   'pc_keterangan'	=> strtoupper($req->pc_keterangan),
+						   'pc_pemohon'		=> strtoupper($req->pc_pemohon),
+						   'pc_sekolah'		=> $req->pc_sekolah,
+						   'pc_total'		=> filter_var($req->pc_total,FILTER_SANITIZE_NUMBER_INT),
+						   'pc_tanggal'		=> carbon::parse($req->pc_tanggal)->format('Y-m-d'),
+						   'pc_jenis'		=> 'ANGGARAN',
+						   'pc_ref'			=> $req->kode_rencana,
+						   'created_by'		=> Auth::user()->name,
+						   'updated_by'		=> Auth::user()->name,
+            			);
 			
+			$this->model->petty_cash()->update($save,'pc_id',$id);
+			$this->model->petty_cash_detail()->delete('pcd_id',$id);
+			for ($i=0; $i < count($req->rpd_detail); $i++) { 
+				$barang = $this->model->barang()->cari('b_id',$req->rpd_barang[$i]);
+				$save = array(
+		                   'pcd_id'			=> $id,
+						   'pcd_detail'		=> $i+1,
+						   'pcd_akun_biaya'	=> $barang->b_akun,
+						   'pcd_keterangan'	=> $req->pcd_keterangan[$i],
+						   'pcd_jumlah'		=> filter_var($req->pcd_jumlah[$i],FILTER_SANITIZE_NUMBER_INT),
+						   'pcd_rpd_detail'	=> $req->rpd_detail[$i],
+						   'pcd_qty'		=> $req->pcd_qty[$i],
+						   'pcd_barang'		=> $req->rpd_barang[$i],
+            			);
+
+				$this->model->petty_cash_detail()->create($save);
+			}
+
+			$rencana = $this->model->rencana_pembelian()->cari('rp_kode',$req->kode_rencana);
+			$status = [];
+			for ($i=0; $i < count($rencana->rencana_pembelian_d); $i++) { 
+				for ($a=0; $a < count($req->rpd_detail); $a++) { 
+					if ($rencana->rencana_pembelian_d[$i]->rpd_detail == $req->rpd_detail[$a]) {
+						$sisa = $rencana->rencana_pembelian_d[$i]->rpd_sisa - $req->pcd_qty[$a];
+						if ($sisa == 0) {
+							array_push($status, '0');
+						}else{
+							array_push($status, '1');
+						}
+						$upd = array(
+										'rpd_sisa' => $sisa
+									);
+						$this->models->rencana_pembelian_d()->where('rpd_id',$rencana->rp_id)
+															->where('rpd_detail',$req->rpd_detail[$a])
+															->update($upd);
+					}
+				}
+			}
+
+			if (!in_array('1', $status)) {
+				$upd = array(
+								'rp_status' => 'Selesai'
+							);
+				$rencana = $this->model->rencana_pembelian()->update($upd,'rp_kode',$req->kode_rencana);
+			}
+			DB::commit();
+		    return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+		} catch (Exception $e) {
+			DB::rollBack();
+			dd($e);
+		}
+	}
+
+	public function hapus_pengeluaran_anggaran(Request $req)
+	{
+		DB::BeginTransaction();
+		try {
+			$cari = $this->model->petty_cash()->cari('pc_nota',$req->id);
+			foreach ($cari->rencana_pembelian->rencana_pembelian_d as $i => $val1) {
+				foreach ($cari->petty_cash_detail as $a => $val2) {
+					if ($val1->rpd_detail == $val2->pcd_rpd_detail) {
+						$sisa = $val1->rpd_sisa + $val2->pcd_qty;
+						$upd = array(
+										'rpd_sisa' => $sisa
+									);
+						$this->models->rencana_pembelian_d()->where('rpd_id',$val1->rpd_id)
+															->where('rpd_detail',$val1->rpd_detail)
+															->update($upd);
+					}
+				}
+			}
+
+			$upd = array(
+							'rp_status' => 'Berjalan'
+						);
+
+			$rencana = $this->model->rencana_pembelian()->update($upd,'rp_kode',$cari->pc_ref);
+
+			$this->model->petty_cash()->delete('pc_nota',$req->id);
+
 			DB::commit();
 		    return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
 		} catch (Exception $e) {
