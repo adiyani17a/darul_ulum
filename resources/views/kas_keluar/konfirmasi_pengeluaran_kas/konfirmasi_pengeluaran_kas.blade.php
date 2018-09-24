@@ -9,11 +9,11 @@
         <ol class="breadcrumb bg-info">
           <li class="breadcrumb-item"><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a></li>
           <li class="breadcrumb-item">Kas Keluar</li>
-          <li class="breadcrumb-item active" aria-current="page">Petty Cash</li>
+          <li class="breadcrumb-item active" aria-current="page">Konfirmasi Pengeluaran Kas</li>
         </ol>
       </nav>
     </div>
-  	<div class="col-lg-12 grid-margin stretch-card">
+    <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
           @if (Session::has('message'))
@@ -23,13 +23,9 @@
               Simpan Data.
             </div>
           @endif
-          <h4 class="card-title">Petty Cash</h4>
-          <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-          	<a href="{{ url('kas_keluar/create_petty_cash') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
-          </div>
-
+          <h4 class="card-title">Konfirmasi Pengeluaran Kas</h4>
           <div class="table-responsive">
-			        <table id="table_data" class="table table-striped table-hover" cellspacing="0">
+              <table id="table_data" class="table table-hover" cellspacing="0">
                   <thead class="bg-gradient-info">
                     <tr>
                       <th>No</th>
@@ -54,7 +50,6 @@
 </div>
 
 @include('kas_keluar.konfirmasi_pengeluaran_kas.modal')
-
 <!-- content-wrapper ends -->
 @endsection
 @section('extra_script')
@@ -66,8 +61,11 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url:'{{ route('datatable_petty_cash') }}',
-            data:{_token:'{{ csrf_token() }}'}
+            url:'{{ route('datatable_konfirmasi_pengeluaran_kas') }}',
+            data:{_token:'{{ csrf_token() }}'},
+            error:function(){
+              location.reload();
+            }
         },
         columnDefs: [
                 {
@@ -102,12 +100,6 @@ $(document).ready(function(){
   });
 })
 
-$('.btn_modal').click(function(){
-  $('#tambah-akun :input:not(input[name="_token"])').val('');
-  $('#tambah-akun select:not(.a_akun_dka):not(.a_aktif)').val('').trigger('change');
-})
-
-
 function detail(id) {
   $.ajax({
       url:baseUrl +'/kas_keluar/detail_konfirmasi_pengeluaran_kas',
@@ -126,23 +118,21 @@ function detail(id) {
   });
 }
 
-function edit(id) {
- location.href = '{{  url('kas_keluar/edit_petty_cash') }}?id='+id;
-}
-function hapus(id) {
+function konfirm(id) {
+  var status = 'KONFIRM';
   iziToast.show({
     overlay: true,
     close: false,
     timeout: 20000, 
     color: 'dark',
     icon: 'fas fa-question-circle',
-    title: 'Hapus Data!',
+    title: 'Setujui Pengeluaran Kas!',
     message: 'Apakah Anda Yakin ?!',
     position: 'center',
     progressBarColor: 'rgb(0, 255, 184)',
     buttons: [
     [
-        '<button style="background-color:#32CD32;">Hapus</button>',
+        '<button style="background-color:#32CD32;">Setuju</button>',
         function (instance, toast) {
 
           $.ajaxSetup({
@@ -152,9 +142,9 @@ function hapus(id) {
             });
 
             $.ajax({
-                url:baseUrl +'/kas_keluar/hapus_petty_cash',
+                url:baseUrl +'/kas_keluar/simpan_konfirmasi_pengeluaran_kas',
                 type:'get',
-                data:{id},
+                data:{id,status},
                 dataType:'json',
                 success:function(data){
                   $('#tambah-jabatan').modal('hide');
@@ -162,10 +152,10 @@ function hapus(id) {
                   table.ajax.reload();
                   if (data.status == 1) {
                     iziToast.success({
-                          icon: 'fa fa-trash',
+                          icon: 'fa fa-check',
                           title: 'Berhasil',
                           color:'yellow',
-                          message: 'Menghapus Data!',
+                          message: 'Mensetujui Data!',
                     });
                   }else{
                     iziToast.warning({
@@ -198,5 +188,77 @@ function hapus(id) {
     ]
   });
 }
+
+function batal(id) {
+  var status = 'TOLAK';
+  iziToast.show({
+    overlay: true,
+    close: false,
+    timeout: 20000, 
+    color: 'dark',
+    icon: 'fas fa-question-circle',
+    title: 'Tolak Pengeluaran Kas!',
+    message: 'Apakah Anda Yakin ?!',
+    position: 'center',
+    progressBarColor: 'rgb(0, 255, 184)',
+    buttons: [
+    [
+        '<button style="background-color:#32CD32;">Tolak</button>',
+        function (instance, toast) {
+
+          $.ajaxSetup({
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url:baseUrl +'/kas_keluar/simpan_konfirmasi_pengeluaran_kas',
+                type:'get',
+                data:{id,status},
+                dataType:'json',
+                success:function(data){
+                  $('#tambah-jabatan').modal('hide');
+                  var table = $('#table_data').DataTable();
+                  table.ajax.reload();
+                  if (data.status == 1) {
+                    iziToast.success({
+                          icon: 'fa fa-check',
+                          title: 'Berhasil',
+                          color:'yellow',
+                          message: 'Menolak Data!',
+                    });
+                  }else{
+                    iziToast.warning({
+                          icon: 'fa fa-times',
+                          title: 'Oops,',
+                          message: data.pesan,
+                    });
+                  }
+                },
+                error:function(){
+                  iziToast.warning({
+                    icon: 'fa fa-times',
+                    message: 'Terjadi Kesalahan!',
+                  });
+                }
+            });
+            instance.hide({
+                transitionOut: 'fadeOutUp'
+            }, toast);
+        }
+    ],
+    [
+        '<button style="background-color:#44d7c9;">Cancel</button>',
+        function (instance, toast) {
+          instance.hide({
+            transitionOut: 'fadeOutUp'
+          }, toast);
+        }
+      ]
+    ]
+  });
+}
+
 </script>
 @endsection

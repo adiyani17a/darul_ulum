@@ -191,5 +191,10 @@ a{
   display: inline-block;
   padding: 0px !important;
 }
+
+.nopadlr{
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
 </style>
 </head>

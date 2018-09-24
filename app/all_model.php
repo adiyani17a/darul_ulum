@@ -20,6 +20,8 @@ use App\child\petty_cash_detail;
 use App\child\barang;
 use App\child\rencana_pembelian;
 use App\child\rencana_pembelian_d;
+use App\child\bukti_kas_keluar;
+use App\child\bukti_kas_keluar_detail;
 use App\Repositories\TestRepo;
 
 class all_model extends Model
@@ -124,5 +126,17 @@ class all_model extends Model
 	{
 		$rencana_pembelian_d = new rencana_pembelian_d();
         return $rencana_pembelian_d = new TestRepo($rencana_pembelian_d);
+	}
+
+	public function bukti_kas_keluar()
+	{
+		$bukti_kas_keluar = new bukti_kas_keluar();
+        return $bukti_kas_keluar = new TestRepo($bukti_kas_keluar);
+	}
+
+	public function bukti_kas_keluar_detail()
+	{
+		$bukti_kas_keluar_detail = new bukti_kas_keluar_detail();
+        return $bukti_kas_keluar_detail = new TestRepo($bukti_kas_keluar_detail);
 	}
 }

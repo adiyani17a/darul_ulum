@@ -261,7 +261,7 @@
                   <li class="nav-item" > <a href="{{ url('/kas_keluar/rencana_pembelian/') }}" class="nav-link {{Request::is('kas_keluar/rencana_pembelian') ? 'active' : '' || Request::is('kas_keluar/rencana_pembelian/*') ? 'active' : '' }}">Rencana Pembelian</a></li>
                   <li class="nav-item" > <a href="{{ url('/kas_keluar/pengeluaran_anggaran/') }}" class="nav-link {{Request::is('kas_keluar/pengeluaran_anggaran') ? 'active' : '' || Request::is('kas_keluar/pengeluaran_anggaran/*') ? 'active' : '' }}">Pengeluaran Anggaran</a></li>
                   <li class="nav-item" > <a href="{{ url('/kas_keluar/petty_cash/') }}" class="nav-link {{Request::is('kas_keluar/petty_cash') ? 'active' : '' || Request::is('kas_keluar/petty_cash/*') ? 'active' : '' }}">Petty Cash</a></li>
-                  <li class="nav-item" > <a href="{{ url('/kas_keluar/konfirmasi_pembelian/') }}" class="nav-link {{Request::is('kas_keluar/konfirmasi_pembelian') ? 'active' : '' || Request::is('kas_keluar/konfirmasi_pembelian/*') ? 'active' : '' }}">Konfirmasi Pembelian</a></li>
+                  <li class="nav-item" > <a href="{{ url('/kas_keluar/konfirmasi_pengeluaran_kas/') }}" class="nav-link {{Request::is('kas_keluar/konfirmasi_pengeluaran_kas') ? 'active' : '' || Request::is('kas_keluar/konfirmasi_pengeluaran_kas/*') ? 'active' : '' }}">Konfirmasi Pengeluaran Kas</a></li>
 
                   <li class="nav-item" > <a href="{{ url('/kas_keluar/bukti_kas_keluar/') }}" class="nav-link {{Request::is('kas_keluar/bukti_kas_keluar') ? 'active' : '' || Request::is('kas_keluar/bukti_kas_keluar/*') ? 'active' : '' }}">Bukti Kas Keluar</a></li>
                 </ul>

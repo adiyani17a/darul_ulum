@@ -9,7 +9,7 @@
         <ol class="breadcrumb bg-info">
           <li class="breadcrumb-item"><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a></li>
           <li class="breadcrumb-item">Kas Keluar</li>
-          <li class="breadcrumb-item active" aria-current="page">Petty Cash</li>
+          <li class="breadcrumb-item active" aria-current="page">Bukti Kas Keluar</li>
         </ol>
       </nav>
     </div>
@@ -23,9 +23,11 @@
               Simpan Data.
             </div>
           @endif
-          <h4 class="card-title">Petty Cash</h4>
+          <h4 class="card-title">Bukti Kas Keluar</h4>
           <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-          	<a href="{{ url('kas_keluar/create_petty_cash') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
+          	<a href="{{ url('kas_keluar/create_bukti_kas_keluar') }}">
+              <button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-download"></i>&nbsp;&nbsp;Upload Bukti Kas Keluar</button>
+            </a>
           </div>
 
           <div class="table-responsive">
@@ -35,11 +37,9 @@
                       <th>No</th>
                       <th>Nota</th>
                       <th>Sekolah</th>
-                      <th>Pemohon</th>
                       <th>Tanggal</th>
-                      <th>Total</th>
+                      <th>Sisa Kas</th>
                       <th>Pembuat</th>
-                      <th>Status</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -66,7 +66,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url:'{{ route('datatable_petty_cash') }}',
+            url:'{{ route('datatable_bukti_kas_keluar') }}',
             data:{_token:'{{ csrf_token() }}'}
         },
         columnDefs: [
@@ -78,24 +78,14 @@ $(document).ready(function(){
                    targets: 5 ,
                    className: ' right'
                 },
-                {
-                   targets: 7 ,
-                   className: ' center'
-                },
-                {
-                   targets: 8 ,
-                   className: ' center'
-                },
               ],
         columns: [
           {data: 'DT_Row_Index', name: 'DT_Row_Index'},
-          {data: 'nota', name: 'nota'},
+          {data: 'bkk_pc_ref', name: 'bkk_pc_ref'},
           {data: 'sekolah', name: 'sekolah'},
-          {data: 'pc_pemohon', name: 'pc_pemohon'},
-          {data: 'pc_tanggal', name: 'pc_tanggal'},
-          {data: 'pc_total', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
+          {data: 'created_at', name: 'created_at'},
+          {data: 'bkk_sisa_kembali', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
           {data: 'created_by', name: 'created_by'},
-          {data: 'status', name: 'status'},
           {data: 'aksi'}
         ]
 

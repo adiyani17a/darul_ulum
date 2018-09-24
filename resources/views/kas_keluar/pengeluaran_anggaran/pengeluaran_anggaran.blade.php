@@ -53,6 +53,7 @@
   </div>
 </div>
 
+@include('kas_keluar.konfirmasi_pengeluaran_kas.modal')
 
 
 <!-- content-wrapper ends -->
@@ -89,7 +90,7 @@ $(document).ready(function(){
               ],
         columns: [
           {data: 'DT_Row_Index', name: 'DT_Row_Index'},
-          {data: 'pc_nota', name: 'pc_nota'},
+          {data: 'nota', name: 'nota'},
           {data: 'sekolah', name: 'sekolah'},
           {data: 'pc_pemohon', name: 'pc_pemohon'},
           {data: 'pc_tanggal', name: 'pc_tanggal'},
@@ -101,6 +102,24 @@ $(document).ready(function(){
 
   });
 })
+
+function detail(id) {
+  $.ajax({
+      url:baseUrl +'/kas_keluar/detail_konfirmasi_pengeluaran_kas',
+      type:'get',
+      data:{id},
+      success:function(data){
+        $('.table_append').html(data);
+        $('#detail').modal('show');
+      },
+      error:function(){
+        iziToast.warning({
+          icon: 'fa fa-times',
+          message: 'Terjadi Kesalahan!',
+        });
+      }
+  });
+}
 
 $('.btn_modal').click(function(){
   $('#tambah-akun :input:not(input[name="_token"])').val('');

@@ -158,6 +158,16 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_keluar/edit_petty_cash', 'kas_keluar_controller@edit_petty_cash');
         Route::get('/kas_keluar/nota_petty_cash', 'kas_keluar_controller@nota_petty_cash');
         Route::post('/kas_keluar/update_petty_cash', 'kas_keluar_controller@update_petty_cash');
+        // KONFIRMASI PENGELUARAN KAS
+        Route::get('/kas_keluar/konfirmasi_pengeluaran_kas', 'kas_keluar_controller@konfirmasi_pengeluaran_kas');
+        Route::get('/kas_keluar/datatable_konfirmasi_pengeluaran_kas', 'kas_keluar_controller@datatable_konfirmasi_pengeluaran_kas')->name('datatable_konfirmasi_pengeluaran_kas');
+        Route::get('/kas_keluar/detail_konfirmasi_pengeluaran_kas', 'kas_keluar_controller@detail_konfirmasi_pengeluaran_kas');
+        Route::get('/kas_keluar/simpan_konfirmasi_pengeluaran_kas', 'kas_keluar_controller@simpan_konfirmasi_pengeluaran_kas');
+        // BUKTI KAS KELUAR
+        Route::get('/kas_keluar/bukti_kas_keluar', 'kas_keluar_controller@bukti_kas_keluar');
+        Route::get('/kas_keluar/datatable_bukti_kas_keluar', 'kas_keluar_controller@datatable_bukti_kas_keluar')->name('datatable_bukti_kas_keluar');
+        Route::get('/kas_keluar/create_bukti_kas_keluar', 'kas_keluar_controller@create_bukti_kas_keluar');
+
     // LAPORAN
 
 

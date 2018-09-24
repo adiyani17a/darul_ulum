@@ -68,8 +68,7 @@ class kas_keluar_controller extends Controller
 							}
 
 		                    return $a.$b.$c.$c1.$c2.$d;
-		                })
-		                ->addColumn('nota', function ($data) {
+		                })->addColumn('nota', function ($data) {
 		                    return '<a class="btn_modal" onclick="detail(\''.$data->rp_id.'\')" style="color:blue">'.$data->rp_kode.'</a>';
 		                })->addColumn('sekolah', function ($data) {
 		                    return $data->sekolah->s_nama;
@@ -214,11 +213,16 @@ class kas_keluar_controller extends Controller
 		$data = collect($data);
 		return Datatables::of($data)
 		                ->addColumn('aksi', function ($data) {
-		                	$a = '<div class="btn-group"><button type="button" onclick="jurnal(\''.$data->pc_nota.'\')" class="btn btn-primary btn-lg" title="Check Jurnal"><label class="fa fa-book"></label></button>';
+		                	$a = '<div class="btn-group">' ;
 		                	$b = '';
 		                	$c = '';
 		                	$c1 = '';
 		                	$d = '</div>';
+
+		                	if ($data->pc_status == 'APPROVED') {
+								$a = '<div class="btn-group"><button type="button" onclick="jurnal(\''.$data->pc_nota.'\')" class="btn btn-primary btn-lg" title="Check Jurnal"><label class="fa fa-book"></label></button>';
+							}
+
 		                	if (Auth::user()->akses('PETTY CASH','ubah')) {
 		                		if ($data->pc_status == 'RELEASED') {
 		                			$b = '<button type="button" onclick="edit(\''.$data->pc_nota.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
@@ -235,6 +239,8 @@ class kas_keluar_controller extends Controller
 								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
 							}
 
+							
+
 		                    return $a.$b.$c.$c1.$d;
 		                })
 		                ->addColumn('none', function ($data) {
@@ -245,12 +251,16 @@ class kas_keluar_controller extends Controller
 		                   	if ($data->pc_status == 'RELEASED') {
 								return '<label class="badge badge-warning">RELEASED</label>';
 		                   	}else if ($data->pc_status == 'APPROVED') {
-								return '<label class="badge badge-primary">APPROVED</label>';
+								return '<label class="badge badge-primary">DISETUJUI</label>';
+		                   	}else if ($data->pc_status == 'REJECTED') {
+								return '<label class="badge badge-danger">DITOLAK</label>';
 		                   	}if ($data->pc_status == 'POSTING') {
 								return '<label class="label label-success">POSTING</label>';
 		                   	}
+		                })->addColumn('nota', function ($data) {
+		                    return '<a class="btn_modal" onclick="detail(\''.$data->pc_nota.'\')" style="color:blue">'.$data->pc_nota.'</a>';
 		                })
-		                ->rawColumns(['aksi', 'none','sekolah','status'])
+		                ->rawColumns(['aksi', 'none','sekolah','status','nota'])
 		                ->addIndexColumn()
 		                ->make(true);
 	}
@@ -542,26 +552,33 @@ class kas_keluar_controller extends Controller
 		$data = collect($data);
 		return Datatables::of($data)
 		                ->addColumn('aksi', function ($data) {
-		                	$a = '<div class="btn-group"><button type="button" onclick="jurnal(\''.$data->pc_nota.'\')" class="btn btn-primary btn-lg" title="Check Jurnal"><label class="fa fa-book"></label></button>';
+		                	$a = '<div class="btn-group">' ;
 		                	$b = '';
 		                	$c = '';
 		                	$c1 = '';
 		                	$d = '</div>';
+
+		                	if ($data->pc_status == 'APPROVED') {
+								$a = '<div class="btn-group"><button type="button" onclick="jurnal(\''.$data->pc_nota.'\')" class="btn btn-primary btn-lg" title="Check Jurnal"><label class="fa fa-book"></label></button>';
+							}
+
 		                	if (Auth::user()->akses('PETTY CASH','ubah')) {
 		                		if ($data->pc_status == 'RELEASED') {
-		                			$b = '<button type="button" onclick="edit(\''.$data->pc_id.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
+		                			$b = '<button type="button" onclick="edit(\''.$data->pc_nota.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
 		                		}
 		                	}
 
 		                	if (Auth::user()->akses('PETTY CASH','hapus')) {
 		                		if ($data->pc_status == 'RELEASED') {
-		                			$c = '<button type="button" onclick="hapus(\''.$data->pc_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
+		                			$c = '<button type="button" onclick="hapus(\''.$data->pc_nota.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
 		                		}
 		                	}
 
 							if ($data->pc_status == 'APPROVED') {
-								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
+								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
 							}
+
+							
 
 		                    return $a.$b.$c.$c1.$d;
 		                })
@@ -573,12 +590,16 @@ class kas_keluar_controller extends Controller
 		                   	if ($data->pc_status == 'RELEASED') {
 								return '<label class="badge badge-warning">RELEASED</label>';
 		                   	}else if ($data->pc_status == 'APPROVED') {
-								return '<label class="badge badge-primary">APPROVED</label>';
+								return '<label class="badge badge-primary">DISETUJUI</label>';
+		                   	}else if ($data->pc_status == 'REJECTED') {
+								return '<label class="badge badge-danger">DITOLAK</label>';
 		                   	}if ($data->pc_status == 'POSTING') {
 								return '<label class="label label-success">POSTING</label>';
 		                   	}
+		                })->addColumn('nota', function ($data) {
+		                    return '<a class="btn_modal" onclick="detail(\''.$data->pc_nota.'\')" style="color:blue">'.$data->pc_nota.'</a>';
 		                })
-		                ->rawColumns(['aksi', 'none','sekolah','status'])
+		                ->rawColumns(['aksi', 'none','sekolah','status','nota'])
 		                ->addIndexColumn()
 		                ->make(true);
 	}
@@ -655,91 +676,7 @@ class kas_keluar_controller extends Controller
 
 				$this->model->petty_cash_detail()->create($save);
 			}
-			// JURNAL
-
-			$del_jurnal = $this->model->jurnal()->delete('j_ref',$req->pc_nota);
-			$id_jurnal = $this->model->jurnal()->max('j_id');
-			$save = array(
-		                   'j_id'			=> $id_jurnal,
-						   'j_tahun'		=> carbon::parse($req->pc_tanggal)->format('Y'),
-						   'j_tanggal'		=> carbon::parse($req->pc_tanggal)->format('Y-m-d'),
-						   'j_keterangan'	=> strtoupper($req->pc_keterangan),
-						   'j_sekolah'		=> $req->pc_sekolah,
-						   'j_ref'			=> $req->pc_nota,
-						   'created_by'		=> Auth::user()->name,
-						   'updated_by'		=> Auth::user()->name,
-            		);
-			$this->model->jurnal()->create($save);
-
-			$akun 	  = [];
-			$akun_val = [];
-			$cari = $this->model->akun()->show_detail_one('a_master_akun',$req->pc_akun_kas,'a_sekolah',$req->pc_sekolah);
-			if ($cari == null) {
-				DB::rollBack();
-				return Response::json(['status'=>0,'pesan'=>'Sekolah Ini Tidak Memilik Akun '.$req->pc_akun_kas]);
-			}
-
 			
-			array_push($akun, $cari->a_id);
-			array_push($akun_val, filter_var($req->pc_total,FILTER_SANITIZE_NUMBER_INT));
-
-			for ($i=0; $i < count($req->pcd_akun_biaya); $i++) { 
-				$cari = $this->model->akun()->show_detail_one('a_master_akun',$req->pcd_akun_biaya[$i],'a_sekolah',$req->pc_sekolah);
-
-				if ($cari == null) {
-					DB::rollBack();
-					return Response::json(['status'=>0,'pesan'=>'Sekolah Ini Tidak Memilik Akun '.$req->pcd_akun_biaya[$i]]);
-				}
-				array_push($akun, $cari->a_id);
-				array_push($akun_val, filter_var($req->pcd_jumlah[$i],FILTER_SANITIZE_NUMBER_INT));
-			}
-
-			$data_akun = [];
-			for ($i=0; $i < count($akun); $i++) { 
-				$cari_coa = $this->model->akun()->cari('a_id',$akun[$i]);
-				if (substr($akun[$i],0, 2)==11) {
-					if ($cari_coa->a_akun_dka == 'DEBET') {
-						$data_akun[$i]['jd_id'] 	= $id_jurnal;
-						$data_akun[$i]['jd_detail']	= $i+1;
-						$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
-						$data_akun[$i]['jd_value'] 	= -filter_var($akun_val[$i],FILTER_SANITIZE_NUMBER_INT);
-                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . strtoupper($req->pc_keterangan);
-						$data_akun[$i]['jd_statusdk'] = 'KREDIT';
-					}else{
-						$data_akun[$i]['jd_id'] 	= $id_jurnal;
-						$data_akun[$i]['jd_keterangan']	= $i+1;
-						$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
-						$data_akun[$i]['jd_value'] 	= -filter_var($akun_val[$i],FILTER_SANITIZE_NUMBER_INT);
-                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . strtoupper($req->pc_keterangan);
-						$data_akun[$i]['jd_statusdk'] = 'DEBET';
-					}
-				}if (substr($akun[$i],0, 2)>11) {
-					if ($cari_coa->a_akun_dka == 'DEBET') {
-						$data_akun[$i]['jd_id'] 	= $id_jurnal;
-						$data_akun[$i]['jd_detail']	= $i+1;
-						$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
-						$data_akun[$i]['jd_value'] 	= filter_var($akun_val[$i],FILTER_SANITIZE_NUMBER_INT);
-                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . strtoupper($req->pc_keterangan);
-						$data_akun[$i]['jd_statusdk'] = 'DEBET';
-					}else{
-						$data_akun[$i]['jd_id'] 	= $id_jurnal;
-						$data_akun[$i]['jd_detail']	= $i+1;
-						$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
-						$data_akun[$i]['jd_value'] 	= filter_var($akun_val[$i],FILTER_SANITIZE_NUMBER_INT);
-                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . strtoupper($req->pc_keterangan);
-						$data_akun[$i]['jd_statusdk'] = 'KREDIT';
-					}
-				}
-			}
-			$jurnal_dt = $this->models->jurnal_dt()->insert($data_akun);
-				
-			$lihat = $this->model->jurnal_dt()->show('jd_id',$id_jurnal);
-
-			$check = $this->models->check_jurnal($req->pc_nota);
-			if ($check == 0) {
-				DB::rollBack();
-				return Response::json(['status'=>0,'pesan'=>'Jurnal Tidak Balance']);
-			}
 		    DB::commit();
 		    return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
 		}catch(Exception $er){
@@ -783,5 +720,346 @@ class kas_keluar_controller extends Controller
 		}
 	}
 
+	// KONFIRMASI PEMBELIAN
+	public function konfirmasi_pengeluaran_kas()
+	{
+		
+		return view('kas_keluar.konfirmasi_pengeluaran_kas.konfirmasi_pengeluaran_kas');
+	}
 
+	public function datatable_konfirmasi_pengeluaran_kas()
+	{
+		$data = $this->model->petty_cash()->show('pc_status','RELEASED');
+		// return $data;
+		$data = collect($data);
+		return Datatables::of($data)
+		                ->addColumn('aksi', function ($data) {
+		                	$a = '<div class="btn-group">';
+		                	$b = '';
+		                	$c = '';
+		                	$d = '</div>';
+                			$b = '<button type="button" onclick="konfirm(\''.$data->pc_nota.'\')" class="btn btn-success btn-lg" title="Konfirmasi"><label class="fa fa-check"></label></button>';
+
+                			$c = '<button type="button" onclick="batal(\''.$data->pc_nota.'\')" class="btn btn-danger btn-lg" title="Batal"><label class="fa fa-times"></label></button>';
+
+		                    return $a.$b.$c.$d;
+		                })
+		                ->addColumn('none', function ($data) {
+		                    return '-';
+		                })->addColumn('sekolah', function ($data) {
+		                    return $data->sekolah->s_nama;
+		                })->addColumn('status', function ($data) {
+		                   	if ($data->pc_status == 'RELEASED') {
+								return '<label class="badge badge-warning">RELEASED</label>';
+		                   	}else if ($data->pc_status == 'APPROVED') {
+								return '<label class="badge badge-primary">APPROVED</label>';
+		                   	}if ($data->pc_status == 'POSTING') {
+								return '<label class="label label-success">POSTING</label>';
+		                   	}
+		                })->addColumn('nota', function ($data) {
+		                    return '<a class="btn_modal" onclick="detail(\''.$data->pc_nota.'\')" style="color:blue">'.$data->pc_nota.'</a>';
+		                })
+		                ->rawColumns(['aksi', 'none','sekolah','status','nota'])
+		                ->addIndexColumn()
+		                ->make(true);
+	}
+
+	public function detail_konfirmasi_pengeluaran_kas(Request $req)
+	{
+		$data = $this->model->petty_cash()->cari('pc_nota',$req->id);
+		return view('kas_keluar.konfirmasi_pengeluaran_kas.table_modal',compact('data'));
+	}
+
+	public function simpan_konfirmasi_pengeluaran_kas(Request $req)
+	{
+		DB::BeginTransaction();
+		try {
+		  	$cari = $this->model->petty_cash()->cari('pc_nota',$req->id);
+			if ($req->status == 'KONFIRM') {
+				if ($cari->pc_jenis == 'ANGGARAN') {
+					$upd = array(
+									'pc_status' => 'APPROVED'
+								);
+
+					$this->model->petty_cash()->update($upd,'pc_nota',$req->id);
+
+					// JURNAL
+					$del_jurnal = $this->model->jurnal()->delete('j_ref',$cari->pc_nota);
+					$id_jurnal = $this->model->jurnal()->max('j_id');
+					$save = array(
+				                   'j_id'			=> $id_jurnal,
+								   'j_tahun'		=> carbon::parse($cari->pc_tanggal)->format('Y'),
+								   'j_tanggal'		=> carbon::parse($cari->pc_tanggal)->format('Y-m-d'),
+								   'j_keterangan'	=> strtoupper($cari->pc_keterangan),
+								   'j_sekolah'		=> $cari->pc_sekolah,
+								   'j_ref'			=> $cari->pc_nota,
+								   'created_by'		=> Auth::user()->name,
+								   'updated_by'		=> Auth::user()->name,
+		            		);
+					$this->model->jurnal()->create($save);
+
+					$akun 	  = [];
+					$akun_val = [];
+					$akun_ket = [];
+					$akun_kas = $this->model->akun()->show_detail_one('a_master_akun',$cari->pc_akun_kas,'a_sekolah',$cari->pc_sekolah);
+					if ($akun_kas == null) {
+						DB::rollBack();
+						return Response::json(['status'=>0,'pesan'=>'Sekolah Ini Tidak Memilik Akun '.$cari->pc_akun_kas]);
+					}
+
+					array_push($akun, $akun_kas->a_id);
+					array_push($akun_val, $cari->pc_total);
+					array_push($akun_ket, strtoupper($cari->pc_keterangan));
+
+
+					for ($i=0; $i < count($cari->petty_cash_detail); $i++) { 
+						if ($cari->petty_cash_detail[$i]->pcd_jumlah != 0) {
+							$akun_biaya = $this->model->akun()->show_detail_one('a_master_akun',$cari->petty_cash_detail[$i]->pcd_akun_biaya,'a_sekolah',$cari->pc_sekolah);
+
+							if ($akun_biaya == null) {
+								DB::rollBack();
+								return Response::json(['status'=>0,'pesan'=>'Sekolah Ini Tidak Memilik Akun '.$cari[$i]->pcd_akun_biaya]);
+							}
+							array_push($akun, $akun_biaya->a_id);
+							array_push($akun_val, $cari->petty_cash_detail[$i]->pcd_jumlah);
+							array_push($akun_ket, strtoupper($cari->petty_cash_detail[$i]->pcd_keterangan));
+						}
+							
+					}
+
+					$data_akun = [];
+					for ($i=0; $i < count($akun); $i++) { 
+						$cari_coa = $this->model->akun()->cari('a_id',$akun[$i]);
+						if (substr($akun[$i],0, 2)==11) {
+							if ($cari_coa->a_akun_dka == 'DEBET') {
+								$data_akun[$i]['jd_id'] 	= $id_jurnal;
+								$data_akun[$i]['jd_detail']	= $i+1;
+								$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
+								$data_akun[$i]['jd_value'] 	= -$akun_val[$i];
+		                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+								$data_akun[$i]['jd_statusdk'] = 'KREDIT';
+							}else{
+								$data_akun[$i]['jd_id'] 	= $id_jurnal;
+								$data_akun[$i]['jd_keterangan']	= $i+1;
+								$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
+								$data_akun[$i]['jd_value'] 	= -$akun_val[$i];
+		                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+								$data_akun[$i]['jd_statusdk'] = 'DEBET';
+							}
+						}if (substr($akun[$i],0, 2)>11) {
+							if ($cari_coa->a_akun_dka == 'DEBET') {
+								$data_akun[$i]['jd_id'] 	= $id_jurnal;
+								$data_akun[$i]['jd_detail']	= $i+1;
+								$data_akun[$i]['jd_akun'] 	= $akun[$i];
+								$data_akun[$i]['jd_value'] 	= $akun_val[$i];
+		                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+								$data_akun[$i]['jd_statusdk'] = 'DEBET';
+							}else{
+								$data_akun[$i]['jd_id'] 	= $id_jurnal;
+								$data_akun[$i]['jd_detail']	= $i+1;
+								$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
+								$data_akun[$i]['jd_value'] 	= $akun_val[$i];
+		                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+								$data_akun[$i]['jd_statusdk'] = 'KREDIT';
+							}
+						}
+					}
+					$jurnal_dt = $this->models->jurnal_dt()->insert($data_akun);
+						
+					$lihat = $this->model->jurnal_dt()->show('jd_id',$id_jurnal);
+					$check = $this->models->check_jurnal($cari->pc_nota);
+					if ($check == 0) {
+						DB::rollBack();
+						return Response::json(['status'=>0,'pesan'=>'Jurnal Tidak Balance']);
+					}
+
+		  		}else{
+		  			$upd = array(
+									'pc_status' => 'APPROVED'
+								);
+
+					$this->model->petty_cash()->update($upd,'pc_nota',$req->id);
+
+					// JURNAL
+					$del_jurnal = $this->model->jurnal()->delete('j_ref',$cari->pc_nota);
+					$id_jurnal = $this->model->jurnal()->max('j_id');
+					$save = array(
+				                   'j_id'			=> $id_jurnal,
+								   'j_tahun'		=> carbon::parse($cari->pc_tanggal)->format('Y'),
+								   'j_tanggal'		=> carbon::parse($cari->pc_tanggal)->format('Y-m-d'),
+								   'j_keterangan'	=> strtoupper($cari->pc_keterangan),
+								   'j_sekolah'		=> $cari->pc_sekolah,
+								   'j_ref'			=> $cari->pc_nota,
+								   'created_by'		=> Auth::user()->name,
+								   'updated_by'		=> Auth::user()->name,
+		            		);
+					$this->model->jurnal()->create($save);
+
+					$akun 	  = [];
+					$akun_val = [];
+					$akun_ket = [];
+					$akun_kas = $this->model->akun()->show_detail_one('a_master_akun',$cari->pc_akun_kas,'a_sekolah',$cari->pc_sekolah);
+					if ($akun_kas == null) {
+						DB::rollBack();
+						return Response::json(['status'=>0,'pesan'=>'Sekolah Ini Tidak Memilik Akun '.$cari->pc_akun_kas]);
+					}
+
+					array_push($akun, $akun_kas->a_id);
+					array_push($akun_val, $cari->pc_total);
+					array_push($akun_ket, strtoupper($cari->pc_keterangan));
+
+
+					for ($i=0; $i < count($cari->petty_cash_detail); $i++) { 
+						if ($cari->petty_cash_detail[$i]->pcd_jumlah != 0) {
+							$akun_biaya = $this->model->akun()->show_detail_one('a_master_akun',$cari->petty_cash_detail[$i]->pcd_akun_biaya,'a_sekolah',$cari->pc_sekolah);
+
+							if ($akun_biaya == null) {
+								DB::rollBack();
+								return Response::json(['status'=>0,'pesan'=>'Sekolah Ini Tidak Memilik Akun '.$cari[$i]->pcd_akun_biaya]);
+							}
+							array_push($akun, $akun_biaya->a_id);
+							array_push($akun_val, $cari->petty_cash_detail[$i]->pcd_jumlah);
+							array_push($akun_ket, strtoupper($cari->petty_cash_detail[$i]->pcd_keterangan));
+						}
+							
+					}
+
+					$data_akun = [];
+					for ($i=0; $i < count($akun); $i++) { 
+						$cari_coa = $this->model->akun()->cari('a_id',$akun[$i]);
+						if (substr($akun[$i],0, 2)==11) {
+							if ($cari_coa->a_akun_dka == 'DEBET') {
+								$data_akun[$i]['jd_id'] 	= $id_jurnal;
+								$data_akun[$i]['jd_detail']	= $i+1;
+								$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
+								$data_akun[$i]['jd_value'] 	= -$akun_val[$i];
+		                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+								$data_akun[$i]['jd_statusdk'] = 'KREDIT';
+							}else{
+								$data_akun[$i]['jd_id'] 	= $id_jurnal;
+								$data_akun[$i]['jd_keterangan']	= $i+1;
+								$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
+								$data_akun[$i]['jd_value'] 	= -$akun_val[$i];
+		                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+								$data_akun[$i]['jd_statusdk'] = 'DEBET';
+							}
+						}if (substr($akun[$i],0, 2)>11) {
+							if ($cari_coa->a_akun_dka == 'DEBET') {
+								$data_akun[$i]['jd_id'] 	= $id_jurnal;
+								$data_akun[$i]['jd_detail']	= $i+1;
+								$data_akun[$i]['jd_akun'] 	= $akun[$i];
+								$data_akun[$i]['jd_value'] 	= $akun_val[$i];
+		                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+								$data_akun[$i]['jd_statusdk'] = 'DEBET';
+							}else{
+								$data_akun[$i]['jd_id'] 	= $id_jurnal;
+								$data_akun[$i]['jd_detail']	= $i+1;
+								$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
+								$data_akun[$i]['jd_value'] 	= $akun_val[$i];
+		                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+								$data_akun[$i]['jd_statusdk'] = 'KREDIT';
+							}
+						}
+					}
+					$jurnal_dt = $this->models->jurnal_dt()->insert($data_akun);
+						
+					$lihat = $this->model->jurnal_dt()->show('jd_id',$id_jurnal);
+					$check = $this->models->check_jurnal($cari->pc_nota);
+					if ($check == 0) {
+						DB::rollBack();
+						return Response::json(['status'=>0,'pesan'=>'Jurnal Tidak Balance']);
+					}
+		  		}
+			}else{
+		  		if ($cari->pc_jenis == 'ANGGARAN') {
+					foreach ($cari->rencana_pembelian->rencana_pembelian_d as $i => $val1) {
+						foreach ($cari->petty_cash_detail as $a => $val2) {
+							if ($val1->rpd_detail == $val2->pcd_rpd_detail) {
+								$sisa = $val1->rpd_sisa + $val2->pcd_qty;
+								$upd = array(
+												'rpd_sisa' => $sisa
+											);
+								$this->models->rencana_pembelian_d()->where('rpd_id',$val1->rpd_id)
+																	->where('rpd_detail',$val1->rpd_detail)
+																	->update($upd);
+							}
+						}
+					}
+
+					$upd = array(
+									'rp_status' => 'Berjalan'
+								);
+					$rencana = $this->model->rencana_pembelian()->update($upd,'rp_kode',$cari->pc_ref);
+
+					$upd = array(
+								'pc_status' => 'REJECTED'
+							);
+
+					$this->model->petty_cash()->update($upd,'pc_nota',$req->id);
+		  		}else{
+		  			$upd = array(
+								'pc_status' => 'REJECTED'
+							);
+
+					$this->model->petty_cash()->update($upd,'pc_nota',$req->id);
+		  		}
+			}
+			DB::commit();
+			return Response::json(['status'=>1,'pesan'=>'Data Berhasil Disetujui!']);
+		} catch (Exception $e) {
+			
+			DB::rollBack();
+			dd($e);
+		}
+	}
+
+	public function bukti_kas_keluar(Request $req)
+	{
+
+		return view('kas_keluar.bukti_kas_keluar.bukti_kas_keluar');
+	}
+
+	public function datatable_bukti_kas_keluar()
+	{
+		$data = $this->model->bukti_kas_keluar()->all();
+		// return $data;
+		$data = collect($data);
+		return Datatables::of($data)
+		                ->addColumn('aksi', function ($data) {
+		                	$a = '<div class="btn-group">' ;
+		                	$b = '';
+		                	$c = '';
+		                	$d = '</div>';
+
+		                	if (Auth::user()->akses('BUKTI KAS KELUAR','ubah')) {
+	                			$b = '<button type="button" onclick="edit(\''.$data->bkk_id.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
+		                	}
+
+		                	if (Auth::user()->akses('BUKTI KAS KELUAR','hapus')) {
+	                			$c = '<button type="button" onclick="hapus(\''.$data->bkk_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
+		                	}
+
+		                    return $a.$b.$c.$d;
+		                })
+		                ->addColumn('none', function ($data) {
+		                    return '-';
+		                })->addColumn('sekolah', function ($data) {
+		                    return $data->sekolah->s_nama;
+		                })->rawColumns(['aksi', 'none','sekolah'])
+		                ->addIndexColumn()
+		                ->make(true);
+	}
+	public function create_bukti_kas_keluar()
+	{
+		
+		$sekolah = $this->model->sekolah()->all();
+
+		$akun = $this->models->akun()->select('a_master_akun','a_master_nama')
+									 ->where('a_master_akun','like','5%')
+									 ->orWhere('a_master_akun','like','6%')
+									 ->orWhere('a_master_akun','like','7%')
+									 ->groupBy('a_master_akun','a_master_nama')
+									 ->get();
+		return view('kas_keluar.bukti_kas_keluar.create_bukti_kas_keluar',compact('sekolah','akun'));
+	}
 }

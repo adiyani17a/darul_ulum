@@ -19,7 +19,8 @@ use App\child\petty_cash_detail;
 use App\child\barang;
 use App\child\rencana_pembelian;
 use App\child\rencana_pembelian_d;
-
+use App\child\bukti_kas_keluar;
+use App\child\bukti_kas_keluar_detail;
 class models extends Model
 {
     public function jabatan()
@@ -102,10 +103,19 @@ class models extends Model
 		return $rencana_pembelian_d = new rencana_pembelian_d();
 	}
 
+	public function bukti_kas_keluar()
+	{
+		return $bukti_kas_keluar = new bukti_kas_keluar();
+	}
+
+	public function bukti_kas_keluar_detail()
+	{
+		return $bukti_kas_keluar_detail = new bukti_kas_keluar_detail();
+	}
+
 	public function check_jurnal($nota)
 	{
 		$data = jurnal::where('j_ref',$nota)->first();
-
 		$d = 0;
 		$k = 0;
 		
