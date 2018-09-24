@@ -3,7 +3,7 @@
 @include('partials._head')
 
 @yield('extra_style')
-<body>
+<body style="min-height: 1000px">
 	@include('partials._setting')
 	<div class="container-scroller">
 		@include('partials._sidebar')

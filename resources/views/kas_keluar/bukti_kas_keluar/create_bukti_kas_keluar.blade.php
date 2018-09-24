@@ -123,10 +123,9 @@
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                   <div class="col-sm-12 table-responsive">
-                    <table class="table table-bordered table-data bukti_pengeluaran">
+                    <table class="table table-bordered  bukti_pengeluaran">
                       <thead class="bg-gradient-info">
                         <tr>
-                          <th>Foto</th>
                           <th>Kode Biaya</th>
                           <th>Keterangan</th>
                           <th>Nominal</th>
@@ -134,16 +133,16 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        {{-- <tr>
                           <td></td>
-                        </tr>
+                        </tr> --}}
                       </tbody>
                     </table>
                   </div>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                   <div class="col-sm-12 table-responsive">
-                    <table class="table table-bordered table-data data_petty">
+                    <table class="table table-bordered  data_petty">
                       <thead class="bg-gradient-info">
                         <tr>
                           <th>Nama Biaya</th>
@@ -192,14 +191,8 @@ function nota() {
       }
   });
 }
-var tables = $('.table-data').DataTable({
-  columnDefs: [
-                {
-                   targets: 4 ,
-                   className: ' center'
-                },
-              ],
-});
+var tables  = $('.bukti_pengeluaran').DataTable();
+var tables1 = $('.data_petty').DataTable();
 $(document).ready(function(){
   $('.mask').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
 })

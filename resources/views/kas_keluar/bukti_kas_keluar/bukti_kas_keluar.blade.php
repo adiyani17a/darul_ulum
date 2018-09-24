@@ -26,7 +26,7 @@
           <h4 class="card-title">Bukti Kas Keluar</h4>
           <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
           	<a href="{{ url('kas_keluar/create_bukti_kas_keluar') }}">
-              <button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-download"></i>&nbsp;&nbsp;Upload Bukti Kas Keluar</button>
+              <button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-download"></i>&nbsp;&nbsp;Add</button>
             </a>
           </div>
 
