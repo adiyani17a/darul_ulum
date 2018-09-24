@@ -373,7 +373,7 @@ class keuangan_controller extends Controller
 
 	public function jurnal(Request $req)
 	{
-		$data = $this->model->jurnal()->cari('j_ref',$req->nota);
+		$data = $this->models->jurnal()->where('j_ref',$req->nota)->where('j_detail',$req->jenis)->first();
 		$d = 0;
 		$k = 0;
 		

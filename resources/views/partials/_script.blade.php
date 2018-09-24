@@ -310,11 +310,11 @@
     par.find('span').eq(0).removeClass('error');
   })
 
-  function jurnal(nota) {
+  function jurnal(nota,jenis) {
     $.ajax({
         url:baseUrl +'/keuangan/jurnal',
         type:'get',
-        data:{nota},
+        data:{nota,jenis},
         success:function(data){
       
           $('.append_jurnal').html(data);

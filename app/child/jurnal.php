@@ -18,6 +18,7 @@ class jurnal extends Model
 						   'j_keterangan',
 						   'j_sekolah',
 						   'j_ref',
+						   'j_detail',
 						   'created_by',
 						   'updated_by',
 						  ];

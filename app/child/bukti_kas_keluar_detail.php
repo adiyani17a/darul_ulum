@@ -13,7 +13,10 @@ class bukti_kas_keluar_detail extends Model
 	protected $fillable = [
 						   'bkkd_id',
 						   'bkkd_detail',
+						   'bkkd_pcd_detail',
 						   'bkkd_keterangan',
+						   'bkkd_qty',
+						   'bkkd_harga_awal',
 						   'bkkd_harga',
 						   'bkkd_jenis',
 						   'bkkd_akun',

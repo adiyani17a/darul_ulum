@@ -9,7 +9,7 @@
         <ol class="breadcrumb bg-info">
           <li class="breadcrumb-item"><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a></li>
           <li class="breadcrumb-item">Kas Keluar</li>
-          <li class="breadcrumb-item" aria-current="page">Petty Cash</li>
+          <li class="breadcrumb-item" aria-current="page">Bukti Kas Keluar</li>
           <li class="breadcrumb-item active" aria-current="page">Tambah Data</li>
         </ol>
       </nav>
@@ -17,7 +17,12 @@
     <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Petty Cash</h4>
+          <h4 class="card-title">Bukti Kas Keluar</h4>
+          <div class="alert alert-danger alert-dismissible" title="DP sudah Lunas">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>Notice!</strong> <br>
+              Harap Melampirkan Bukti Nota Pembelian Saat Nota Diprint.<br>
+          </div>
           <div class="row" style="margin-bottom: 50px">
             <div class="col-sm-6 table-responsive" >
               <h5 align="center">HEADER</h5>
@@ -68,15 +73,21 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>TOTAL SISA</td>
+                  <td>TOTAL KAS </td>
                   <td>
                     <input type="text" readonly="" class="pc_total form-control right" name="pc_total">
+                  </td>
+                </tr>
+                <tr>
+                  <td>SISA</td>
+                  <td>
+                    <input type="text" readonly="" class="bkk_sisa_kembali form-control right" name="bkk_sisa_kembali">
                   </td>
                 </tr>
               </table>
             </div>
             <div class="col-sm-6 table-responsive">
-              <h5 align="center">INPUT DATA</h5>
+              <h5 align="center">Biaya Lain</h5>
               <table class="table input_data">
                 <tr>
                   <td>Akun Biaya</td>
@@ -126,10 +137,11 @@
                     <table class="table table-bordered  bukti_pengeluaran">
                       <thead class="bg-gradient-info">
                         <tr>
-                          <th>Kode Biaya</th>
+                          <th>Nama Barang</th>
+                          <th>Qty</th>
+                          <th>Dana Awal</th>
+                          <th>Pengeluaran Akhir</th>
                           <th>Keterangan</th>
-                          <th>Nominal</th>
-                          <th>Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -170,6 +182,26 @@
     </div>
   </div>
 </div>
+
+<div id="modal_petty_cash" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" style="width: 60% !important">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-gradient-info">
+        <h4 class="modal-title">Pilih Petty Cash</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row table_append">
+            
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- content-wrapper ends -->
 @endsection
 @section('extra_script')
@@ -191,22 +223,106 @@ function nota() {
       }
   });
 }
-var tables  = $('.bukti_pengeluaran').DataTable();
-var tables1 = $('.data_petty').DataTable();
+var data_petty = $('.data_petty').DataTable({
+    columnDefs: [
+                {
+                   targets: 4 ,
+                   className: ' center'
+                },
+              ],
+});
+var bukti_pengeluaran = $('.bukti_pengeluaran').DataTable();
 $(document).ready(function(){
   $('.mask').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
 })
 
+$('.pc_sekolah').change(function(){
+  $('.pc_nota').val('');
+  bukti_pengeluaran.clear().draw();
+  
+})
 
 function total() {
+  var pc_total = $('.pc_total').val();
+  pc_total     = pc_total.replace(/[^0-9\-]+/g,"")*1;
   var total = 0;
-  tables.$('.pcd_jumlah').each(function(){
-    temp       = $(this).val().replace(/[^0-9\-]+/g,"");
+  bukti_pengeluaran.$('.bkkd_harga').each(function(){
+    temp       = $(this).val().replace(/[^0-9\-]+/g,"")*1;
     total     += temp
   })
 
-  $('.pc_total').val(accounting.formatMoney(total,"", 0, ".",','));
+  data_petty.$('.pcd_jumlah').each(function(){
+    temp       = $(this).val().replace(/[^0-9\-]+/g,"")*1;
+    total      += temp
+  })
+  var hasil = pc_total - total;
+  $('.bkk_sisa_kembali').val(accounting.formatMoney(hasil,"", 0, ".",','));
 }
+
+$('.pc_nota').focus(function(){
+  var sekolah = $('.pc_sekolah ').val();
+  $.ajax({
+      url:baseUrl +'/kas_keluar/cari_petty_cash',
+      type:'get',
+      data:{sekolah},
+      success:function(data){
+        $('.table_append').html(data);
+        $('#modal_petty_cash').modal('show');
+      },
+      error:function(){
+        iziToast.warning({
+          icon: 'fa fa-times',
+          message: 'Terjadi Kesalahan!',
+        });
+      }
+  });
+})
+
+function pilih(id) {
+  $('.pc_nota').val(id);
+  $.ajax({
+      url:baseUrl +'/kas_keluar/pilih_petty_cash',
+      type:'get',
+      data:{id},
+      dataType:'json',
+      success:function(data){
+        bukti_pengeluaran.clear();
+        for (var i = 0; i < data.data.length; i++) {
+          if (data.data[i].pcd_jumlah != 0) {
+            bukti_pengeluaran.row.add([
+              '<p class="pcd_nama_biaya_text">'+data.data[i].nama_barang+'</p>'+
+              '<input type="hidden" class="bkkd_pcd_detail" name="bkkd_pcd_detail[]" value="'+data.data[i].pcd_detail +'">',
+
+              '<input type="text" class="bkkd_qty form-control" name="bkkd_qty[]" value="'+data.data[i].pcd_qty +'">',
+
+              '<p class="bkkd_harga_awal_text" align="right">'+accounting.formatMoney(data.data[i].pcd_jumlah ,"", 0, ".",',')+'</p>'+
+              '<input type="hidden" class="bkkd_harga_awal" name="bkkd_harga_awal[]" value="'+data.data[i].pcd_jumlah +'">',
+
+              '<input type="text" class="bkkd_harga form-control mask right" name="bkkd_harga[]" value="0">',
+
+              '<input type="text" class="bkkd_keterangan form-control " value="" name="bkkd_keterangan[]">',
+            ]).draw();
+          }
+        }
+        $('.pc_total').val(accounting.formatMoney(data.head.pc_total ,"", 0, ".",','));
+        $('.bkk_sisa_kembali').val(accounting.formatMoney(data.head.pc_total ,"", 0, ".",','));
+        $('.div_barang').prop('hidden',false);
+        $('.simpan').removeClass('disabled');
+        $('.mask').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
+      },
+      error:function(){
+        iziToast.warning({
+          icon: 'fa fa-times',
+          message: 'Terjadi Kesalahan!',
+        });
+      }
+  });
+}
+
+
+$(document).on('keyup','.bkkd_harga',function(){
+  total();
+})
 
 var indexs = 0;
 $('.tambah').click(function(){
@@ -221,6 +337,8 @@ $('.tambah').click(function(){
       validator.push(0);
     }
   })
+
+
 
   $('.input_data').find('.option').each(function(){
     if ($(this).val() == '') {
@@ -240,7 +358,7 @@ $('.tambah').click(function(){
     return false;
   }
 
-  tables.row.add([
+  data_petty.row.add([
     '<p class="pcd_nama_biaya_text">'+pcd_akun_biaya_t+'</p>'+
     ' <input type="hidden" class="pcd_akun_biaya" name="pcd_akun_biaya[]" value="'+pcd_akun_biaya+'">'+
     ' <input type="hidden" class="indexs indexs_'+indexs+'">',
@@ -259,27 +377,19 @@ $('.tambah').click(function(){
   ]).draw();
   indexs++;
   total();
-  $('.simpan').removeClass('disabled');
   $('.input_data').find('.wajib').val('');
   $('.input_data').find('.option').val('').trigger('change');
 })
 
 function hapus(a) {
   var par = $(a).parents('tr');
-  tables.row(par).remove().draw(false);
+  data_petty.row(par).remove().draw(false);
   iziToast.success({
         icon: 'fa fa-trash',
         title: 'Berhasil',
         message: 'Dihapus',
   });
-  var temp = 0;
-  tables.$('.pcd_jumlah').each(function(){
-    temp+=1;
-  })
 
-  if (temp == 0) {
-    $('.save').addClass('disabled');
-  }
   total();
 }
 
@@ -321,8 +431,9 @@ $('.simpan').click(function(){
 
   $.ajax({
      type: "POST",
-     url: baseUrl +'/kas_keluar/simpan_petty_cash',
+     url: baseUrl +'/kas_keluar/simpan_bukti_kas_keluar',
      data:$('.header_petty :input').serialize()+'&'+
+          $('.bukti_pengeluaran :input').serialize()+'&'+
           $('.data_petty :input').serialize(),
      dataType:'json',
      success: function(data){
@@ -333,7 +444,7 @@ $('.simpan').click(function(){
               message: data.pesan,
           });
         }else if(data.status == 1){
-          location.href = '{{ url('kas_keluar/petty_cash') }}?simpan=berhasil';
+          location.href = '{{ url('kas_keluar/bukti_kas_keluar') }}?simpan=berhasil';
         }else{
           iziToast.success({
               icon: 'fa fa-pencil-alt',
