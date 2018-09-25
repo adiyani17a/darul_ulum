@@ -1170,13 +1170,15 @@ class kas_keluar_controller extends Controller
 				
 			// JURNAL
 
-			if (((int)filter_var($req->bkk_sisa_kembali,FILTER_SANITIZE_NUMBER_INT)) != 0) {
+			if (((integer)filter_var($req->bkk_sisa_kembali,FILTER_SANITIZE_NUMBER_INT)) != 0) {
 				$akun 	  = [];
 				$akun_val = [];
 				$akun_ket = [];
 				$status   = [];
 
-				$del_jurnal = $this->model->jurnal()->delete('j_ref',$req->pc_nota);
+				$del_jurnal = $this->models->jurnal()->where('j_ref',$req->pc_nota)
+													 ->where('j_detail','BUKTI KAS KELUAR')
+													 ->delete();
 				$id_jurnal = $this->model->jurnal()->max('j_id');
 				$save = array(
 			                   'j_id'			=> $id_jurnal,
