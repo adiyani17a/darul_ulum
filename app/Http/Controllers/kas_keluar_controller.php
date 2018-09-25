@@ -559,7 +559,7 @@ class kas_keluar_controller extends Controller
 		                	$c1 = '';
 		                	$d = '</div>';
 
-		                	if ($data->pc_status == 'APPROVED') {
+		                	if ($data->pc_status != 'RLEASED') {
 								$a = '<div class="btn-group"><button type="button" onclick="jurnal(\''.$data->pc_nota.'\',\'PETTY CASH\')" class="btn btn-primary btn-lg" title="Check Jurnal"><label class="fa fa-book"></label></button>';
 							}
 
