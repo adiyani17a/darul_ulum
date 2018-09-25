@@ -1170,7 +1170,7 @@ class kas_keluar_controller extends Controller
 				
 			// JURNAL
 
-			if (filter_var($req->bkk_sisa_kembali,FILTER_SANITIZE_NUMBER_INT) != 0) {
+			if (((int)filter_var($req->bkk_sisa_kembali,FILTER_SANITIZE_NUMBER_INT)) != 0) {
 				$akun 	  = [];
 				$akun_val = [];
 				$akun_ket = [];
