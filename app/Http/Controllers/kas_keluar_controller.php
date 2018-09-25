@@ -1032,19 +1032,23 @@ class kas_keluar_controller extends Controller
 		                	$a1 = '';
 		                	$b  = '';
 		                	$c  = '';
-		                	$d  = '</div>';
+		                	$e  = '</div>';
 
 							$a1 = '<div class="btn-group"><button type="button" onclick="jurnal(\''.$data->bkk_pc_ref.'\',\'BUKTI KAS KELUAR\')" class="btn btn-primary btn-lg" title="Check Jurnal"><label class="fa fa-book"></label></button>';
 
 		                	if (Auth::user()->akses('BUKTI KAS KELUAR','ubah')) {
-	                			$b = '<button type="button" onclick="edit(\''.$data->bkk_id.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
+	                			$b = '<button type="button" onclick="edit(\''.$data->bkk_pc_ref.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
 		                	}
 
 		                	if (Auth::user()->akses('BUKTI KAS KELUAR','hapus')) {
-	                			$c = '<button type="button" onclick="hapus(\''.$data->bkk_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
+	                			$c = '<button type="button" onclick="hapus(\''.$data->bkk_pc_ref.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
 		                	}
 
-		                    return $a.$a1.$b.$c.$d;
+		                	if (Auth::user()->akses('BUKTI KAS KELUAR','print')) {
+	                			$d = '<button type="button" onclick="cetak(\''.$data->bkk_pc_ref.'\')" class="btn btn-success btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
+		                	}
+
+		                    return $a.$a1.$b.$c.$d.$e;
 		                })
 		                ->addColumn('none', function ($data) {
 		                    return '-';
@@ -1271,5 +1275,46 @@ class kas_keluar_controller extends Controller
 			DB::rollBack();
 			dd($e);
 		}
+	}
+
+	public function edit_bukti_kas_keluar(Request $req)
+	{
+		$data = $this->model->bukti_kas_keluar()->cari('bkk_pc_ref',$req->id);
+		$sekolah = $this->model->sekolah()->all();
+
+		$akun = $this->models->akun()->select('a_master_akun','a_master_nama')
+									 ->where('a_master_akun','like','5%')
+									 ->orWhere('a_master_akun','like','6%')
+									 ->orWhere('a_master_akun','like','7%')
+									 ->groupBy('a_master_akun','a_master_nama')
+									 ->get();
+		return view('kas_keluar.bukti_kas_keluar.edit_bukti_kas_keluar',compact('sekolah','akun','data'));
+	}
+
+	public function hapus_bukti_kas_keluar(Request $req)
+	{
+		DB::BeginTransaction();
+		try {
+			$this->model->bukti_kas_keluar()->delete('bkk_pc_ref',$req->id);
+			return Response::json(['status'=>1,'pesan'=>'Data Berhasil Dihapus!']);
+		} catch (Exception $e) {
+			
+		}
+	}
+
+	public function update_bukti_kas_keluar(Request $req)
+	{
+		try {
+			$this->model->bukti_kas_keluar()->delete('bkk_pc_ref',$req->id);
+			return $this->simpan_bukti_kas_keluar($req);
+		} catch (Exception $e) {
+			dd($er);
+		  	DB::rollBack();
+		}
+	}
+
+	public function cetak_bukti_kas_keluar()
+	{
+		return view('kas_keluar.bukti_kas_keluar.cetak_bukti_kas_keluar');
 	}
 }

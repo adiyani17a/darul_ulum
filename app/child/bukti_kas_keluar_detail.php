@@ -28,4 +28,9 @@ class bukti_kas_keluar_detail extends Model
     {
         return $this->belongsTo('App\child\bukti_kas_keluar','bkkd_id','bkk_id');
     }
+
+    public function akun()
+    {
+        return $this->belongsTo('App\child\akun','bkkd_akun','a_master_akun');
+    }
 }

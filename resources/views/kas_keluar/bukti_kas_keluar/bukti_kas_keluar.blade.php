@@ -75,8 +75,12 @@ $(document).ready(function(){
                    className: ' center'
                 },
                 {
-                   targets: 5 ,
+                   targets: 4 ,
                    className: ' right'
+                },
+                {
+                   targets: 6 ,
+                   className: 'center'
                 },
               ],
         columns: [
@@ -117,7 +121,7 @@ function detail(id) {
 }
 
 function edit(id) {
- location.href = '{{  url('kas_keluar/edit_petty_cash') }}?id='+id;
+ location.href = '{{  url('kas_keluar/edit_bukti_kas_keluar') }}?id='+id;
 }
 function hapus(id) {
   iziToast.show({
@@ -187,6 +191,10 @@ function hapus(id) {
       ]
     ]
   });
+}
+
+function cetak(id) {
+  window.open('{{  url('kas_keluar/cetak_bukti_kas_keluar') }}?id='+id)
 }
 </script>
 @endsection

@@ -18,6 +18,7 @@ class bukti_kas_keluar extends Model
 						   'bkk_keterangan',
 						   'bkk_sekolah',
 						   'bkk_tanggal',
+						   'bkk_status_print',
 						   'created_by',
 						   'updated_by',
 						];

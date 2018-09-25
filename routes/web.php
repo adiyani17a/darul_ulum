@@ -167,9 +167,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_keluar/bukti_kas_keluar', 'kas_keluar_controller@bukti_kas_keluar');
         Route::get('/kas_keluar/datatable_bukti_kas_keluar', 'kas_keluar_controller@datatable_bukti_kas_keluar')->name('datatable_bukti_kas_keluar');
         Route::get('/kas_keluar/create_bukti_kas_keluar', 'kas_keluar_controller@create_bukti_kas_keluar');
+        Route::get('/kas_keluar/edit_bukti_kas_keluar', 'kas_keluar_controller@edit_bukti_kas_keluar');
         Route::get('/kas_keluar/cari_petty_cash', 'kas_keluar_controller@cari_petty_cash');
         Route::get('/kas_keluar/pilih_petty_cash', 'kas_keluar_controller@pilih_petty_cash');
         Route::post('/kas_keluar/simpan_bukti_kas_keluar', 'kas_keluar_controller@simpan_bukti_kas_keluar');
+        Route::post('/kas_keluar/update_bukti_kas_keluar', 'kas_keluar_controller@update_bukti_kas_keluar');
+        Route::get('/kas_keluar/hapus_bukti_kas_keluar', 'kas_keluar_controller@hapus_bukti_kas_keluar');
+        Route::get('/kas_keluar/cetak_bukti_kas_keluar', 'kas_keluar_controller@cetak_bukti_kas_keluar');
 
     // LAPORAN
 
