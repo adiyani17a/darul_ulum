@@ -40,6 +40,7 @@
                       <th>Tanggal</th>
                       <th>Sisa Kas</th>
                       <th>Pembuat</th>
+                      <th>Print</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -90,6 +91,7 @@ $(document).ready(function(){
           {data: 'created_at', name: 'created_at'},
           {data: 'bkk_sisa_kembali', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
           {data: 'created_by', name: 'created_by'},
+          {data: 'printed', name: 'printed'},
           {data: 'aksi'}
         ]
 
@@ -146,7 +148,7 @@ function hapus(id) {
             });
 
             $.ajax({
-                url:baseUrl +'/kas_keluar/hapus_petty_cash',
+                url:baseUrl +'/kas_keluar/hapus_bukti_kas_keluar',
                 type:'get',
                 data:{id},
                 dataType:'json',

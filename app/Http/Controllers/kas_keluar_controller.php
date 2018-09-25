@@ -16,6 +16,7 @@ use Exception;
 use Response;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Hash;
+use PDF;
 class kas_keluar_controller extends Controller
 {
     protected $model;
@@ -594,7 +595,7 @@ class kas_keluar_controller extends Controller
 		                   	}else if ($data->pc_status == 'REJECTED') {
 								return '<label class="badge badge-danger">DITOLAK</label>';
 		                   	}if ($data->pc_status == 'POSTING') {
-								return '<label class="label label-success">POSTING</label>';
+								return '<label class="badge badge-success">POSTING</label>';
 		                   	}
 		                })->addColumn('nota', function ($data) {
 		                    return '<a class="btn_modal" onclick="detail(\''.$data->pc_nota.'\')" style="color:blue">'.$data->pc_nota.'</a>';
@@ -1054,7 +1055,13 @@ class kas_keluar_controller extends Controller
 		                    return '-';
 		                })->addColumn('sekolah', function ($data) {
 		                    return $data->sekolah->s_nama;
-		                })->rawColumns(['aksi', 'none','sekolah'])
+		                })->addColumn('printed', function ($data) {
+		                    if ($data->bkk_status_print == 'Released') {
+								return '<label class="badge badge-warning">Released</label>';
+		                    }else{
+								return '<label class="badge badge-primary">Printed</label>';
+		                    }
+		                })->rawColumns(['aksi', 'none','sekolah','printed'])
 		                ->addIndexColumn()
 		                ->make(true);
 	}
@@ -1143,22 +1150,24 @@ class kas_keluar_controller extends Controller
 
 			}
 			$b = $i;
-			for ($a=0; $a < count($req->pcd_akun_biaya); $a++) { 
-				$save = array(
-						   'bkkd_id'			=> $id,
-						   'bkkd_detail'		=> $b+1,
-						   'bkkd_pcd_detail'	=> 0,
-						   'bkkd_keterangan'	=> strtoupper($req->pcd_keterangan[$a]),
-						   'bkkd_qty'			=> 1,
-						   'bkkd_harga_awal'	=> filter_var($req->pcd_jumlah[$a],FILTER_SANITIZE_NUMBER_INT),
-						   'bkkd_harga'			=> filter_var($req->pcd_jumlah[$a],FILTER_SANITIZE_NUMBER_INT),
-						   'bkkd_jenis'			=> 'BIAYA',
-						   'bkkd_akun'			=> $req->pcd_akun_biaya[$a],
-						);
-				$this->model->bukti_kas_keluar_detail()->create($save);
-				$b++;
+			if (isset($req->pcd_akun_biaya)) {
+				for ($a=0; $a < count($req->pcd_akun_biaya); $a++) { 
+					$save = array(
+							   'bkkd_id'			=> $id,
+							   'bkkd_detail'		=> $b+1,
+							   'bkkd_pcd_detail'	=> 0,
+							   'bkkd_keterangan'	=> strtoupper($req->pcd_keterangan[$a]),
+							   'bkkd_qty'			=> 1,
+							   'bkkd_harga_awal'	=> filter_var($req->pcd_jumlah[$a],FILTER_SANITIZE_NUMBER_INT),
+							   'bkkd_harga'			=> filter_var($req->pcd_jumlah[$a],FILTER_SANITIZE_NUMBER_INT),
+							   'bkkd_jenis'			=> 'BIAYA',
+							   'bkkd_akun'			=> $req->pcd_akun_biaya[$a],
+							);
+					$this->model->bukti_kas_keluar_detail()->create($save);
+					$b++;
+				}
 			}
-
+				
 			// JURNAL
 
 			if (filter_var($req->bkk_sisa_kembali,FILTER_SANITIZE_NUMBER_INT) != 0) {
@@ -1225,21 +1234,22 @@ class kas_keluar_controller extends Controller
 					}
 				
 				}
+				if (isset($req->pcd_akun_biaya)) {
+					for ($i=0; $i < count($req->pcd_akun_biaya); $i++) { 
+						$akun_biaya = $this->model->akun()->show_detail_one('a_master_akun',$req->pcd_akun_biaya[$i],'a_sekolah',$req->pc_sekolah);
 
-				for ($i=0; $i < count($req->pcd_akun_biaya); $i++) { 
-					$akun_biaya = $this->model->akun()->show_detail_one('a_master_akun',$req->pcd_akun_biaya[$i],'a_sekolah',$req->pc_sekolah);
+						if ($akun_biaya == null) {
+							DB::rollBack();
+							return Response::json(['status'=>0,'pesan'=>'Sekolah Ini Tidak Memilik Akun '.$req->pcd_akun_biaya[$i]]);
+						}
 
-					if ($akun_biaya == null) {
-						DB::rollBack();
-						return Response::json(['status'=>0,'pesan'=>'Sekolah Ini Tidak Memilik Akun '.$req->pcd_akun_biaya[$i]]);
+						array_push($akun, $akun_biaya->a_id);
+						array_push($akun_val, filter_var($req->pcd_jumlah[$i],FILTER_SANITIZE_NUMBER_INT));
+						array_push($akun_ket, strtoupper($req->pcd_keterangan[$i]));
+						array_push($status, 'DEBET');
 					}
-
-					array_push($akun, $akun_biaya->a_id);
-					array_push($akun_val, filter_var($req->pcd_jumlah[$i],FILTER_SANITIZE_NUMBER_INT));
-					array_push($akun_ket, strtoupper($req->pcd_keterangan[$i]));
-					array_push($status, 'DEBET');
 				}
-
+					
 				$data_akun = [];
 				for ($i=0; $i < count($akun); $i++) { 
 					$cari_coa = $this->model->akun()->cari('a_id',$akun[$i]);
@@ -1295,8 +1305,16 @@ class kas_keluar_controller extends Controller
 	{
 		DB::BeginTransaction();
 		try {
+
+			$upd = array(
+						   'pc_status'			=> 'APPROVED',
+						);
+
+			$this->model->petty_cash()->update($upd,'pc_nota',$req->id);
+
 			$this->model->bukti_kas_keluar()->delete('bkk_pc_ref',$req->id);
-			return Response::json(['status'=>1,'pesan'=>'Data Berhasil Dihapus!']);
+			DB::commit();
+			return Response::json(['status'=>1,'pesan'=>'Data Berhasil Dihapus !']);
 		} catch (Exception $e) {
 			
 		}
@@ -1313,8 +1331,19 @@ class kas_keluar_controller extends Controller
 		}
 	}
 
-	public function cetak_bukti_kas_keluar()
+	public function cetak_bukti_kas_keluar(Request $req)
 	{
-		return view('kas_keluar.bukti_kas_keluar.cetak_bukti_kas_keluar');
+		$id = Auth::user()->id;
+		$data = $this->model->user()->cari('id',$id);
+		$bkk = $this->model->bukti_kas_keluar()->cari('bkk_pc_ref',$req->id);
+		$upd = array(
+						'bkk_status_print'	=> 'Printed',
+					);
+
+		$this->model->bukti_kas_keluar()->update($upd,'bkk_pc_ref',$req->id);
+		$pdf = PDF::loadView('kas_keluar.bukti_kas_keluar.cetak_bukti_kas_keluar',compact('data','bkk'))
+					->setPaper('a4','potrait');;
+		return $pdf->stream('invoice.pdf');
+		return view('kas_keluar.bukti_kas_keluar.cetak_bukti_kas_keluar',compact('data','bkk'));
 	}
 }

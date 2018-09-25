@@ -376,28 +376,28 @@ class keuangan_controller extends Controller
 		$data = $this->models->jurnal()->where('j_ref',$req->nota)->where('j_detail',$req->jenis)->first();
 		$d = 0;
 		$k = 0;
-		
-		for ($i=0; $i < count($data->jurnal_dt); $i++) { 
-			if ($data->jurnal_dt[$i]->jd_statusdk == 'DEBET') {
-				if ($data->jurnal_dt[$i]->jd_value < 0) {
-					$temp = $data->jurnal_dt[$i]->jd_value * -1;
-				}else{
-					$temp = $data->jurnal_dt[$i]->jd_value;
-				}
+		if ($data != null) {
+			for ($i=0; $i < count($data->jurnal_dt); $i++) { 
+				if ($data->jurnal_dt[$i]->jd_statusdk == 'DEBET') {
+					if ($data->jurnal_dt[$i]->jd_value < 0) {
+						$temp = $data->jurnal_dt[$i]->jd_value * -1;
+					}else{
+						$temp = $data->jurnal_dt[$i]->jd_value;
+					}
 
-				$d+=$temp;
-			}else{
-				if ($data->jurnal_dt[$i]->jd_value < 0) {
-					$temp = $data->jurnal_dt[$i]->jd_value * -1;
+					$d+=$temp;
 				}else{
-					$temp = $data->jurnal_dt[$i]->jd_value;
-				}
+					if ($data->jurnal_dt[$i]->jd_value < 0) {
+						$temp = $data->jurnal_dt[$i]->jd_value * -1;
+					}else{
+						$temp = $data->jurnal_dt[$i]->jd_value;
+					}
 
-				$k+=$temp;
+					$k+=$temp;
+				}
 			}
 		}
-
-
+		
 		return view('jurnal',compact('d','k','data'));
 	}
 }

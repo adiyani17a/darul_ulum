@@ -492,7 +492,7 @@ $('.simpan').click(function(){
         @if ($data->petty_cash->pc_jenis == 'ANGGARAN')
           var nama_barang   = '{{ $val1->barang->b_nama }}';
         @else
-          var nama_barang   = '{{ $val1->akun->a_master_akun.' '.$val1->pcd_keterangan }}';
+          var nama_barang   = '{{ $val1->akun->a_master_nama.' '.$val1->pcd_keterangan }}';
         @endif
         var pcd_detail   = '{{ $val1->pcd_detail }}';
       @endif
