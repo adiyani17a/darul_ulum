@@ -113,16 +113,16 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="3" align="right">Total Pembelian</td>
-					<td align="right">{{ number_format($total,0,',','.') }}</td>
+					<th colspan="3" align="right">Total Pembelian</th>
+					<th align="right">{{ number_format($total,0,',','.') }}</th>
 				</tr>
 				<tr>
-					<td colspan="3" align="right">Kas Dikeluarkan</td>
-					<td align="right">{{ number_format($bkk->petty_cash->pc_total,0,',','.') }}</td>
+					<th colspan="3" align="right">Kas Dikeluarkan</th>
+					<th align="right">{{ number_format($bkk->petty_cash->pc_total,0,',','.') }}</th>
 				</tr>
 				<tr>
-					<td colspan="3" align="right">Sisa</td>
-					<td align="right">{{ number_format($bkk->bkk_sisa_kembali,0,',','.') }}</td>
+					<th colspan="3" align="right">Sisa</th>
+					<th align="right">{{ number_format($bkk->bkk_sisa_kembali,0,',','.') }}</th>
 				</tr>
 			</tfoot>
 		</table>

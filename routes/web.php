@@ -114,6 +114,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/penerimaan/hapus_alumni', 'penerimaan_controller@hapus_alumni');
         Route::get('/penerimaan/edit_alumni', 'penerimaan_controller@edit_alumni');
     // KAS MASUK
+        // DANA BOS
+        Route::get('/kas_masuk/dana_bos', 'kas_masuk_controller@dana_bos');
         // PEMASUKAN LAIN
         Route::get('/kas_masuk/petty_cash', 'kas_masuk_controller@petty_cash');
         Route::get('/kas_masuk/datatable_petty_cash', 'kas_masuk_controller@datatable_petty_cash')->name('datatable_petty_cash');

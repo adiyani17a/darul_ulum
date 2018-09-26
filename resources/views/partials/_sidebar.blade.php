@@ -229,6 +229,7 @@
               <a class="nav-link " data-toggle="collapse" href="#kas_masuk" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-title">Kas Masuk</span>
                 <span class="d-none">
+                  Dana BOS
                   Pemasukan Lain
                   Pembayaran Spp
                 </span>
@@ -237,6 +238,7 @@
               </a>
               <div class="collapse {{Request::is('kas_masuk') ? 'show' : '' || Request::is('kas_masuk/*') ? 'show' : '' }}" id="kas_masuk">
                 <ul class="nav flex-column sub-menu">
+                  <li class="nav-item" > <a href="{{ url('/kas_masuk/dana_bos/') }}" class="nav-link {{Request::is('kas_masuk/dana_bos') ? 'active' : '' || Request::is('kas_masuk/dana_bos/*') ? 'active' : '' }}">Dana BOS</a></li>
                   <li class="nav-item" > <a href="{{ url('/kas_masuk/pemasukan_lain/') }}" class="nav-link {{Request::is('kas_masuk/pemasukan_lain') ? 'active' : '' || Request::is('kas_masuk/pemasukan_lain/*') ? 'active' : '' }}">Pemasukan Lain</a></li>
                   <li class="nav-item" > <a href="{{ url('/kas_masuk/spp/') }}" class="nav-link {{Request::is('kas_masuk/spp') ? 'active' : '' || Request::is('kas_masuk/spp/*') ? 'active' : '' }}">Pembayaran SPP</a></li>
                 </ul>
