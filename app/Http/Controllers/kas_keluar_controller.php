@@ -824,7 +824,7 @@ class kas_keluar_controller extends Controller
 								return Response::json(['status'=>0,'pesan'=>'Sekolah Ini Tidak Memilik Akun '.$cari[$i]->pcd_akun_biaya]);
 							}
 							array_push($akun, $akun_biaya->a_id);
-							array_push($akun_val, $cari->petty_cash_detail[$i]->pcd_jumlah);
+							array_push($akun_val, $cari->petty_cash_detail[$i]->pcd_jumlah*$cari->petty_cash_detail[$i]->pcd_qty);
 							array_push($akun_ket, strtoupper($cari->petty_cash_detail[$i]->pcd_keterangan));
 						}
 							
