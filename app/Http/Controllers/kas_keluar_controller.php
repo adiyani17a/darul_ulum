@@ -803,6 +803,7 @@ class kas_keluar_controller extends Controller
 					$akun 	  = [];
 					$akun_val = [];
 					$akun_ket = [];
+
 					$akun_kas = $this->model->akun()->show_detail_one('a_master_akun',$cari->pc_akun_kas,'a_sekolah',$cari->pc_sekolah);
 					if ($akun_kas == null) {
 						DB::rollBack();
@@ -869,6 +870,7 @@ class kas_keluar_controller extends Controller
 					$jurnal_dt = $this->models->jurnal_dt()->insert($data_akun);
 						
 					$lihat = $this->model->jurnal_dt()->show('jd_id',$id_jurnal);
+					dd($lihat);
 					$check = $this->models->check_jurnal($cari->pc_nota);
 					if ($check == 0) {
 						DB::rollBack();
