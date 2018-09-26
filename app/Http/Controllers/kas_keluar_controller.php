@@ -1220,7 +1220,7 @@ class kas_keluar_controller extends Controller
 					}
 					array_push($akun, $akun_biaya->a_id);
 
-					$harga_fix = $req->bkkd_harga_awal[$i] - filter_var($req->bkkd_harga[$i],FILTER_SANITIZE_NUMBER_INT);
+					$harga_fix = ($req->bkkd_harga_awal[$i]*$req->bkkd_qty[$i]) - filter_var($req->bkkd_harga[$i],FILTER_SANITIZE_NUMBER_INT);
 
 					if ($harga_fix > 0) {
 						$harga_fix = -$harga_fix;
@@ -1235,7 +1235,6 @@ class kas_keluar_controller extends Controller
 						array_push($akun_ket, strtoupper($pcd->pcd_keterangan));
 						array_push($status, 'DEBET');
 					}
-				
 				}
 				if (isset($req->pcd_akun_biaya)) {
 					for ($i=0; $i < count($req->pcd_akun_biaya); $i++) { 
