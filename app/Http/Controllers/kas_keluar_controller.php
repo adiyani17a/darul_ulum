@@ -870,7 +870,7 @@ class kas_keluar_controller extends Controller
 					$jurnal_dt = $this->models->jurnal_dt()->insert($data_akun);
 						
 					$lihat = $this->model->jurnal_dt()->show('jd_id',$id_jurnal);
-					dd($lihat);
+					dd($lihat->toArray());
 					$check = $this->models->check_jurnal($cari->pc_nota);
 					if ($check == 0) {
 						DB::rollBack();
