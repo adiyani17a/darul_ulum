@@ -210,7 +210,7 @@ function total(ch) {
 $('#kode_rencana').focus(function(){
   var sekolah = $('.pc_sekolah ').val();
   $.ajax({
-      url:baseUrl +'/kas_keluar/cari_petty_cash',
+      url:baseUrl +'/kas_keluar/cari_pengeluaran_anggaran',
       type:'get',
       data:{sekolah},
       success:function(data){
