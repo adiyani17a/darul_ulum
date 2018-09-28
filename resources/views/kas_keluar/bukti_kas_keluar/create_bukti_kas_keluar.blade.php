@@ -139,7 +139,7 @@
                         <tr>
                           <th>Nama Barang</th>
                           <th>Qty</th>
-                          <th>Dana Awal</th>
+                          <th>Total Dana Awal</th>
                           <th>Pengeluaran Akhir</th>
                           <th>Keterangan</th>
                         </tr>
@@ -295,8 +295,8 @@ function pilih(id) {
 
               '<input type="text" class="bkkd_qty form-control" name="bkkd_qty[]" value="'+data.data[i].pcd_qty +'">',
 
-              '<p class="bkkd_harga_awal_text" align="right">'+accounting.formatMoney(data.data[i].pcd_jumlah ,"", 0, ".",',')+'</p>'+
-              '<input type="hidden" class="bkkd_harga_awal" name="bkkd_harga_awal[]" value="'+data.data[i].pcd_jumlah +'">',
+              '<p class="bkkd_harga_awal_text" align="right">'+accounting.formatMoney(data.data[i].pcd_jumlah*data.data[i].pcd_qty ,"", 0, ".",',')+'</p>'+
+              '<input type="hidden" class="bkkd_harga_awal" name="bkkd_harga_awal[]" value="'+data.data[i].pcd_jumlah*data.data[i].pcd_qty +'">',
 
               '<input type="text" class="bkkd_harga form-control mask right" name="bkkd_harga[]" value="0">',
 

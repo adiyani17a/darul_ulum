@@ -220,7 +220,7 @@ class kas_keluar_controller extends Controller
 		                	$c1 = '';
 		                	$d = '</div>';
 
-		                	if ($data->pc_status == 'APPROVED') {
+		                	if ($data->pc_status != 'RELEASED') {
 								$a = '<div class="btn-group"><button type="button" onclick="jurnal(\''.$data->pc_nota.'\',\'ANGGARAN\')" class="btn btn-primary btn-lg" title="Check Jurnal"><label class="fa fa-book"></label></button>';
 							}
 
@@ -785,7 +785,9 @@ class kas_keluar_controller extends Controller
 					$this->model->petty_cash()->update($upd,'pc_nota',$req->id);
 
 					// JURNAL
-					$del_jurnal = $this->model->jurnal()->delete('j_ref',$cari->pc_nota);
+					$del_jurnal = $this->models->jurnal()->where('j_detail','ANGGARAN')
+														 ->where('j_ref',$cari->pc_nota)
+														 ->delete();
 					$id_jurnal = $this->model->jurnal()->max('j_id');
 					$save = array(
 				                   'j_id'			=> $id_jurnal,
@@ -884,7 +886,9 @@ class kas_keluar_controller extends Controller
 					$this->model->petty_cash()->update($upd,'pc_nota',$req->id);
 
 					// JURNAL
-					$del_jurnal = $this->model->jurnal()->delete('j_ref',$cari->pc_nota);
+					$del_jurnal = $this->models->jurnal()->where('j_detail','PETTY CASH')
+														 ->where('j_ref',$cari->pc_nota)
+														 ->delete();
 					$id_jurnal = $this->model->jurnal()->max('j_id');
 					$save = array(
 				                   'j_id'			=> $id_jurnal,
@@ -1213,24 +1217,25 @@ class kas_keluar_controller extends Controller
 									->show_detail_one('pcd_id',$cari->pc_id,'pcd_detail',$req->bkkd_pcd_detail[$i]);
 
 					$akun_biaya = $this->model->akun()->show_detail_one('a_master_akun',$pcd->pcd_akun_biaya,'a_sekolah',$req->pc_sekolah);
-
 					if ($akun_biaya == null) {
 						DB::rollBack();
 						return Response::json(['status'=>0,'pesan'=>'Sekolah Ini Tidak Memilik Akun '.$cari[$i]->pcd_akun_biaya]);
 					}
-					array_push($akun, $akun_biaya->a_id);
 
-					$harga_fix = ($req->bkkd_harga_awal[$i]*$req->bkkd_qty[$i]) - filter_var($req->bkkd_harga[$i],FILTER_SANITIZE_NUMBER_INT);
-					if ($harga_fix == 0) {
+					$harga_fix = $req->bkkd_harga_awal[$i] - filter_var($req->bkkd_harga[$i],FILTER_SANITIZE_NUMBER_INT);
+
+					if ($harga_fix != 0) {
 						if ($harga_fix > 0) {
 							$harga_fix = -$harga_fix;
 
+							array_push($akun, $akun_biaya->a_id);
 							array_push($akun_val, $harga_fix);
 							array_push($akun_ket, strtoupper($pcd->pcd_keterangan));
 							array_push($status, 'KREDIT');
 						}elseif ($harga_fix < 0){
 							$harga_fix = $harga_fix*-1;
 
+							array_push($akun, $akun_biaya->a_id);
 							array_push($akun_val, $harga_fix);
 							array_push($akun_ket, strtoupper($pcd->pcd_keterangan));
 							array_push($status, 'DEBET');
@@ -1238,6 +1243,7 @@ class kas_keluar_controller extends Controller
 					}
 						
 				}
+
 				if (isset($req->pcd_akun_biaya)) {
 					for ($i=0; $i < count($req->pcd_akun_biaya); $i++) { 
 						$akun_biaya = $this->model->akun()->show_detail_one('a_master_akun',$req->pcd_akun_biaya[$i],'a_sekolah',$req->pc_sekolah);
@@ -1253,7 +1259,6 @@ class kas_keluar_controller extends Controller
 						array_push($status, 'DEBET');
 					}
 				}
-					
 				$data_akun = [];
 				for ($i=0; $i < count($akun); $i++) { 
 					$cari_coa = $this->model->akun()->cari('a_id',$akun[$i]);
