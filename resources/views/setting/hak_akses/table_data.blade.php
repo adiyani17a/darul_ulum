@@ -26,82 +26,83 @@
           <tbody>
             @foreach($data as $c=>$val)
             @if($val->daftar_menu->grup_menu->gm_id == $g->gm_id)
-            <tr>
-              <td>
-                {{ $val->daftar_menu->dm_nama }}
-                <input class="penanda" value="{{ $val->daftar_menu->dm_nama }}" name="penanda" type="hidden" />
-              </td>
-              <td align="center">
-                <label class="label">
-                  <input @if($val->aktif == 1) checked="" @endif  class="label__checkbox aktif" name="aktif" type="checkbox" />
-                  <span class="label__text">
-                    <span class="label__check">
-                      <i class="fa fa-check icon"></i>
+              <tr>
+                <td>
+                {{dd($data)}}
+                  {{ $val->daftar_menu->dm_nama }}
+                  <input class="penanda" value="{{ $val->daftar_menu->dm_nama }}" name="penanda" type="hidden" />
+                </td>
+                <td align="center">
+                  <label class="label">
+                    <input @if($val->aktif == 1) checked="" @endif  class="label__checkbox aktif" name="aktif" type="checkbox" />
+                    <span class="label__text">
+                      <span class="label__check">
+                        <i class="fa fa-check icon"></i>
+                      </span>
                     </span>
-                  </span>
-                </label>
-              </td>
-              <td align="center">
-                <label class="label">
-                  <input @if($val->tambah == 1) checked="" @endif  class="label__checkbox tambah" name="tambah" type="checkbox" />
-                  <span class="label__text">
-                    <span class="label__check">
-                      <i class="fa fa-check icon"></i>
+                  </label>
+                </td>
+                <td align="center">
+                  <label class="label">
+                    <input @if($val->tambah == 1) checked="" @endif  class="label__checkbox tambah" name="tambah" type="checkbox" />
+                    <span class="label__text">
+                      <span class="label__check">
+                        <i class="fa fa-check icon"></i>
+                      </span>
                     </span>
-                  </span>
-                </label>
-              </td>
-              <td align="center">
-                <label class="label">
-                  <input @if($val->ubah == 1) checked="" @endif  class="label__checkbox ubah" name="ubah" type="checkbox" />
-                  <span class="label__text">
-                    <span class="label__check">
-                      <i class="fa fa-check icon"></i>
+                  </label>
+                </td>
+                <td align="center">
+                  <label class="label">
+                    <input @if($val->ubah == 1) checked="" @endif  class="label__checkbox ubah" name="ubah" type="checkbox" />
+                    <span class="label__text">
+                      <span class="label__check">
+                        <i class="fa fa-check icon"></i>
+                      </span>
                     </span>
-                  </span>
-                </label>
-              </td>
-              <td align="center">
-                <label class="label">
-                  <input @if($val->hapus == 1) checked="" @endif  class="label__checkbox hapus" name="hapus" type="checkbox" />
-                  <span class="label__text">
-                    <span class="label__check">
-                      <i class="fa fa-check icon"></i>
+                  </label>
+                </td>
+                <td align="center">
+                  <label class="label">
+                    <input @if($val->hapus == 1) checked="" @endif  class="label__checkbox hapus" name="hapus" type="checkbox" />
+                    <span class="label__text">
+                      <span class="label__check">
+                        <i class="fa fa-check icon"></i>
+                      </span>
                     </span>
-                  </span>
-                </label>
-              </td>
-              <td align="center">
-                <label class="label">
-                  <input @if($val->sekolah == 1) checked="" @endif  class="label__checkbox sekolah" name="sekolah" type="checkbox" />
-                  <span class="label__text">
-                    <span class="label__check">
-                      <i class="fa fa-check icon"></i>
+                  </label>
+                </td>
+                <td align="center">
+                  <label class="label">
+                    <input @if($val->sekolah == 1) checked="" @endif  class="label__checkbox sekolah" name="sekolah" type="checkbox" />
+                    <span class="label__text">
+                      <span class="label__check">
+                        <i class="fa fa-check icon"></i>
+                      </span>
                     </span>
-                  </span>
-                </label>
-              </td>
-              <td align="center">
-                <label class="label">
-                  <input @if($val->global == 1) checked="" @endif  class="label__checkbox global" name="global" type="checkbox" />
-                  <span class="label__text">
-                    <span class="label__check">
-                      <i class="fa fa-check icon"></i>
+                  </label>
+                </td>
+                <td align="center">
+                  <label class="label">
+                    <input @if($val->global == 1) checked="" @endif  class="label__checkbox global" name="global" type="checkbox" />
+                    <span class="label__text">
+                      <span class="label__check">
+                        <i class="fa fa-check icon"></i>
+                      </span>
                     </span>
-                  </span>
-                </label>
-              </td>
-              <td align="center">
-                <label class="label">
-                  <input @if($val->print == 1) checked="" @endif class="label__checkbox print" name="print" type="checkbox" />
-                  <span class="label__text">
-                    <span class="label__check">
-                      <i class="fa fa-check icon"></i>
+                  </label>
+                </td>
+                <td align="center">
+                  <label class="label">
+                    <input @if($val->print == 1) checked="" @endif class="label__checkbox print" name="print" type="checkbox" />
+                    <span class="label__text">
+                      <span class="label__check">
+                        <i class="fa fa-check icon"></i>
+                      </span>
                     </span>
-                  </span>
-                </label>
-              </td>
-            </tr>
+                  </label>
+                </td>
+              </tr>
             @endif
             @endforeach
           </tbody>
