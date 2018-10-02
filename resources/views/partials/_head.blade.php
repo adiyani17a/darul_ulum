@@ -42,6 +42,7 @@
   {{-- validetta --}}
   <link rel="stylesheet" href="{{asset('assets/validetta/validetta.css')}}" />
   <link rel="stylesheet" href="{{asset('assets/validetta/validetta.min.css')}}" />
+  <link rel="stylesheet" href="{{asset('assets/node_modules/checkbox/css/style.css')}}">
 
   <!-- Lightgallery -->
 
