@@ -28,7 +28,7 @@
             @if($val->daftar_menu->grup_menu->gm_id == $g->gm_id)
               <tr>
                 <td>
-                {{dd($val)}}
+                {{dd($val->toArray())}}
                   {{ $val->daftar_menu->dm_nama }}
                   <input class="penanda" value="{{ $val->daftar_menu->dm_nama }}" name="penanda" type="hidden" />
                 </td>
