@@ -25,7 +25,7 @@
           @endif
           <h4 class="card-title">Dana BOS</h4>
           <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-          	<a href="{{ url('kas_keluar/create_petty_cash') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
+          	<a href="{{ url('kas_masuk/create_dana_bos') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
           </div>
 
           <div class="table-responsive">
@@ -35,7 +35,7 @@
                       <th>No</th>
                       <th>Nota</th>
                       <th>Sekolah</th>
-                      <th>Pemohon</th>
+                      <th>Ref</th>
                       <th>Tanggal</th>
                       <th>Total</th>
                       <th>Pembuat</th>
@@ -66,34 +66,34 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url:'{{ route('datatable_petty_cash') }}',
+            url:'{{ route('datatable_dana_bos') }}',
             data:{_token:'{{ csrf_token() }}'}
         },
-        columnDefs: [
-                {
-                   targets: 0 ,
-                   className: ' center'
-                },
-                {
-                   targets: 5 ,
-                   className: ' right'
-                },
-                {
-                   targets: 7 ,
-                   className: ' center'
-                },
-                {
-                   targets: 8 ,
-                   className: ' center'
-                },
-              ],
+        // columnDefs: [
+        //         {
+        //            targets: 0 ,
+        //            className: ' center'
+        //         },
+        //         {
+        //            targets: 5 ,
+        //            className: ' right'
+        //         },
+        //         {
+        //            targets: 7 ,
+        //            className: ' center'
+        //         },
+        //         {
+        //            targets: 8 ,
+        //            className: ' center'
+        //         },
+        //       ],
         columns: [
           {data: 'DT_Row_Index', name: 'DT_Row_Index'},
-          {data: 'nota', name: 'nota'},
+          {data: 'km_nota', name: 'km_nota'},
           {data: 'sekolah', name: 'sekolah'},
-          {data: 'pc_pemohon', name: 'pc_pemohon'},
-          {data: 'pc_tanggal', name: 'pc_tanggal'},
-          {data: 'pc_total', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
+          {data: 'km_ref', name: 'km_ref'},
+          {data: 'created_at', name: 'created_at'},
+          {data: 'km_total', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
           {data: 'created_by', name: 'created_by'},
           {data: 'status', name: 'status'},
           {data: 'aksi'}

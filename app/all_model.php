@@ -22,6 +22,8 @@ use App\child\rencana_pembelian;
 use App\child\rencana_pembelian_d;
 use App\child\bukti_kas_keluar;
 use App\child\bukti_kas_keluar_detail;
+use App\child\kas_masuk;
+use App\child\kas_masuk_detail;
 use App\Repositories\TestRepo;
 
 class all_model extends Model
@@ -138,5 +140,16 @@ class all_model extends Model
 	{
 		$bukti_kas_keluar_detail = new bukti_kas_keluar_detail();
         return $bukti_kas_keluar_detail = new TestRepo($bukti_kas_keluar_detail);
+	}
+	public function kas_masuk()
+	{
+		$kas_masuk = new kas_masuk();
+        return $kas_masuk = new TestRepo($kas_masuk);
+	}
+
+	public function kas_masuk_detail()
+	{
+		$kas_masuk_detail = new kas_masuk_detail();
+        return $kas_masuk_detail = new TestRepo($kas_masuk_detail);
 	}
 }

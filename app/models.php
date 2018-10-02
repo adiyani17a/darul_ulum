@@ -21,6 +21,8 @@ use App\child\rencana_pembelian;
 use App\child\rencana_pembelian_d;
 use App\child\bukti_kas_keluar;
 use App\child\bukti_kas_keluar_detail;
+use App\child\kas_masuk;
+use App\child\kas_masuk_detail;
 class models extends Model
 {
     public function jabatan()
@@ -111,6 +113,16 @@ class models extends Model
 	public function bukti_kas_keluar_detail()
 	{
 		return $bukti_kas_keluar_detail = new bukti_kas_keluar_detail();
+	}
+
+	public function kas_masuk()
+	{
+		return $kas_masuk = new kas_masuk();
+	}
+
+	public function kas_masuk_detail()
+	{
+		return $kas_masuk_detail = new kas_masuk_detail();
 	}
 
 	public function check_jurnal($nota)

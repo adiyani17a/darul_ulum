@@ -116,6 +116,9 @@ Route::group(['middleware' => 'auth'], function () {
     // KAS MASUK
         // DANA BOS
         Route::get('/kas_masuk/dana_bos', 'kas_masuk_controller@dana_bos');
+        Route::get('/kas_masuk/datatable_dana_bos', 'kas_masuk_controller@datatable_dana_bos')->name('datatable_dana_bos');
+        Route::get('/kas_masuk/create_dana_bos', 'kas_masuk_controller@create_dana_bos');
+        Route::get('/kas_masuk/nota_dana_bos', 'kas_masuk_controller@nota_dana_bos');
         // PEMASUKAN LAIN
         Route::get('/kas_masuk/petty_cash', 'kas_masuk_controller@petty_cash');
         Route::get('/kas_masuk/datatable_petty_cash', 'kas_masuk_controller@datatable_petty_cash')->name('datatable_petty_cash');
