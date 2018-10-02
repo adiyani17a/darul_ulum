@@ -15,6 +15,7 @@
         </ol>
       </nav>
     </div>
+    
   	<div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
@@ -170,9 +171,7 @@
   }
 
 
-  function hapus(a) {
-    var par   = $(a).parents('tr');
-    var id    = $(par).find('.d_id').text();
+  function hapus(id) {
     $.ajax({
         url:baseUrl +'/master/hapus_barang',
         type:'get',

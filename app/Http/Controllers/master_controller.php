@@ -472,10 +472,8 @@ class master_controller extends Controller
 
   public function hapus_barang(Request $req)
   {
-    $data = $this->model->staff()->cari('st_id',$req->id);
-    unlink(storage_path('uploads/staff/thumbnail').'/'.$data->st_image);
-    unlink(storage_path('uploads/staff/original').'/'.$data->st_image);
-    $data = $this->model->staff()->delete('st_id',$req->id);
+    $data = $this->model->barang()->cari('b_id',$req->id);
+    $data = $this->model->barang()->delete('b_id',$req->id);
     return response()->json(['status' => 1]);
   }
 
