@@ -80,7 +80,10 @@ body.modal-open{
   opacity: 0.7;
 }
 .center{
-  text-align: center;
+  text-align: center !important;
+}
+.tengah{
+  text-align: center !important;
 }
 
 .right{

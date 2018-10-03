@@ -28,37 +28,37 @@
               <h5 align="center">HEADER</h5>
               <table class="table header_petty">
               	<tr>
-                  <td>NOTA</td>
-                  <td><input type="text" readonly="" value="" class="pc_nota form-control wajib" name="pc_nota"></td>
+                  <td width="30%">NOTA</td>
+                  <td><input type="text" readonly="" value="" class="km_nota form-control wajib" name="km_nota"></td>
                 </tr>
-                @if (Auth::user()->akses('DANA BOS','sekolah'))
-                <tr class="">
-                  <td>SEKOLAH</td>
-                  <td>
-                    <select class="pc_sekolah form-control option " name="pc_sekolah">
-                      <option value="">Pilih - Sekolah</option>
-                      @foreach($sekolah as $val)
-                        <option @if (Auth::user()->sekolah_id == $val->s_id)
-                          selected="" 
-                        @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
-                      @endforeach
-                    </select>
-                  </td>
-                </tr>
+                @if (Auth::user()->akses('PEMASUKAN KAS','sekolah'))
+                  <tr class="">
+                    <td>SEKOLAH</td>
+                    <td>
+                      <select class="km_sekolah form-control option " name="km_sekolah" onchange="nota()">
+                        <option value="">Pilih - Sekolah</option>
+                        @foreach($sekolah as $val)
+                          <option @if (Auth::user()->sekolah_id == $val->s_id)
+                            selected="" 
+                          @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
+                        @endforeach
+                      </select>
+                    </td>
+                  </tr>
                 @else
-                <tr class="disabled">
-                  <td>SEKOLAH</td>
-                  <td>
-                    <select class="pc_sekolah form-control option" name="pc_sekolah">
-                      <option value="">Pilih - Sekolah</option>
-                      @foreach($sekolah as $val)
-                        <option @if (Auth::user()->sekolah_id == $val->s_id)
-                          selected="" 
-                        @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
-                      @endforeach
-                    </select>
-                  </td>
-                </tr>
+                  <tr class="disabled">
+                    <td>SEKOLAH</td>
+                    <td>
+                      <select class="km_sekolah form-control option" name="km_sekolah">
+                        <option value="">Pilih - Sekolah</option>
+                        @foreach($sekolah as $val)
+                          <option @if (Auth::user()->sekolah_id == $val->s_id)
+                            selected="" 
+                          @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
+                        @endforeach
+                      </select>
+                    </td>
+                  </tr>
                 @endif
                 <tr>
                   <td>TANGGAL</td>
@@ -69,31 +69,36 @@
                 <tr>
                   <td>KETERANGAN</td>
                   <td>
-                    <input type="text"  class="pc_keterangan huruf_besar form-control wajib" name="pc_keterangan">
+                    <input type="text"  class="km_keterangan huruf_besar form-control wajib" name="km_keterangan">
                   </td>
                 </tr>
+                  <tr>
+                    <td>AKUN KAS</td>
+                    <td>
+                      <select class="km_akun_kas form-control option" name="km_akun_kas">
+                        <option value="">Pilih - Kas</option>
+                        @foreach($akun_kas as $val)
+                          <option value="{{$val->a_master_akun}}">{{$val->a_master_akun}} - {{$val->a_master_nama}}</option>
+                        @endforeach
+                      </select>
+                    </td>
+                  </tr>
                 <tr>
-                  <td>TOTAL KAS </td>
+                  <td>TOTAL PENDAPATAN </td>
                   <td>
-                    <input type="text" readonly="" class="pc_total form-control right" name="pc_total">
-                  </td>
-                </tr>
-                <tr>
-                  <td>SISA</td>
-                  <td>
-                    <input type="text" readonly="" class="bkk_sisa_kembali form-control right" name="bkk_sisa_kembali">
+                    <input type="text" readonly="" class="km_total form-control right" name="km_total">
                   </td>
                 </tr>
               </table>
             </div>
             <div class="col-sm-6 table-responsive">
-              <h5 align="center">Biaya Lain</h5>
+              <h5 align="center">INPUT PENDAPATAN</h5>
               <table class="table input_data">
                 <tr>
-                  <td>Akun Biaya</td>
+                  <td>Akun Pendapatan</td>
                   <td>
-                    <select id="pcd_akun_biayas " class="form-control pcd_akun_biayas option" >
-                      <option value="">Pilih - Biaya</option>
+                    <select id="kmd_akun_pendapatan " class="form-control kmd_akun_pendapatans option" >
+                      <option value="">Pilih - Pendapatan</option>
                       @foreach($akun as $val)
                         <option value="{{$val->a_master_akun}}">{{$val->a_master_akun}} - {{$val->a_master_nama}}</option>
                       @endforeach
@@ -103,7 +108,7 @@
                 <tr>
                   <td>Keterangan</td>
                   <td>
-                    <input type="text" id="pcd_keterangan" class="huruf_besar pcd_keterangans form-control wajib">
+                    <input type="text" id="kmd_keterangan" class="huruf_besar kmd_keterangans form-control wajib">
                   </td>
                 </tr>
                 <tr>
@@ -125,36 +130,13 @@
             <form id="save" class="col-sm-12 nopadlr">
               <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Upload Bukti</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Biaya Lain</a>
+                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">PENDAPATAN</a>
                 </li>
               </ul>
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                   <div class="col-sm-12 table-responsive">
                     <table class="table table-bordered  bukti_pengeluaran">
-                      <thead class="bg-gradient-info">
-                        <tr>
-                          <th>Nama Barang</th>
-                          <th>Qty</th>
-                          <th>Total Dana Awal</th>
-                          <th>Pengeluaran Akhir</th>
-                          <th>Keterangan</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {{-- <tr>
-                          <td></td>
-                        </tr> --}}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                  <div class="col-sm-12 table-responsive">
-                    <table class="table table-bordered  data_petty">
                       <thead class="bg-gradient-info">
                         <tr>
                           <th>Nama Biaya</th>
@@ -174,7 +156,7 @@
             </form>
             <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;margin-top: 15px">
               <button type="button" class="btn btn-success simpan disabled"><i class="fa fa-save"></i>&nbsp;&nbsp;Simpan</button>
-              <a href="{{ url('kas_masuk/petty_cash') }}"><button type="button" class="btn btn-warning btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali</button></a>
+              <a href="{{ url('kas_masuk/pemasukan_kas') }}"><button type="button" class="btn btn-warning btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali</button></a>
             </div>
           </div>
         </div>
@@ -183,12 +165,12 @@
   </div>
 </div>
 
-<div id="modal_petty_cash" class="modal fade" role="dialog">
+<div id="modal_pemasukan_kas" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg" style="width: 60% !important">
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header bg-gradient-info">
-        <h4 class="modal-title">Pilih DANA BOS</h4>
+        <h4 class="modal-title">Pilih PEMASUKAN KAS</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
@@ -209,65 +191,55 @@
 
 
 function nota() {
-  var pc_sekolah = $('.pc_sekolah option:selected').val();
+  var km_sekolah = $('.km_sekolah option:selected').val();
   $.ajax({
-      url:baseUrl +'/kas_keluar/nota_petty_cash',
+      url:baseUrl +'/kas_masuk/nota_pemasukan_kas',
       type:'get',
-      data:{pc_sekolah},
+      data:{km_sekolah},
       dataType:'json',
       success:function(data){
-        $('.pc_nota').val(data.nota);
+        $('.km_nota').val(data.nota);
       },
       error:function(){
-        location.reload();
+        // location.reload();
       }
   });
 }
-var data_petty = $('.data_petty').DataTable({
-    columnDefs: [
+
+var data_petty = $('.bukti_pengeluaran').DataTable({
+  columnDefs: [
                 {
                    targets: 4 ,
-                   className: ' center'
+                   className: 'tengah'
                 },
               ],
 });
-var bukti_pengeluaran = $('.bukti_pengeluaran').DataTable();
 $(document).ready(function(){
   $('.mask').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
+  nota();
 })
 
-$('.pc_sekolah').change(function(){
-  $('.pc_nota').val('');
-  bukti_pengeluaran.clear().draw();
-  
-})
 
 function total() {
-  var pc_total = $('.pc_total').val();
-  pc_total     = pc_total.replace(/[^0-9\-]+/g,"")*1;
+  var km_total = $('.km_total').val();
+  km_total     = km_total.replace(/[^0-9\-]+/g,"")*1;
   var total = 0;
-  bukti_pengeluaran.$('.bkkd_harga').each(function(){
-    temp       = $(this).val().replace(/[^0-9\-]+/g,"")*1;
-    total     += temp
-  })
-
   data_petty.$('.pcd_jumlah').each(function(){
     temp       = $(this).val().replace(/[^0-9\-]+/g,"")*1;
     total      += temp
   })
-  var hasil = pc_total - total;
-  $('.bkk_sisa_kembali').val(accounting.formatMoney(hasil,"", 0, ".",','));
+  $('.km_total').val(accounting.formatMoney(total,"", 0, ".",','));
 }
 
-$('.pc_nota').focus(function(){
-  var sekolah = $('.pc_sekolah ').val();
+$('.km_nota').focus(function(){
+  var sekolah = $('.km_sekolah ').val();
   $.ajax({
-      url:baseUrl +'/kas_keluar/cari_petty_cash',
+      url:baseUrl +'/kas_masuk/cari_pemasukan_kas',
       type:'get',
       data:{sekolah},
       success:function(data){
         $('.table_append').html(data);
-        $('#modal_petty_cash').modal('show');
+        $('#modal_pemasukan_kas').modal('show');
       },
       error:function(){
         iziToast.warning({
@@ -278,46 +250,7 @@ $('.pc_nota').focus(function(){
   });
 })
 
-function pilih(id) {
-  $('.pc_nota').val(id);
-  $.ajax({
-      url:baseUrl +'/kas_keluar/pilih_petty_cash',
-      type:'get',
-      data:{id},
-      dataType:'json',
-      success:function(data){
-        bukti_pengeluaran.clear();
-        for (var i = 0; i < data.data.length; i++) {
-          if (data.data[i].pcd_jumlah != 0) {
-            bukti_pengeluaran.row.add([
-              '<p class="pcd_nama_biaya_text">'+data.data[i].nama_barang+'</p>'+
-              '<input type="hidden" class="bkkd_pcd_detail" name="bkkd_pcd_detail[]" value="'+data.data[i].pcd_detail +'">',
 
-              '<input type="text" class="bkkd_qty form-control" name="bkkd_qty[]" value="'+data.data[i].pcd_qty +'">',
-
-              '<p class="bkkd_harga_awal_text" align="right">'+accounting.formatMoney(data.data[i].pcd_jumlah*data.data[i].pcd_qty ,"", 0, ".",',')+'</p>'+
-              '<input type="hidden" class="bkkd_harga_awal" name="bkkd_harga_awal[]" value="'+data.data[i].pcd_jumlah*data.data[i].pcd_qty +'">',
-
-              '<input type="text" class="bkkd_harga form-control mask right" name="bkkd_harga[]" value="0">',
-
-              '<input type="text" class="bkkd_keterangan form-control " value="" name="bkkd_keterangan[]">',
-            ]).draw();
-          }
-        }
-        $('.pc_total').val(accounting.formatMoney(data.head.pc_total ,"", 0, ".",','));
-        $('.bkk_sisa_kembali').val(accounting.formatMoney(data.head.pc_total ,"", 0, ".",','));
-        $('.div_barang').prop('hidden',false);
-        $('.simpan').removeClass('disabled');
-        $('.mask').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
-      },
-      error:function(){
-        iziToast.warning({
-          icon: 'fa fa-times',
-          message: 'Terjadi Kesalahan!',
-        });
-      }
-  });
-}
 
 
 $(document).on('keyup','.bkkd_harga',function(){
@@ -326,9 +259,9 @@ $(document).on('keyup','.bkkd_harga',function(){
 
 var indexs = 0;
 $('.tambah').click(function(){
-  var pcd_akun_biaya   = $('.pcd_akun_biayas').val();
-  var pcd_akun_biaya_t = $('.pcd_akun_biayas option:selected').text();
-  var pcd_keterangan   = $('.pcd_keterangans').val();
+  var pcd_akun_biaya   = $('.kmd_akun_pendapatans').val();
+  var pcd_akun_biaya_t = $('.kmd_akun_pendapatans option:selected').text();
+  var kmd_keterangan   = $('.kmd_keterangans').val();
   var pcd_jumlah       = $('.pcd_jumlahs').val();
   var validator        = [];
   $('.input_data').find('.wajib').each(function(){
@@ -365,10 +298,10 @@ $('.tambah').click(function(){
 
     '<p class="pcd_akun_biaya_t">'+pcd_akun_biaya+'</p>',
 
-    '<p class="pcd_keterangan_t">'+pcd_keterangan+'</p>'+
-    ' <input type="hidden" class="pcd_keterangan" name="pcd_keterangan[]" value="'+pcd_keterangan+'">',
+    '<p class="kmd_keterangan_t">'+kmd_keterangan+'</p>'+
+    ' <input type="hidden" class="kmd_keterangan" name="kmd_keterangan[]" value="'+kmd_keterangan+'">',
 
-    ' <input type="text" readonly class="pcd_jumlah form-control right" value="'+pcd_jumlah+'" name="pcd_jumlah[]">',
+    ' <input type="text" readonly class="pcd_jumlah form-control right" value="'+pcd_jumlah+'" name="kmd_total[]">',
 
     '<div class="btn-group">'+
     '<button type="button" onclick="hapus(this)" class="btn btn-danger btn-lg" title="hapus">'+
@@ -378,12 +311,20 @@ $('.tambah').click(function(){
   indexs++;
   total();
   $('.input_data').find('.wajib').val('');
+  $('.simpan').removeClass('disabled');
   $('.input_data').find('.option').val('').trigger('change');
 })
 
 function hapus(a) {
   var par = $(a).parents('tr');
   data_petty.row(par).remove().draw(false);
+  var temp = 0;
+  data_petty.$('.pcd_akun_biaya').each(function(){
+    temp++
+  })
+  if (temp == 0) {
+    $('.simpan').addClass('disabled');
+  }
   iziToast.success({
         icon: 'fa fa-trash',
         title: 'Berhasil',
@@ -431,10 +372,9 @@ $('.simpan').click(function(){
 
   $.ajax({
      type: "POST",
-     url: baseUrl +'/kas_keluar/simpan_bukti_kas_keluar',
+     url: baseUrl +'/kas_masuk/simpan_pemasukan_kas',
      data:$('.header_petty :input').serialize()+'&'+
-          $('.bukti_pengeluaran :input').serialize()+'&'+
-          $('.data_petty :input').serialize(),
+          data_petty.$('input').serialize(),
      dataType:'json',
      success: function(data){
         if (data.status == 0) {
@@ -444,7 +384,7 @@ $('.simpan').click(function(){
               message: data.pesan,
           });
         }else if(data.status == 1){
-          location.href = '{{ url('kas_keluar/bukti_kas_keluar') }}?simpan=berhasil';
+          location.href = '{{ url('kas_masuk/pemasukan_kas') }}?simpan=berhasil';
         }else{
           iziToast.success({
               icon: 'fa fa-pencil-alt',

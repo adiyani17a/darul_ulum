@@ -61,7 +61,7 @@
 
                   {
                      targets: 0 ,
-                     className: 'center'
+                     className: 'tengah'
                   },
                   {
                      targets: 1,
@@ -69,11 +69,11 @@
                   },
                   {
                      targets: 2,
-                     className: 'center gm_id'
+                     className: 'tengah gm_id'
                   },
                   {
                      targets: 4,
-                     className: 'center'
+                     className: 'tengah'
                   }
                 ],
           columns: [

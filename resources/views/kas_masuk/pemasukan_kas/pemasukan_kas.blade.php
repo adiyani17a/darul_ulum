@@ -9,7 +9,7 @@
         <ol class="breadcrumb bg-info">
           <li class="breadcrumb-item"><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a></li>
           <li class="breadcrumb-item">Kas Masuk</li>
-          <li class="breadcrumb-item active" aria-current="page">Dana BOS</li>
+          <li class="breadcrumb-item active" aria-current="page">Pemasukan Kas</li>
         </ol>
       </nav>
     </div>
@@ -23,9 +23,9 @@
               Simpan Data.
             </div>
           @endif
-          <h4 class="card-title">Dana BOS</h4>
+          <h4 class="card-title">Pemasukan Kas</h4>
           <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-          	<a href="{{ url('kas_masuk/create_dana_bos') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
+          	<a href="{{ url('kas_masuk/create_pemasukan_kas') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
           </div>
 
           <div class="table-responsive">
@@ -66,13 +66,13 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url:'{{ route('datatable_dana_bos') }}',
+            url:'{{ route('datatable_pemasukan_kas') }}',
             data:{_token:'{{ csrf_token() }}'}
         },
         // columnDefs: [
         //         {
         //            targets: 0 ,
-        //            className: ' center'
+        //            className: ' tengah'
         //         },
         //         {
         //            targets: 5 ,
@@ -80,11 +80,11 @@ $(document).ready(function(){
         //         },
         //         {
         //            targets: 7 ,
-        //            className: ' center'
+        //            className: ' tengah'
         //         },
         //         {
         //            targets: 8 ,
-        //            className: ' center'
+        //            className: ' tengah'
         //         },
         //       ],
         columns: [

@@ -130,7 +130,6 @@ class models extends Model
 		$data = jurnal::where('j_ref',$nota)->first();
 		$d = 0;
 		$k = 0;
-		
 		for ($i=0; $i < count($data->jurnal_dt); $i++) { 
 			if ($data->jurnal_dt[$i]->jd_statusdk == 'DEBET') {
 				if ($data->jurnal_dt[$i]->jd_value < 0) {
@@ -150,7 +149,6 @@ class models extends Model
 				$k+=$temp;
 			}
 		}
-
 		if ($d == $k) {
 			return 1;
 		}else{

@@ -27,7 +27,7 @@ class kas_masuk extends Model
 
 	public function kas_masuk_detail()
     {
-        return $this->hasMany('App\child\petty_cash_detail','pcd_id');
+        return $this->hasMany('App\child\kas_masuk_detail','kmd_id');
     }
 
     public function rencana_pembelian()

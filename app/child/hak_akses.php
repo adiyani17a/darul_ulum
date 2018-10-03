@@ -20,6 +20,8 @@ class hak_akses extends Model
 						   'ubah',
 						   'hapus',
 						   'print',
+						   'sekolah',
+						   'global',
 						];
 
 	public function jabatan()

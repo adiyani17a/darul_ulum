@@ -115,16 +115,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/penerimaan/edit_alumni', 'penerimaan_controller@edit_alumni');
     // KAS MASUK
         // DANA BOS
-        Route::get('/kas_masuk/dana_bos', 'kas_masuk_controller@dana_bos');
-        Route::get('/kas_masuk/datatable_dana_bos', 'kas_masuk_controller@datatable_dana_bos')->name('datatable_dana_bos');
-        Route::get('/kas_masuk/create_dana_bos', 'kas_masuk_controller@create_dana_bos');
-        Route::get('/kas_masuk/nota_dana_bos', 'kas_masuk_controller@nota_dana_bos');
-        // PEMASUKAN LAIN
-        Route::get('/kas_masuk/petty_cash', 'kas_masuk_controller@petty_cash');
-        Route::get('/kas_masuk/datatable_petty_cash', 'kas_masuk_controller@datatable_petty_cash')->name('datatable_petty_cash');
-        Route::post('/kas_masuk/simpan_petty_cash', 'kas_masuk_controller@simpan_petty_cash');
-        Route::get('/kas_masuk/hapus_petty_cash', 'kas_masuk_controller@hapus_petty_cash');
-        Route::get('/kas_masuk/edit_petty_cash', 'kas_masuk_controller@edit_petty_cash');
+        Route::get('/kas_masuk/pemasukan_kas', 'kas_masuk_controller@pemasukan_kas');
+        Route::get('/kas_masuk/datatable_pemasukan_kas', 'kas_masuk_controller@datatable_pemasukan_kas')->name('datatable_pemasukan_kas');
+        Route::get('/kas_masuk/create_pemasukan_kas', 'kas_masuk_controller@create_pemasukan_kas');
+        Route::get('/kas_masuk/nota_pemasukan_kas', 'kas_masuk_controller@nota_pemasukan_kas');
+        Route::post('/kas_masuk/simpan_pemasukan_kas', 'kas_masuk_controller@simpan_pemasukan_kas');
+        Route::get('/kas_masuk/edit_pemasukan_kas', 'kas_masuk_controller@edit_pemasukan_kas');
+        Route::get('/kas_masuk/hapus_pemasukan_kas', 'kas_masuk_controller@hapus_pemasukan_kas');
+        Route::post('/kas_masuk/update_pemasukan_kas', 'kas_masuk_controller@update_pemasukan_kas');
         // PEMBAYARAN SPP
         Route::get('/kas_masuk/spp', 'kas_masuk_controller@spp');
         Route::get('/kas_masuk/datatable_spp', 'kas_masuk_controller@datatable_spp')->name('datatable_spp');
