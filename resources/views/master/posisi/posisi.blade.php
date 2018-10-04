@@ -57,7 +57,7 @@
 
                   {
                      targets: 0 ,
-                     className: 'center d_id'
+                     className: 'tengah d_id'
                   },
                   {
                      targets: 1 ,
@@ -69,7 +69,7 @@
                   },
                   {
                      targets: 3 ,
-                     className: 'center'
+                     className: 'tengah'
                   },
                   
                   

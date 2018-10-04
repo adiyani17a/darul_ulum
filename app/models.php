@@ -23,6 +23,7 @@ use App\child\bukti_kas_keluar;
 use App\child\bukti_kas_keluar_detail;
 use App\child\kas_masuk;
 use App\child\kas_masuk_detail;
+use App\child\group_spp;
 class models extends Model
 {
     public function jabatan()
@@ -123,6 +124,11 @@ class models extends Model
 	public function kas_masuk_detail()
 	{
 		return $kas_masuk_detail = new kas_masuk_detail();
+	}
+
+	public function group_spp()
+	{
+		return $group_spp = new group_spp();
 	}
 
 	public function check_jurnal($nota)

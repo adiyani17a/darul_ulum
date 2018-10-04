@@ -73,7 +73,7 @@ $(document).ready(function(){
         columnDefs: [
                 {
                    targets: 0 ,
-                   className: ' center'
+                   className: 'tengah'
                 },
                 {
                    targets: 4 ,
@@ -81,7 +81,7 @@ $(document).ready(function(){
                 },
                 {
                    targets: 6 ,
-                   className: 'center'
+                   className: 'tengah'
                 },
               ],
         columns: [

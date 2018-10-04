@@ -173,6 +173,7 @@
                   Master Data Posisi
                   Master Data Staff
                   Master Data Barang
+                  Master Group SPP
                 </span>
                 <i class="menu-arrow"></i>
                 <i class="mdi menu-icon mdi-archive"></i>
@@ -183,6 +184,7 @@
                   <li class="nav-item" > <a href="{{ url('/master/posisi/') }}" class="nav-link {{Request::is('master/posisi') ? 'active' : '' || Request::is('master/posisi/*') ? 'active' : '' }}">Master Posisi</a></li>
                   <li class="nav-item" > <a href="{{ url('/master/staff/') }}" class="nav-link {{Request::is('master/staff') ? 'active' : '' || Request::is('master/staff/*') ? 'active' : '' }}">Master Staff</a></li>
                   <li class="nav-item" > <a href="{{ url('/master/barang/') }}" class="nav-link {{Request::is('master/barang') ? 'active' : '' || Request::is('master/barang/*') ? 'active' : '' }}">Master Barang</a></li>
+                  <li class="nav-item" > <a href="{{ url('/master/group_spp/') }}" class="nav-link {{Request::is('master/group_spp') ? 'active' : '' || Request::is('master/group_spp/*') ? 'active' : '' }}">Master Group SPP</a></li>
                 </ul>
                 </div>
             </li>

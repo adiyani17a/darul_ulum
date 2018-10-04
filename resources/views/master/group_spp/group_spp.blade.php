@@ -1,7 +1,7 @@
 @extends('main')
 @section('content')
 
-@include('setting.jabatan.tambah')
+@include('master.group_spp.tambah')
 
 <!-- partial -->
 <div class="content-wrapper">
@@ -10,25 +10,27 @@
       <nav aria-label="breadcrumb" role="navigation">
         <ol class="breadcrumb bg-info">
           <li class="breadcrumb-item"><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a></li>
-          <li class="breadcrumb-item">Setting</li>
-          <li class="breadcrumb-item active" aria-current="page">Setting Level Account</li>
+          <li class="breadcrumb-item">Master</li>
+          <li class="breadcrumb-item active" aria-current="page">Master Group SPP</li>
         </ol>
       </nav>
     </div>
+    
   	<div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Setting Level Account</h4>
+          <h4 class="card-title">Master Group SPP</h4>
           <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-          	<button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-jabatan"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button>
+          	<button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-group"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button>
           </div>
           <div class="table-responsive">
 			        <table id="table_data" class="table table-striped table-hover table-bordered" cellspacing="0">
                   <thead class="bg-gradient-info">
                     <tr>
                       <th style="width: 10%">No</th>
-                      <th style="width: 40%">Nama Level</th>
+                      <th style="width: 20%">Nama Group</th>
                       <th style="width: 40%">Keterangan</th>
+                      <th style="width: 40%;text-align: center !important">Nilai</th>
                       <th style="width: 10%">Aksi</th>
                     </tr>
                   </thead>
@@ -51,47 +53,68 @@
           processing: true,
           serverSide: true,
           ajax: {
-              url:'{{ route('datatable_jabatan') }}',
+              url:'{{ route('datatable_group_spp') }}',
           },
           columnDefs: [
-
                   {
                      targets: 0 ,
                      className: 'tengah d_id'
                   },
                   {
-                     targets: 1 ,
-                     className: 'd_nama'
-                  },
-                  {
-                     targets: 2 ,
-                     className: 'd_keterangan'
+                     targets: 4 ,
+                     className: 'tengah'
                   },
                   {
                      targets: 3 ,
-                     className: 'tengah'
+                     className: 'right'
                   },
-                  
-                  
                 ],
           columns: [
-            {data: 'j_id', name: 'j_id'},
-            {data: 'j_nama', name: 'j_nama'},
-            {data: 'j_keterangan', name: 'j_keterangan'},
+            {data: 'DT_Row_Index', name: 'DT_Row_Index'},
+            {data: 'gs_nama', name: 'gs_nama'},
+            {data: 'gs_keterangan', name: 'gs_keterangan'},
+            {data: 'gs_nilai', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
             {data: 'aksi', name: 'aksi'}
           ]
 
     });
+    $('.gs_nilai').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
   })
 
   $('.btn_modal').click(function(){
+    $('.tabel_modal input').val('');
+    $('.tabel_modal select').val('').trigger('change');
     $('.nama').focus();
   })
 
   $('.simpan').click(function(){
+
+    var validator = [];
+    $('.tabel_modal').find('.wajib').each(function(){
+      if ($(this).val() == '') {
+        $(this).addClass('error');
+        validator.push(0);
+      }
+    })
+
+    var index = validator.indexOf(0);
+    if (index != -1) {
+      iziToast.warning({
+          icon: 'fa fa-times',
+          title: 'Terjadi Kesalahan',
+          message: 'Semua Inputan Harus Diisi',
+      });
+      return false;
+    }
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $.ajax({
-        url:baseUrl +'/setting/simpan_jabatan',
-        type:'get',
+        url:baseUrl +'/master/simpan_group_spp',
+        type:'post',
         data:$('.tabel_modal :input').serialize(),
         dataType:'json',
         success:function(data){
@@ -107,14 +130,14 @@
                   title: 'Berhasil',
                   message: data.pesan,
               });
-              $('#tambah-jabatan').modal('hide');
+              $('#tambah-group').modal('hide');
             }else if(data.status == 2){
               iziToast.success({
                   icon: 'fa fa-pencil-alt',
                   title: 'Berhasil',
                   message: data.pesan,
               });
-              $('#tambah-jabatan').modal('hide');
+              $('#tambah-group').modal('hide');
             }
             var table = $('#table_data').DataTable();
             table.ajax.reload();
@@ -129,32 +152,41 @@
     });
   });
 
-  function edit(a) {
+  function edit(id) {
     
-    var par   = $(a).parents('tr');
-    var id    = $(par).find('.d_id').text();
-    var nama  = $(par).find('.d_nama').text();
-    var ket   = $(par).find('.d_keterangan').text();
+    $.ajax({
+        url:baseUrl +'/master/edit_group_spp',
+        type:'get',
+        data:{id},
+        dataType:'json',
+        success:function(data){
+            $('.id').val(data.data.gs_id);
+            $('.gs_nama').val(data.data.gs_nama);
+            $('.gs_keterangan').val(data.data.gs_keterangan);
+            $('.gs_nilai').maskMoney('mask',data.data.gs_nilai);
 
-    $('.id').val(id);
-    $('.nama').val(nama);
-    $('.keterangan').val(ket);
-    $('#tambah-jabatan').modal('show');
+        },
+        error:function(){
+          iziToast.warning({
+            icon: 'fa fa-times',
+            message: 'Terjadi Kesalahan!',
+          });
+        }
+    });
+    $('#tambah-group').modal('show');
 
 
   }
 
 
-  function hapus(a) {
-    var par   = $(a).parents('tr');
-    var id    = $(par).find('.d_id').text();
+  function hapus(id) {
     $.ajax({
-        url:baseUrl +'/setting/hapus_jabatan',
+        url:baseUrl +'/master/hapus_group_spp',
         type:'get',
         data:{id},
         dataType:'json',
         success:function(data){
-          $('#tambah-jabatan').modal('hide');
+          $('#tambah-group').modal('hide');
           var table = $('#table_data').DataTable();
           table.ajax.reload();
           if (data.status == 1) {

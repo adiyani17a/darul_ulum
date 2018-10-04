@@ -64,7 +64,7 @@ $(document).ready(function(){
                 },
                 {
                    targets: 5 ,
-                   className: ' center'
+                   className: 'tengah'
                 },
               ],
         columns: [

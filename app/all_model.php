@@ -24,6 +24,7 @@ use App\child\bukti_kas_keluar;
 use App\child\bukti_kas_keluar_detail;
 use App\child\kas_masuk;
 use App\child\kas_masuk_detail;
+use App\child\group_spp;
 use App\Repositories\TestRepo;
 
 class all_model extends Model
@@ -151,5 +152,11 @@ class all_model extends Model
 	{
 		$kas_masuk_detail = new kas_masuk_detail();
         return $kas_masuk_detail = new TestRepo($kas_masuk_detail);
+	}
+
+	public function group_spp()
+	{
+		$group_spp = new group_spp();
+        return $group_spp = new TestRepo($group_spp);
 	}
 }

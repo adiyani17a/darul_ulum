@@ -212,7 +212,7 @@ var data_petty = $('.data_petty').DataTable({
     columnDefs: [
                 {
                    targets: 4 ,
-                   className: ' center'
+                   className: 'tengah'
                 },
               ],
 });

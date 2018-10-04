@@ -477,5 +477,84 @@ class master_controller extends Controller
     return response()->json(['status' => 1]);
   }
 
+  public function group_spp()
+  {
+    $group_spp = $this->model->group_spp()->all();
+    return view('master.group_spp.group_spp',compact('group_spp','sekolah'));
+  }
+
+  public function datatable_group_spp()
+  {
+    $data = $this->model->group_spp()->all();
+    
+    // return $data;
+    $data = collect($data);
+    return Datatables::of($data)
+                    ->addColumn('aksi', function ($data) {
+                      return   '<div class="btn-group">'.
+                               '<button type="button" onclick="edit(\''.$data->gs_id.'\')" class="btn btn-info btn-lg" title="detail">'.
+                               '<label class="fa fa-pencil-alt"></label></button>'.
+                               '<button type="button" onclick="hapus(\''.$data->gs_id.'\')" class="btn btn-danger btn-lg" title="hapus">'.
+                               '<label class="fa fa-trash"></label></button>'.
+                               '</div>';
+                    })
+                    ->addColumn('none', function ($data) {
+                        return '-';
+                    })
+                    ->rawColumns(['aksi', 'none','sekolah','foto'])
+                    ->addIndexColumn()
+                    ->make(true);
+  }
+
+  public function simpan_group_spp(request $req)
+  {
+    DB::BeginTransaction();
+    try{
+      if ($req->id == null) {
+        $id = $this->model->group_spp()->max('gs_id');
+        $save = array(
+                  'gs_id'         => $id,
+                  'gs_nama'       => strtoupper($req->gs_nama),
+                  'gs_keterangan' => strtoupper($req->gs_keterangan),
+                  'gs_nilai'      => filter_var($req->gs_nilai,FILTER_SANITIZE_NUMBER_INT),
+                  'created_by'    => Auth::user()->name,
+                  'updated_by'    => Auth::user()->name,
+                 );
+        $this->model->group_spp()->create($save);
+        DB::commit();
+        return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+      }else{
+        $id = $req->id;
+        $save = array(
+                  'gs_id'         => $id,
+                  'gs_nama'       => strtoupper($req->gs_nama),
+                  'gs_keterangan' => strtoupper($req->gs_keterangan),
+                  'gs_nilai'      => filter_var($req->gs_nilai,FILTER_SANITIZE_NUMBER_INT),
+                  'created_by'    => Auth::user()->name,
+                  'updated_by'    => Auth::user()->name,
+                 );
+        $this->model->group_spp()->update($save,'gs_id',$id);
+        DB::commit();
+        return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+      }
+      
+    }catch(Exception $er){
+      dd($er);
+      DB::rollBack();
+    }
+  }
+
+  public function edit_group_spp(request $req)
+  {
+    $data = $this->model->group_spp()->cari('gs_id',$req->id);
+    return response()->json(['data' => $data]);
+  }
+
+  public function hapus_group_spp(Request $req)
+  {
+    $data = $this->model->group_spp()->cari('gs_id',$req->id);
+    $data = $this->model->group_spp()->delete('gs_id',$req->id);
+    return response()->json(['status' => 1]);
+  }
 
 }

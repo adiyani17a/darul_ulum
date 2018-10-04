@@ -179,7 +179,7 @@ var tables = $('.table-data').DataTable({
   columnDefs: [
                 {
                    targets: 4 ,
-                   className: ' center'
+                   className: 'tengah'
                 },
               ],
 });

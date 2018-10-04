@@ -70,6 +70,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/master/simpan_barang', 'master_controller@simpan_barang');
         Route::get('/master/hapus_barang', 'master_controller@hapus_barang');
         Route::get('/master/edit_barang', 'master_controller@edit_barang');
+        // GROUP SPP
+        Route::get('/master/group_spp', 'master_controller@group_spp');
+        Route::get('/master/datatable_group_spp', 'master_controller@datatable_group_spp')->name('datatable_group_spp');
+        Route::post('/master/simpan_group_spp', 'master_controller@simpan_group_spp');
+        Route::get('/master/hapus_group_spp', 'master_controller@hapus_group_spp');
+        Route::get('/master/edit_group_spp', 'master_controller@edit_group_spp');
     // KEUANGAN
         // MASTER AKUN KEUANGAN
         Route::get('/keuangan/keuangan', 'keuangan_controller@keuangan');
