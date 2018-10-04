@@ -163,7 +163,7 @@
             $('.id').val(data.data.gs_id);
             $('.gs_nama').val(data.data.gs_nama);
             $('.gs_keterangan').val(data.data.gs_keterangan);
-            $('.gs_nilai').maskMoney('mask',data.data.gs_nilai);
+            $('.gs_nilai').maskMoney('mask',parseInt(data.data.gs_nilai));
 
         },
         error:function(){
