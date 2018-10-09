@@ -8,8 +8,8 @@
       <nav aria-label="breadcrumb" role="navigation">
         <ol class="breadcrumb bg-info">
           <li class="breadcrumb-item"><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a></li>
-          <li class="breadcrumb-item">Kas Masuk</li>
-          <li class="breadcrumb-item active" aria-current="page">Pemasukan Kas</li>
+          <li class="breadcrumb-item">Kesiswaan</li>
+          <li class="breadcrumb-item active" aria-current="page">Penerimaan Siswa Baru</li>
         </ol>
       </nav>
     </div>
@@ -23,9 +23,9 @@
               Simpan Data.
             </div>
           @endif
-          <h4 class="card-title">Pemasukan Kas</h4>
+          <h4 class="card-title">Penerimaan Siswa Baru</h4>
           <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-          	<a href="{{ url('kas_masuk/create_pemasukan_kas') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
+          	<a href="{{ url('penerimaan/create_siswa') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
           </div>
 
           <div class="table-responsive">
@@ -33,11 +33,11 @@
                   <thead class="bg-gradient-info">
                     <tr>
                       <th>No</th>
-                      <th>Nota</th>
-                      <th>Sekolah</th>
-                      <th>Ref</th>
-                      <th>Tanggal</th>
-                      <th>Total</th>
+                      <th>Gambar</th>
+                      <th>Nama</th>
+                      <th>Tempat Lahir</th>
+                      <th>Tanggal Lahir</th>
+                      <th>NISN</th>
                       <th>Pembuat</th>
                       <th>Status</th>
                       <th>Aksi</th>
@@ -93,13 +93,13 @@ $(document).ready(function(){
         //       ],
         columns: [
           {data: 'DT_Row_Index', name: 'DT_Row_Index'},
-          {data: 'km_nota', name: 'km_nota'},
-          {data: 'sekolah', name: 'sekolah'},
-          {data: 'km_ref', name: 'km_ref'},
-          {data: 'created_at', name: 'created_at'},
-          {data: 'km_total', render: $.fn.dataTable.render.number( '.', ',', 2, '' )},
+          {data: 'image', name: 'image'},
+          {data: 'sdd_nama', name: 'sdd_nama'},
+          {data: 'sdd_tempat_lahir', name: 'sdd_tempat_lahir'},
+          {data: 'sdd_tanggal_lahir', name: 'sdd_tanggal_lahir'},
+          {data: 'sdd_nomor_induk_nasional', name: 'sdd_nomor_induk_nasional'},
           {data: 'created_by', name: 'created_by'},
-          {data: 'status', name: 'status'},
+          {data: 'sdd_status', name: 'sdd_status'},
           {data: 'aksi'}
         ]
 
@@ -131,7 +131,7 @@ function detail(id) {
 }
 
 function edit(id) {
- location.href = '{{  url('kas_keluar/edit_petty_cash') }}?id='+id;
+ location.href = '{{  url('penerimaan/edit_siswa') }}?id='+id;
 }
 function hapus(id) {
   iziToast.show({

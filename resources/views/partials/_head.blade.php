@@ -201,5 +201,9 @@ a{
   padding-left: 0px !important;
 }
 
+.no-border td,th{
+  border: none !important;
+  color: grey;
+}
 </style>
 </head>

@@ -222,7 +222,7 @@
                   <li class="nav-item" > <a href="{{ url('/penerimaan/siswa/') }}" class="nav-link {{Request::is('penerimaan/siswa') ? 'active' : '' || Request::is('penerimaan/siswa/*') ? 'active' : '' }}">Penerimaan Siswa Baru</a></li>
                   <li class="nav-item" > <a href="{{ url('/penerimaan/konfirmasi/') }}" class="nav-link {{Request::is('penerimaan/konfirmasi') ? 'active' : '' || Request::is('penerimaan/konfirmasi/*') ? 'active' : '' }}">Konfirmasi Siswa Baru</a></li>
                   <li class="nav-item" > <a href="{{ url('/penerimaan/rekap_siswa/') }}" class="nav-link {{Request::is('penerimaan/rekap_siswa') ? 'active' : '' || Request::is('penerimaan/rekap_siswa/*') ? 'active' : '' }}">Data Siswa</a></li>
-                  <li class="nav-item" > <a href="{{ url('/penerimaan/alumni/') }}" class="nav-link {{Request::is('penerimaan/alumni') ? 'active' : '' || Request::is('penerimaan/alumni/*') ? 'active' : '' }}">Alumni Siswa</a></li>
+                  {{-- <li class="nav-item" > <a href="{{ url('/penerimaan/alumni/') }}" class="nav-link {{Request::is('penerimaan/alumni') ? 'active' : '' || Request::is('penerimaan/alumni/*') ? 'active' : '' }}">Alumni Siswa</a></li> --}}
                 </ul>
                 </div>
             </li>

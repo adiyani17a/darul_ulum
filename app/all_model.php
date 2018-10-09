@@ -25,6 +25,13 @@ use App\child\bukti_kas_keluar_detail;
 use App\child\kas_masuk;
 use App\child\kas_masuk_detail;
 use App\child\group_spp;
+use App\child\siswa_ayah;
+use App\child\siswa_ibu;
+use App\child\siswa_wali;
+use App\child\siswa_data_diri;
+use App\child\siswa_kesehatan;
+use App\child\siswa_pendidikan;
+use App\child\siswa_tempat_tinggal;
 use App\Repositories\TestRepo;
 
 class all_model extends Model
@@ -158,5 +165,47 @@ class all_model extends Model
 	{
 		$group_spp = new group_spp();
         return $group_spp = new TestRepo($group_spp);
+	}
+
+	public function siswa_ayah()
+	{
+		$siswa_ayah = new siswa_ayah();
+        return $siswa_ayah = new TestRepo($siswa_ayah);
+	}
+
+	public function siswa_ibu()
+	{
+		$siswa_ibu = new siswa_ibu();
+        return $siswa_ibu = new TestRepo($siswa_ibu);
+	}
+
+	public function siswa_wali()
+	{
+		$siswa_wali = new siswa_wali();
+        return $siswa_wali = new TestRepo($siswa_wali);
+	}
+
+	public function siswa_data_diri()
+	{
+		$siswa_data_diri = new siswa_data_diri();
+        return $siswa_data_diri = new TestRepo($siswa_data_diri);
+	}
+
+	public function siswa_kesehatan()
+	{
+		$siswa_kesehatan = new siswa_kesehatan();
+        return $siswa_kesehatan = new TestRepo($siswa_kesehatan);
+	}
+
+	public function siswa_pendidikan()
+	{
+		$siswa_pendidikan = new siswa_pendidikan();
+        return $siswa_pendidikan = new TestRepo($siswa_pendidikan);
+	}
+
+	public function siswa_tempat_tinggal()
+	{
+		$siswa_tempat_tinggal = new siswa_tempat_tinggal();
+        return $siswa_tempat_tinggal = new TestRepo($siswa_tempat_tinggal);
 	}
 }
