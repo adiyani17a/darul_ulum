@@ -10,13 +10,11 @@ class siswa_tempat_tinggal extends Model
 	protected $primaryKey = 'si_id';
 	public $timestamp = false;
 
-	protected $fillable = ['sp_id',
-						   'sp_detail',
-						   'sp_tingkat_pendidikan',
-						   'sp_nama_sekolah',
-						   'sp_keterangan',
-						   'sp_ijazah',
-						   'sp_tanggal_ijazah',
+	protected $fillable = ['stt_id',
+						   'stt_alamat',
+						   'stt_no_telp',
+						   'stt_status_tempat_tinggal',
+						   'stt_jarak_rumah',
 						];
 
 	public function siswa_data_diri()

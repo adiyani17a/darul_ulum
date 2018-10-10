@@ -20,6 +20,8 @@ class siswa_data_diri extends Model
 						   'sdd_tempat_lahir',
 						   'sdd_tanggal_lahir',
 						   'sdd_tinggi',
+						   'sdd_golongan_darah',
+						   'sdd_jenjang_sebelumnya',
 						   'sdd_berat',
 						   'sdd_agama',
 						   'sdd_urutan_anak',

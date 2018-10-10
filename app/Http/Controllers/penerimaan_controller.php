@@ -83,4 +83,16 @@ class penerimaan_controller extends Controller
 	{
 		return view('siswa.siswa.create_siswa');
 	}
+
+	public function simpan_siswa(Request $req)
+	{
+		DB::beginTransaction();
+		try {
+			dd($req->all());
+			DB::commit();
+		} catch (Exception $e) {
+			DB::rollBack();
+			dd($e);
+		}
+	}
 }

@@ -13,6 +13,7 @@ class siswa_kesehatan extends Model
 	protected $fillable = ['sk_id',
 						   'sk_detail',
 						   'sk_nama_penyakit',
+						   'sk_keterangan'
 						];
 
 	public function siswa_data_diri()
