@@ -100,8 +100,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/penerimaan/datatable_siswa', 'penerimaan_controller@datatable_siswa')->name('datatable_siswa');
         Route::get('/penerimaan/create_siswa', 'penerimaan_controller@create_siswa');
         Route::post('/penerimaan/simpan_siswa', 'penerimaan_controller@simpan_siswa');
-        Route::get('/penerimaan/hapus_siswa', 'penerimaan_controller@hapus_siswa');
         Route::get('/penerimaan/edit_siswa', 'penerimaan_controller@edit_siswa');
+        Route::post('/penerimaan/update_siswa', 'penerimaan_controller@update_siswa');
+        Route::get('/penerimaan/hapus_siswa', 'penerimaan_controller@hapus_siswa');
         // KONFIRMASI
         Route::get('/penerimaan/konfirmasi', 'penerimaan_controller@konfirmasi');
         Route::get('/penerimaan/datatable_konfirmasi', 'penerimaan_controller@datatable_konfirmasi')->name('datatable_konfirmasi');

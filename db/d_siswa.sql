@@ -14,7 +14,7 @@
 -- Dumping structure for table darul_ulum.d_siswa_ayah
 CREATE TABLE IF NOT EXISTS `d_siswa_ayah` (
   `sa_id` int(11) NOT NULL,
-  `sa_nama` int(11) DEFAULT NULL,
+  `sa_nama` varchar(50) DEFAULT NULL,
   `sa_tempat_lahir` varchar(50) DEFAULT NULL,
   `sa_tanggal_lahir` date DEFAULT NULL,
   `sa_agama` varchar(50) DEFAULT NULL,
@@ -29,11 +29,10 @@ CREATE TABLE IF NOT EXISTS `d_siswa_ayah` (
   CONSTRAINT `FK_d_siswa_ayah_d_siswa_data_diri` FOREIGN KEY (`sa_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table darul_ulum.d_siswa_ayah: ~0 rows (approximately)
+-- Dumping data for table darul_ulum.d_siswa_ayah: ~3 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_ayah` DISABLE KEYS */;
 REPLACE INTO `d_siswa_ayah` (`sa_id`, `sa_nama`, `sa_tempat_lahir`, `sa_tanggal_lahir`, `sa_agama`, `sa_kewarganegaraan`, `sa_pendidikan`, `sa_pekerjaan`, `sa_penghasilan`, `sa_alamat`, `sa_telpon`, `sa_status`) VALUES
-	(1, 123123, '123123', '2018-10-11', 'KRISTEN', '123123', 'TIDAK SEKOLAH', '123123', 123123, '123123', '123123', 'H'),
-	(2, 123123, '123123', '2018-10-11', 'ISLAM', '123123', 'SMP', '123123', 123123, '123123', '123123', 'H');
+	(3, '3232', 'fdsfds', '2018-10-31', 'ISLAM', '433', 'SARJANA', '223', 23223333, '3232', '323232', 'H');
 /*!40000 ALTER TABLE `d_siswa_ayah` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_data_diri
@@ -55,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `d_siswa_data_diri` (
   `sdd_saudara_tiri` int(11) NOT NULL,
   `sdd_bahasa` varchar(50) NOT NULL,
   `sdd_jenjang_sebelumnya` varchar(100) NOT NULL,
+  `sdd_kewarganegaraan` varchar(100) NOT NULL,
   `sdd_image` varchar(100) NOT NULL,
   `sdd_sekolah` int(11) NOT NULL,
   `sdd_status` varchar(50) DEFAULT 'Released',
@@ -65,17 +65,16 @@ CREATE TABLE IF NOT EXISTS `d_siswa_data_diri` (
   PRIMARY KEY (`sdd_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_siswa_data_diri: ~2 rows (approximately)
+-- Dumping data for table darul_ulum.d_siswa_data_diri: ~3 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_data_diri` DISABLE KEYS */;
-REPLACE INTO `d_siswa_data_diri` (`sdd_id`, `sdd_nomor_induk`, `sdd_nomor_induk_nasional`, `sdd_nama`, `sdd_panggilan`, `sdd_jenis_kelamin`, `sdd_golongan_darah`, `sdd_tempat_lahir`, `sdd_tanggal_lahir`, `sdd_tinggi`, `sdd_berat`, `sdd_agama`, `sdd_urutan_anak`, `sdd_saudara_kandung`, `sdd_saudara_tiri`, `sdd_bahasa`, `sdd_jenjang_sebelumnya`, `sdd_image`, `sdd_sekolah`, `sdd_status`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
-	(1, 0, 0, '123123', '123123', 'L', '123123', '123123', '2018-10-11', 123123, 123123, 'ISLAM', 123123, 123123, 0, '123123', 'TK', 'data_siswa_1_.jpg', 2, 'Released', '2018-10-11 21:12:31', '2018-10-11 21:12:31', 'DASD', 'DASD'),
-	(2, 0, 0, '123123', '123123', 'L', '123123', '123123', '2018-10-11', 123123, 123123, 'ISLAM', 123123, 123123, 0, '123123', 'KRISTEN', 'data_siswa_2_.jpg', 2, 'Released', '2018-10-11 21:20:36', '2018-10-11 21:20:36', 'DASD', 'DASD');
+REPLACE INTO `d_siswa_data_diri` (`sdd_id`, `sdd_nomor_induk`, `sdd_nomor_induk_nasional`, `sdd_nama`, `sdd_panggilan`, `sdd_jenis_kelamin`, `sdd_golongan_darah`, `sdd_tempat_lahir`, `sdd_tanggal_lahir`, `sdd_tinggi`, `sdd_berat`, `sdd_agama`, `sdd_urutan_anak`, `sdd_saudara_kandung`, `sdd_saudara_tiri`, `sdd_bahasa`, `sdd_jenjang_sebelumnya`, `sdd_kewarganegaraan`, `sdd_image`, `sdd_sekolah`, `sdd_status`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
+	(3, 0, 0, 'anya', '345435435', 'L', 'b', '345454', '2018-10-29', 178, 45, 'ISLAM', 454, 45, 0, 'hggfh', 'TK', 'INDONESIA', 'data_siswa_3_.jpg', 2, 'Released', '2018-10-11 23:03:04', '2018-10-11 23:03:04', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_siswa_data_diri` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_ibu
 CREATE TABLE IF NOT EXISTS `d_siswa_ibu` (
   `si_id` int(11) NOT NULL,
-  `si_nama` int(11) DEFAULT NULL,
+  `si_nama` varchar(50) DEFAULT NULL,
   `si_tempat_lahir` varchar(50) DEFAULT NULL,
   `si_tanggal_lahir` date DEFAULT NULL,
   `si_agama` varchar(50) DEFAULT NULL,
@@ -90,11 +89,10 @@ CREATE TABLE IF NOT EXISTS `d_siswa_ibu` (
   CONSTRAINT `FK_d_siswa_ibu_d_siswa_data_diri` FOREIGN KEY (`si_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_siswa_ibu: ~0 rows (approximately)
+-- Dumping data for table darul_ulum.d_siswa_ibu: ~3 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_ibu` DISABLE KEYS */;
 REPLACE INTO `d_siswa_ibu` (`si_id`, `si_nama`, `si_tempat_lahir`, `si_tanggal_lahir`, `si_agama`, `si_kewarganegaraan`, `si_pendidikan`, `si_pekerjaan`, `si_penghasilan`, `si_alamat`, `si_telpon`, `si_status`) VALUES
-	(1, 123123, '123123', '2018-10-11', 'KRISTEN', '123123', 'TIDAK SEKOLAH', '123123', 123123, '123123', '123123', 'H'),
-	(2, 123123, '123123', '2018-10-11', 'ISLAM', '123123', 'SD', '123123', 123123, '123123', '123123', 'H');
+	(3, 'dfdf', 'dfdfd', '2018-10-11', 'ISLAM', '434', 'SARJANA', '2323', 23232323, '323', '2232', 'H');
 /*!40000 ALTER TABLE `d_siswa_ibu` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_kesehatan
@@ -107,13 +105,13 @@ CREATE TABLE IF NOT EXISTS `d_siswa_kesehatan` (
   CONSTRAINT `FK_d_siswa_kesehatan_d_siswa_data_diri` FOREIGN KEY (`sk_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_siswa_kesehatan: ~2 rows (approximately)
+-- Dumping data for table darul_ulum.d_siswa_kesehatan: ~6 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_kesehatan` DISABLE KEYS */;
 REPLACE INTO `d_siswa_kesehatan` (`sk_id`, `sk_detail`, `sk_nama_penyakit`, `sk_keterangan`) VALUES
-	(1, 1, 'w', 'wdwsd'),
-	(1, 2, 'w', 'wdwsd'),
-	(2, 1, 'sd', 'sdfsdfds'),
-	(2, 2, 'sd', 'sdfsdfds');
+	(3, 1, '545', '54545'),
+	(3, 2, '545', '54545'),
+	(3, 3, '545', '54545'),
+	(3, 4, '545', '54545');
 /*!40000 ALTER TABLE `d_siswa_kesehatan` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_pendidikan
@@ -129,11 +127,10 @@ CREATE TABLE IF NOT EXISTS `d_siswa_pendidikan` (
   CONSTRAINT `FK_d_siswa_pendidikan_d_siswa_data_diri` FOREIGN KEY (`sp_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_siswa_pendidikan: ~0 rows (approximately)
+-- Dumping data for table darul_ulum.d_siswa_pendidikan: ~3 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_pendidikan` DISABLE KEYS */;
 REPLACE INTO `d_siswa_pendidikan` (`sp_id`, `sp_detail`, `sp_tingkat_pendidikan`, `sp_nama_sekolah`, `sp_keterangan`, `sp_ijazah`, `sp_tanggal_ijazah`) VALUES
-	(1, 1, NULL, '123123', '123123', '123123', '2018-10-11'),
-	(2, 1, NULL, '123123', '123123', '123123', '2018-10-11');
+	(3, 1, NULL, '4545', '2323323', '45454', '2018-10-11');
 /*!40000 ALTER TABLE `d_siswa_pendidikan` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_tempat_tinggal
@@ -147,17 +144,16 @@ CREATE TABLE IF NOT EXISTS `d_siswa_tempat_tinggal` (
   CONSTRAINT `FK_d_siswa_tempat_tinggal_d_siswa_data_diri` FOREIGN KEY (`stt_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_siswa_tempat_tinggal: ~1 rows (approximately)
+-- Dumping data for table darul_ulum.d_siswa_tempat_tinggal: ~4 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_tempat_tinggal` DISABLE KEYS */;
 REPLACE INTO `d_siswa_tempat_tinggal` (`stt_id`, `stt_alamat`, `stt_no_telp`, `stt_status_tempat_tinggal`, `stt_jarak_rumah`) VALUES
-	(1, '123123', '123123', 'ORANG TUA', 123123),
-	(2, '123123', '123123', 'ORANG TUA', 123123);
+	(3, 'ghfghfg', '4545454', 'ORANG TUA', 4545);
 /*!40000 ALTER TABLE `d_siswa_tempat_tinggal` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_wali
 CREATE TABLE IF NOT EXISTS `d_siswa_wali` (
   `sw_id` int(11) NOT NULL,
-  `sw_nama` int(11) DEFAULT NULL,
+  `sw_nama` varchar(50) DEFAULT NULL,
   `sw_tempat_lahir` varchar(50) DEFAULT NULL,
   `sw_tanggal_lahir` date DEFAULT NULL,
   `sw_agama` varchar(50) DEFAULT NULL,
@@ -172,11 +168,10 @@ CREATE TABLE IF NOT EXISTS `d_siswa_wali` (
   CONSTRAINT `FK_d_siswa_wali_d_siswa_data_diri` FOREIGN KEY (`sw_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table darul_ulum.d_siswa_wali: ~0 rows (approximately)
+-- Dumping data for table darul_ulum.d_siswa_wali: ~3 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_wali` DISABLE KEYS */;
 REPLACE INTO `d_siswa_wali` (`sw_id`, `sw_nama`, `sw_tempat_lahir`, `sw_tanggal_lahir`, `sw_agama`, `sw_kewarganegaraan`, `sw_pendidikan`, `sw_pekerjaan`, `sw_penghasilan`, `sw_alamat`, `sw_telpon`, `sw_status`) VALUES
-	(1, 123123, '123123', '2018-10-11', 'KATHOLIK', '123123', NULL, '123123', 123123, '123123', '123123', 'H'),
-	(2, 123123, '123123', '2018-10-11', 'ISLAM', '123123', NULL, '123123', 123123, '123123', '123123', 'H');
+	(3, '3213', '123213', '2018-10-11', 'ISLAM', '2323', 'SD', 'wfewfew', 23333333, '2323', '232323', 'H');
 /*!40000 ALTER TABLE `d_siswa_wali` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

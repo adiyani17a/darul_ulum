@@ -150,7 +150,7 @@ function hapus(id) {
             });
 
             $.ajax({
-                url:baseUrl +'/kas_keluar/hapus_petty_cash',
+                url:baseUrl +'/penerimaan/hapus_siswa',
                 type:'get',
                 data:{id},
                 dataType:'json',

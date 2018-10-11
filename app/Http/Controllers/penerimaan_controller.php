@@ -108,6 +108,15 @@ class penerimaan_controller extends Controller
 		return view('siswa.siswa.create_siswa',compact('sekolah'));
 	}
 
+	public function edit_siswa(Request $req)
+	{
+		if (Auth::User()->akses('PENERIMAAN SISWA BARU','ubah')) {
+			$sekolah = $this->model->sekolah()->all();
+			$data    = $this->model->siswa_data_diri()->cari('sdd_id',$req->id);
+			return view('siswa.siswa.edit_siswa',compact('sekolah','data'));
+		}
+	}
+
 	public function simpan_siswa(Request $req)
 	{
 		DB::beginTransaction();
@@ -238,6 +247,165 @@ class penerimaan_controller extends Controller
 	        	}
 	        }
 			$this->model->siswa_wali()->create($save);
+			DB::commit();
+			return Response()->json(['status'=>1,'pesan'=>'Berhasil Menyimpan Data']); 
+		} catch (Exception $e) {
+			DB::rollBack();
+			dd($e);
+		}
+	}
+
+	public function hapus_siswa(Request $req)
+	{
+		if (Auth::User()->akses('PENERIMAAN SISWA BARU','hapus')) {
+			$data    = $this->model->siswa_data_diri()->cari('sdd_id',$req->id);
+			unlink(storage_path('uploads/data_siswa/thumbnail').'/'.$data->sdd_image);
+    		unlink(storage_path('uploads/data_siswa/original').'/'.$data->sdd_image);
+			$this->model->siswa_data_diri()->delete('sdd_id',$req->id);
+			return Response()->json(['status'=>1,'pesan'=>'Berhasil Menyimpan Data']); 
+		}else{
+			return Response()->json(['status'=>0,'pesan'=>'Anda Tidak Memiliki Akses Untuk Menghapus Data']); 
+		}
+	}
+
+	public function update_siswa(Request $req)
+	{
+		DB::beginTransaction();
+		try {
+			$id = $req->id;
+			$tes = array_keys($req->all());
+			$tes1 = $req->all();
+			// dd($tes);
+			$data = $this->model->siswa_data_diri()->cari('sdd_id',$id);
+			
+			// SAVE DATA SISWA
+			$file = $req->file('image');
+	        if ($file != null) {
+			$file_name = 'data_siswa_'. $id .'_' . '.' . $file->getClientOriginalExtension();
+			if (!is_dir(storage_path('uploads/data_siswa/thumbnail/'))) {
+				mkdir(storage_path('uploads/data_siswa/thumbnail/'), 0777, true);
+			}
+
+			if (!is_dir(storage_path('uploads/data_siswa/original/'))) {
+				mkdir(storage_path('uploads/data_siswa/original/'), 0777, true);
+			}
+
+			$thumbnail_path = storage_path('uploads/data_siswa/thumbnail/');
+			$original_path = storage_path('uploads/data_siswa/original/');
+
+			Image::make($file)
+			      ->resize(261,null,function ($constraint) {
+			        $constraint->aspectRatio();
+			         })
+			      ->save($original_path . $file_name)
+			      ->resize(90, 90)
+			      ->save($thumbnail_path . $file_name);
+	        }else{
+	          $file_name = $data->sdd_image;
+	        }
+	        // SAVE DATA SISWA
+			$save = [];
+	        for ($i=0; $i < count($tes); $i++) { 
+	        	if (substr($tes[$i], 0,3) == 'sdd') {
+	        		$save['sdd_id'] = $id;
+		        	$save['sdd_nomor_induk_nasional'] = 0;
+		        	$save['sdd_nomor_induk'] = 0;
+		        	$save['sdd_saudara_tiri'] = 0;
+		        	if ($tes[$i] == 'sdd_tanggal_lahir') {
+		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
+		        	}else{
+		        		$save[$tes[$i]] = $tes1[$tes[$i]];
+		        	}
+		        	$save['created_by'] = Auth::user()->name;
+		        	$save['updated_by'] = Auth::user()->name;
+		        	$save['sdd_image']  = $file_name;
+	        	}
+	        }
+			$this->model->siswa_data_diri()->update($save,'sdd_id',$id);
+
+	        // SAVE TEMPAT TINGGAL
+			$save = [];
+	        for ($i=0; $i < count($tes); $i++) { 
+	        	if (substr($tes[$i], 0,3) == 'stt') {
+	        		
+	        		$save['stt_id'] = $id;
+	        		$save[$tes[$i]] = $tes1[$tes[$i]];
+	        	}
+	        }
+			$this->model->siswa_tempat_tinggal()->update($save,'stt_id',$id);
+			// SAVE KESEHATAN
+			$detail = 1;
+	       
+			$save = [];
+			$this->model->siswa_kesehatan()->delete($save,'sk_id',$id);
+    		for ($a=0; $a < count($tes1['sk_nama_penyakit']); $a++) { 
+				$save[$a]['sk_id'] 	   			 = $id;
+        		$save[$a]['sk_detail'] 			 = $detail;
+        		$save[$a]['sk_nama_penyakit']    = $tes1['sk_nama_penyakit'][$a];
+        		$save[$a]['sk_keterangan'] 		 = $tes1['sk_keterangan'][$a];
+        		$detail++;
+			}
+	   
+			$this->models->siswa_kesehatan()->insert($save);
+			// SAVE PENDIDIKAN
+			$save = [];
+	        for ($i=0; $i < count($tes); $i++) { 
+	        	if (substr($tes[$i], 0,2) == 'sp') {
+	        		$save['sp_id'] 		= $id;
+        			$save['sp_detail'] 	= 1;
+		        	if ($tes[$i] == 'sp_tanggal_ijazah') {
+		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
+		        	}else{
+		        		$save[$tes[$i]] = $tes1[$tes[$i]];
+		        	}
+	        	}
+	        }
+			$this->model->siswa_pendidikan()->update($save,'sp_id',$id);
+			// SAVE IBU
+			$save = [];
+	        for ($i=0; $i < count($tes); $i++) { 
+	        	if (substr($tes[$i], 0,2) == 'si') {
+	        		$save['si_id'] = $id;
+		        	if ($tes[$i] == 'si_tanggal_lahir') {
+		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
+		        	}else if ($tes[$i] == 'si_penghasilan'){
+		        		$save[$tes[$i]] = filter_var($tes1[$tes[$i]],FILTER_SANITIZE_NUMBER_INT);
+		        	}else{
+		        		$save[$tes[$i]] = $tes1[$tes[$i]];
+		        	}
+	        	}
+	        }
+			$this->model->siswa_ibu()->update($save,'si_id',$id);
+			// SAVE AYAH
+			$save = [];
+	        for ($i=0; $i < count($tes); $i++) { 
+	        	if (substr($tes[$i], 0,2) == 'sa') {
+	        		$save['sa_id'] = $id;
+		        	if ($tes[$i] == 'sa_tanggal_lahir') {
+		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
+		        	}else if ($tes[$i] == 'sa_penghasilan'){
+		        		$save[$tes[$i]] = filter_var($tes1[$tes[$i]],FILTER_SANITIZE_NUMBER_INT);
+		        	}else{
+		        		$save[$tes[$i]] = $tes1[$tes[$i]];
+		        	}
+	        	}
+	        }
+			$this->model->siswa_ayah()->update($save,'sa_id',$id);
+			// SAVE wali
+			$save = [];
+	        for ($i=0; $i < count($tes); $i++) { 
+	        	if (substr($tes[$i], 0,2) == 'sw') {
+	        		$save['sw_id'] = $id;
+		        	if ($tes[$i] == 'sw_tanggal_lahir') {
+		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
+		        	}else if ($tes[$i] == 'sw_penghasilan'){
+		        		$save[$tes[$i]] = filter_var($tes1[$tes[$i]],FILTER_SANITIZE_NUMBER_INT);
+		        	}else{
+		        		$save[$tes[$i]] = $tes1[$tes[$i]];
+		        	}
+	        	}
+	        }
+			$this->model->siswa_wali()->update($save,'sw_id',$id);
 			DB::commit();
 			return Response()->json(['status'=>1,'pesan'=>'Berhasil Menyimpan Data']); 
 		} catch (Exception $e) {

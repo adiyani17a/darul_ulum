@@ -37,14 +37,14 @@
                     <tr>
                       <td align="left">
                         <div class="preview_td">
-                            <img style="width: 150px;height: 170px;border:1px solid pink;border-radius: 0" id="output" >
+                            <img src="{{ asset('storage/uploads/data_siswa/original') }}/{{ $data->sdd_image }}" style="width: 150px;height: 170px;border:1px solid pink;border-radius: 0" id="output" >
                         </div>
                       </td>
                       <td>
-                        <div class="file-upload">
+                        <div class="file-upload active">
                           <div class="file-select">
                             <div class="file-select-button" id="fileName">Image</div>
-                            <div class="file-select-name" id="noFile">Choose Image...</div> 
+                            <div class="file-select-name" id="noFile">{{ $data->sdd_image }}</div> 
                             <input type="file" name="image" onchange="loadFile(event)" id="chooseFile">
                           </div>
                         </div>
@@ -53,13 +53,14 @@
                     <tr>
                       <th>NAMA LENGKAP</th>
                       <td>
-                        <input type="text" name="sdd_nama" class="sdd_nama form-control wajib">
+                        <input type="text" value="{{ $data->sdd_nama }}" name="sdd_nama" class="sdd_nama form-control wajib">
+                        <input type="hidden" value="{{ $data->sdd_id }}" name="id" class="id form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>NAMA PANGGILAN</th>
                       <td>
-                        <input type="text" name="sdd_panggilan" class="sdd_panggilan form-control wajib">
+                        <input type="text" value="{{ $data->sdd_panggilan }}" name="sdd_panggilan" class="sdd_panggilan form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -67,21 +68,25 @@
                       <td>
                         <select class="form-control option sdd_jenis_kelamin" name="sdd_jenis_kelamin">
                           <option value="">Pilih - Data</option>
-                          <option value="L">Laki</option>
-                          <option value="P">Perempuan</option>
+                          <option @if ($data->sdd_jenis_kelamin == 'L')
+                            selected="" 
+                          @endif value="L">Laki</option>
+                          <option @if ($data->sdd_jenis_kelamin == 'P')
+                            selected="" 
+                          @endif value="P">Perempuan</option>
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <th>TEMPAT LAHIR</th>
                       <td>
-                        <input type="text" name="sdd_tempat_lahir" class="sdd_tempat_lahir form-control wajib">
+                        <input value="{{ $data->sdd_tempat_lahir }}"  type="text" name="sdd_tempat_lahir" class="sdd_tempat_lahir form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TANGGAL LAHIR</th>
                       <td>
-                        <input type="text" name="sdd_tanggal_lahir" class="sdd_tanggal_lahir date form-control wajib">
+                        <input value="{{ carbon\carbon::parse($data->sdd_tanggal_lahir)->format('d/m/Y') }}" type="text" name="sdd_tanggal_lahir" class="sdd_tanggal_lahir date form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -89,37 +94,49 @@
                       <td>
                         <select class="form-control option sdd_agama" name="sdd_agama">
                           <option value="">Pilih - Data</option>
-                          <option value="ISLAM">ISLAM</option>
-                          <option value="KRISTEN">KRISTEN</option>
-                          <option value="KATHOLIK">KATHOLIK</option>
-                          <option value="HINDU">HINDU</option>
-                          <option value="BUDHA">BUDHA</option>
-                          <option value="KONG_HU_CU">KONG HU CU</option>
+                          <option @if ($data->sdd_agama == 'ISLAM')
+                            selected="" 
+                          @endif value="ISLAM">ISLAM</option>
+                          <option @if ($data->sdd_agama == 'KRISTEN')
+                            selected="" 
+                          @endif value="KRISTEN">KRISTEN</option>
+                          <option @if ($data->sdd_agama == 'KATHOLIK')
+                            selected="" 
+                          @endif  value="KATHOLIK">KATHOLIK</option>
+                          <option @if ($data->sdd_agama == 'HINDU')
+                            selected="" 
+                          @endif  value="HINDU">HINDU</option>
+                          <option @if ($data->sdd_agama == 'BUDHA')
+                            selected="" 
+                          @endif  value="BUDHA">BUDHA</option>
+                          <option @if ($data->sdd_agama == 'KONG_HU_CU')
+                            selected="" 
+                          @endif  value="KONG_HU_CU">KONG HU CU</option>
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <th>KEWARGANEGARAAN</th>
                       <td>
-                        <input type="text" name="sdd_kewarganegaraan" class="sdd_kewarganegaraan form-control wajib">
+                        <input value="{{ $data->sdd_kewarganegaraan }}" type="text" name="sdd_kewarganegaraan" class="sdd_kewarganegaraan form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>ANAK KE</th>
                       <td>
-                        <input type="text" name="sdd_urutan_anak" class="sdd_urutan_anak hanya_angka form-control wajib">
+                        <input value="{{ $data->sdd_urutan_anak }}" type="text" name="sdd_urutan_anak" class="sdd_urutan_anak hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>JUMLAH SAUDARA</th>
                       <td>
-                        <input type="text" name="sdd_saudara_kandung" class="sdd_saudara_kandung hanya_angka form-control wajib">
+                        <input value="{{ $data->sdd_saudara_kandung }}" type="text" name="sdd_saudara_kandung" class="sdd_saudara_kandung hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>BAHASA SEHARI HARI</th>
                       <td>
-                        <input type="text" name="sdd_bahasa" class="sdd_bahasa form-control wajib">
+                        <input value="{{ $data->sdd_bahasa }}" type="text" name="sdd_bahasa" class="sdd_bahasa form-control wajib">
                       </td>
                     </tr>
                   </table>
@@ -134,13 +151,13 @@
                     <tr>
                       <th>ALAMAT</th>
                       <td>
-                        <input type="text" name="stt_alamat" class="stt_alamat form-control wajib">
+                        <input value="{{ $data->siswa_tempat_tinggal[0]->stt_alamat }}" type="text" name="stt_alamat" class="stt_alamat form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>NOMOR TELPON</th>
                       <td>
-                        <input type="text" name="stt_no_telp" class="stt_no_telp hanya_angka form-control wajib">
+                        <input value="{{ $data->siswa_tempat_tinggal[0]->stt_no_telp }}" type="text" name="stt_no_telp" class="stt_no_telp hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -148,17 +165,25 @@
                       <td>
                        <select class="form-control option stt_status_tempat_tinggal" name="stt_status_tempat_tinggal">
                           <option value="">Pilih - Data</option>
-                          <option value="ORANG TUA">ORANG TUA</option>
-                          <option value="KRISTEN">KONTRAK</option>
-                          <option value="KOS">KOS</option>
-                          <option value="RUMAH SENDIRI">RUMAH SENDIRI</option>
+                          <option @if ($data->siswa_tempat_tinggal[0]->stt_status_tempat_tinggal == 'ORANG TUA')
+                            selected="" 
+                          @endif value="ORANG TUA">ORANG TUA</option>
+                          <option @if ($data->siswa_tempat_tinggal[0]->stt_status_tempat_tinggal == 'KONTRAK')
+                            selected="" 
+                          @endif value="KRISTEN">KONTRAK</option>
+                          <option @if ($data->siswa_tempat_tinggal[0]->stt_status_tempat_tinggal == 'KOS')
+                            selected="" 
+                          @endif value="KOS">KOS</option>
+                          <option @if ($data->siswa_tempat_tinggal[0]->stt_status_tempat_tinggal == 'RUMAH SENDIRI')
+                            selected="" 
+                          @endif value="RUMAH SENDIRI">RUMAH SENDIRI</option>
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <th>JARAK KE SEKOLAH</th>
                       <td>
-                        <input type="text" name="stt_jarak_rumah" class="stt_jarak_rumah hanya_angka form-control wajib">
+                        <input value="{{ $data->siswa_tempat_tinggal[0]->stt_jarak_rumah }}" type="text" name="stt_jarak_rumah" class="stt_jarak_rumah hanya_angka form-control wajib">
                       </td>
                     </tr>
                   </table>
@@ -173,19 +198,19 @@
                     <tr>
                       <th>BERAT BADAN</th>
                       <td>
-                        <input type="text" name="sdd_berat" class="sdd_berat form-control wajib">
+                        <input value="{{ $data->sdd_berat }}" type="text" name="sdd_berat" class="sdd_berat form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TINGGI BADAN</th>
                       <td>
-                        <input type="text" name="sdd_tinggi" class="sdd_tinggi form-control wajib">
+                        <input value="{{ $data->sdd_tinggi }}" type="text" name="sdd_tinggi" class="sdd_tinggi form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>GOLONGAN DARAH</th>
                       <td>
-                        <input type="text" name="sdd_golongan_darah" class="sdd_golongan_darah form-control wajib">
+                        <input value="{{ $data->sdd_golongan_darah }}" type="text" name="sdd_golongan_darah" class="sdd_golongan_darah form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -203,11 +228,25 @@
                             </tr>
                           </thead>
                           <tbody class="append_riwayat">
-                            <tr class="tr_kesehatan">
-                              <td><input type="text" class="form-control sk_nama_penyakit" name="sk_nama_penyakit[]"></td>
-                              <td><input type="text" class="form-control sk_keterangan" name="sk_keterangan[]"></td>
-                              <td align="center" class="append_button">-</td>
-                            </tr>
+                              @foreach ($data->siswa_kesehatan as $k => $val)
+                                @if ($k == 0)
+                                  <tr class="tr_kesehatan">
+                                    <td><input value="{{ $val->sk_nama_penyakit }}" type="text" class="form-control sk_nama_penyakit" name="sk_nama_penyakit[]"></td>
+                                    <td><input value="{{ $val->sk_keterangan }}" type="text" class="form-control sk_keterangan" name="sk_keterangan[]"></td>
+                                    <td align="center" class="append_button">-</td>
+                                  </tr>
+                                @else
+                                  <tr class="tr_kesehatan">
+                                    <td><input value="{{ $val->sk_nama_penyakit }}" type="text" class="form-control sk_nama_penyakit" name="sk_nama_penyakit[]"></td>
+                                    <td><input value="{{ $val->sk_keterangan }}" type="text" class="form-control sk_keterangan" name="sk_keterangan[]"></td>
+                                    <td align="center" class="append_button">
+                                      <button type="button" class="btn btn-danger btn-sm hapus_riwayat">
+                                        <i class="fa fa-minus"></i>
+                                      </button> 
+                                    </td>
+                                  </tr>
+                                @endif
+                              @endforeach
                           </tbody>
                         </table>
                       </td>
@@ -226,59 +265,69 @@
                       <td>
                         <select class="form-control option sdd_jenjang_sebelumnya" name="sdd_jenjang_sebelumnya">
                           <option value="">Pilih - Data</option>
-                          <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
-                          <option value="TK">TK</option>
-                          <option value="SD">SD</option>
-                          <option value="SMP">SMP</option>
+                          <option @if ($data->sdd_jenjang_sebelumnya == 'TIDAK SEKOLAH')
+                            selected="" 
+                          @endif value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
+                          <option @if ($data->sdd_jenjang_sebelumnya == 'TK')
+                            selected="" 
+                          @endif value="TK">TK</option>
+                          <option @if ($data->sdd_jenjang_sebelumnya == 'SD')
+                            selected="" 
+                          @endif value="SD">SD</option>
+                          <option @if ($data->sdd_jenjang_sebelumnya == 'SMP')
+                            selected="" 
+                          @endif value="SMP">SMP</option>
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <th>NAMA SEKOLAH TERAKHIR</th>
                       <td>
-                        <input type="text" name="sp_nama_sekolah" class="sp_nama_sekolah form-control wajib">
+                        <input value="{{ $data->siswa_pendidikan[0]->sp_nama_sekolah }}" type="text" name="sp_nama_sekolah" class="sp_nama_sekolah form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>NOMOR IJAZAH TERAKHIR</th>
                       <td>
-                        <input type="text" name="sp_ijazah" class="sp_ijazah form-control wajib">
+                        <input value="{{ $data->siswa_pendidikan[0]->sp_ijazah }}" type="text" name="sp_ijazah" class="sp_ijazah form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TANGGAL IJAZAH TERAKHIR</th>
                       <td>
-                        <input type="text" name="sp_tanggal_ijazah" class="sp_tanggal_ijazah date form-control wajib">
+                        <input value="{{ carbon\carbon::parse($data->siswa_pendidikan[0]->sdd_tanggal_lahir)->format('d/m/Y') }}" type="text" name="sp_tanggal_ijazah" class="sp_tanggal_ijazah date form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>DAFTAR DI SEKOLAH</th>
-                      <td>
                         @if (Auth::user()->akses('PENERIMAAN SISWA BARU','sekolah'))
-                          <select class="sdd_sekolah form-control option " name="sdd_sekolah">
-                            <option value="">Pilih - Sekolah</option>
-                            @foreach($sekolah as $val)
-                              <option @if (Auth::user()->sekolah_id == $val->s_id)
-                                selected="" 
-                              @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
-                            @endforeach
-                          </select>
+                          <td>
+                            <select class="sdd_sekolah form-control option " name="sdd_sekolah">
+                              <option value="">Pilih - Sekolah</option>
+                              @foreach($sekolah as $val)
+                                <option @if ($data->sdd_sekolah == $val->s_id)
+                                  selected="" 
+                                @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
+                              @endforeach
+                            </select>
+                          </td>
                         @else
-                          <select class="sdd_sekolah form-control option" name="sdd_sekolah">
-                            <option value="">Pilih - Sekolah</option>
-                            @foreach($sekolah as $val)
-                              <option @if (Auth::user()->sekolah_id == $val->s_id)
-                                selected="" 
-                              @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
-                            @endforeach
-                          </select>
+                          <td class="disabled">
+                            <select class="sdd_sekolah form-control option" name="sdd_sekolah">
+                              <option value="">Pilih - Sekolah</option>
+                              @foreach($sekolah as $val)
+                                <option @if ($data->sdd_sekolah == $val->s_id)
+                                  selected="" 
+                                @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
+                              @endforeach
+                            </select>
+                          </td>
                         @endif
-                      </td>
                     </tr>
                     <tr>
                       <th>KETERANGAN</th>
                       <td>
-                        <input type="text" name="sp_keterangan" class="sp_keterangan form-control wajib">
+                        <input value="{{ $data->siswa_pendidikan[0]->sp_keterangan }}" type="text" name="sp_keterangan" class="sp_keterangan form-control wajib">
                       </td>
                     </tr>
                   </table>
@@ -293,19 +342,19 @@
                     <tr>
                       <th>NAMA</th>
                       <td>
-                        <input type="text" name="sa_nama" class="sa_nama form-control wajib">
+                        <input value="{{ $data->siswa_ayah[0]->sa_nama }}" type="text" name="sa_nama" class="sa_nama form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TEMPAT LAHIR</th>
                       <td>
-                        <input type="text" name="sa_tempat_lahir" class="sa_tempat_lahir form-control wajib">
+                        <input value="{{ $data->siswa_ayah[0]->sa_tempat_lahir }}" type="text" name="sa_tempat_lahir" class="sa_tempat_lahir form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TANGGAL LAHIR</th>
                       <td>
-                        <input type="text" name="sa_tanggal_lahir" class="sa_tanggal_lahir date form-control wajib">
+                        <input value="{{ carbon\carbon::parse($data->siswa_ayah[0]->sa_tanggal_lahir)->format('d/m/Y') }}" type="text" name="sa_tanggal_lahir" class="sa_tanggal_lahir date form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -313,19 +362,31 @@
                       <td>
                         <select class="form-control option sa_agama" name="sa_agama">
                           <option value="">Pilih - Data</option>
-                          <option value="ISLAM">ISLAM</option>
-                          <option value="KRISTEN">KRISTEN</option>
-                          <option value="KATHOLIK">KATHOLIK</option>
-                          <option value="HINDU">HINDU</option>
-                          <option value="BUDHA">BUDHA</option>
-                          <option value="KONG_HU_CU">KONG HU CU</option>
+                          <option @if ($data->siswa_ayah[0]->sa_agama == 'ISLAM')
+                            selected="" 
+                          @endif value="ISLAM">ISLAM</option>
+                          <option @if ($data->siswa_ayah[0]->sa_agama == 'KRISTEN')
+                            selected="" 
+                          @endif value="KRISTEN">KRISTEN</option>
+                          <option @if ($data->siswa_ayah[0]->sa_agama == 'KATHOLIK')
+                            selected="" 
+                          @endif  value="KATHOLIK">KATHOLIK</option>
+                          <option @if ($data->siswa_ayah[0]->sa_agama == 'HINDU')
+                            selected="" 
+                          @endif  value="HINDU">HINDU</option>
+                          <option @if ($data->siswa_ayah[0]->sa_agama == 'BUDHA')
+                            selected="" 
+                          @endif  value="BUDHA">BUDHA</option>
+                          <option @if ($data->siswa_ayah[0]->sa_agama == 'KONG_HU_CU')
+                            selected="" 
+                          @endif  value="KONG_HU_CU">KONG HU CU</option>
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <th>KEWARGANEGARAAN</th>
                       <td>
-                        <input type="text" name="sa_kewarganegaraan" class="sa_kewarganegaraan form-control wajib">
+                        <input value="{{ $data->siswa_ayah[0]->sa_kewarganegaraan }}" type="text" name="sa_kewarganegaraan" class="sa_kewarganegaraan form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -333,37 +394,50 @@
                       <td>
                         <select class="form-control option sa_pendidikan" name="sa_pendidikan">
                           <option value="">Pilih - Data</option>
-                          <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
-                          <option value="TK">TK</option>
-                          <option value="SD">SD</option>
-                          <option value="SMP">SMP</option>
-                          <option value="SMA">SMA</option>
-                          <option value="SARJANA">SARJANA</option>
+                          <option @if ($data->siswa_ayah[0]->sa_pendidikan == 'TIDAK SEKOLAH')
+                            selected="" 
+                          @endif value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
+                          <option @if ($data->siswa_ayah[0]->sa_pendidikan == 'TK')
+                            selected="" 
+                          @endif value="TK">TK</option>
+                          <option @if ($data->siswa_ayah[0]->sa_pendidikan == 'SD')
+                            selected="" 
+                          @endif value="SD">SD</option>
+                          <option @if ($data->siswa_ayah[0]->sa_pendidikan == 'SMP')
+                            selected="" 
+                          @endif value="SMP">SMP</option>
+                          <option @if ($data->siswa_ayah[0]->sa_pendidikan == 'SMA')
+                            selected="" 
+                          @endif value="SMA">SMA</option>
+                          <option @if ($data->siswa_ayah[0]->sa_pendidikan == 'SARJANA')
+                            selected="" 
+                          @endif value="SARJANA">SARJANA</option>
+
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <th>PEKERJAAN</th>
                       <td>
-                        <input type="text" name="sa_pekerjaan" class="sa_pekerjaan form-control wajib">
+                        <input value="{{ $data->siswa_ayah[0]->sa_pekerjaan }}" type="text" name="sa_pekerjaan" class="sa_pekerjaan form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>PENGHASILAN</th>
                       <td>
-                        <input type="text" name="sa_penghasilan" class="sa_penghasilan penghasilan form-control wajib">
+                        <input value="{{ $data->siswa_ayah[0]->sa_penghasilan }}" type="text" name="sa_penghasilan" class="sa_penghasilan penghasilan form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>ALAMAT</th>
                       <td>
-                        <input type="text" name="sa_alamat" class="sa_alamat form-control wajib">
+                        <input value="{{ $data->siswa_ayah[0]->sa_alamat }}" type="text" name="sa_alamat" class="sa_alamat form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TELPON</th>
                       <td>
-                        <input type="text" name="sa_telpon" class="sa_telpon hanya_angka form-control wajib">
+                        <input value="{{ $data->siswa_ayah[0]->sa_telpon }}" type="text" name="sa_telpon" class="sa_telpon hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -371,8 +445,12 @@
                       <td>
                         <select class="form-control option sa_status" name="sa_status">
                           <option value="">Pilih - Data</option>
-                          <option value="H">Masih Hidup</option>
-                          <option value="M">Meninggal</option>
+                          <option @if ($data->siswa_ayah[0]->sa_status == 'H')
+                            selected="" 
+                          @endif value="H">Masih Hidup</option>
+                          <option @if ($data->siswa_ayah[0]->sa_status == 'M')
+                            selected="" 
+                          @endif value="M">Meninggal</option>
                         </select>
                       </td>
                     </tr>
@@ -388,19 +466,19 @@
                     <tr>
                       <th>NAMA</th>
                       <td>
-                        <input type="text" name="si_nama" class="si_nama form-control wajib">
+                        <input value="{{ $data->siswa_ibu[0]->si_nama }}" type="text" name="si_nama" class="si_nama form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TEMPAT LAHIR</th>
                       <td>
-                        <input type="text" name="si_tempat_lahir" class="si_tempat_lahir form-control wajib">
+                        <input value="{{ $data->siswa_ibu[0]->si_tempat_lahir }}" type="text" name="si_tempat_lahir" class="si_tempat_lahir form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TANGGAL LAHIR</th>
                       <td>
-                        <input type="text" name="si_tanggal_lahir" class="si_tanggal_lahir date form-control wajib">
+                        <input value="{{ carbon\carbon::parse($data->siswa_ibu[0]->si_tanggal_lahir)->format('d/m/Y') }}" type="text" name="si_tanggal_lahir" class="si_tanggal_lahir date form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -408,19 +486,31 @@
                       <td>
                         <select class="form-control option si_agama" name="si_agama">
                           <option value="">Pilih - Data</option>
-                          <option value="ISLAM">ISLAM</option>
-                          <option value="KRISTEN">KRISTEN</option>
-                          <option value="KATHOLIK">KATHOLIK</option>
-                          <option value="HINDU">HINDU</option>
-                          <option value="BUDHA">BUDHA</option>
-                          <option value="KONG_HU_CU">KONG HU CU</option>
+                          <option @if ($data->siswa_ibu[0]->si_agama == 'ISLAM')
+                            selected="" 
+                          @endif value="ISLAM">ISLAM</option>
+                          <option @if ($data->siswa_ibu[0]->si_agama == 'KRISTEN')
+                            selected="" 
+                          @endif value="KRISTEN">KRISTEN</option>
+                          <option @if ($data->siswa_ibu[0]->si_agama == 'KATHOLIK')
+                            selected="" 
+                          @endif  value="KATHOLIK">KATHOLIK</option>
+                          <option @if ($data->siswa_ibu[0]->si_agama == 'HINDU')
+                            selected="" 
+                          @endif  value="HINDU">HINDU</option>
+                          <option @if ($data->siswa_ibu[0]->si_agama == 'BUDHA')
+                            selected="" 
+                          @endif  value="BUDHA">BUDHA</option>
+                          <option @if ($data->siswa_ibu[0]->si_agama == 'KONG_HU_CU')
+                            selected="" 
+                          @endif  value="KONG_HU_CU">KONG HU CU</option>
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <th>KEWARGANEGARAAN</th>
                       <td>
-                        <input type="text" name="si_kewarganegaraan" class="si_kewarganegaraan form-control wajib">
+                        <input value="{{ $data->siswa_ibu[0]->si_kewarganegaraan }}" type="text" name="si_kewarganegaraan" class="si_kewarganegaraan form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -428,37 +518,50 @@
                       <td>
                         <select class="form-control option si_pendidikan" name="si_pendidikan">
                           <option value="">Pilih - Data</option>
-                          <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
-                          <option value="TK">TK</option>
-                          <option value="SD">SD</option>
-                          <option value="SMP">SMP</option>
-                          <option value="SMA">SMA</option>
-                          <option value="SARJANA">SARJANA</option>
+                          <option @if ($data->siswa_ibu[0]->si_pendidikan == 'TIDAK SEKOLAH')
+                            selected="" 
+                          @endif value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
+                          <option @if ($data->siswa_ibu[0]->si_pendidikan == 'TK')
+                            selected="" 
+                          @endif value="TK">TK</option>
+                          <option @if ($data->siswa_ibu[0]->si_pendidikan == 'SD')
+                            selected="" 
+                          @endif value="SD">SD</option>
+                          <option @if ($data->siswa_ibu[0]->si_pendidikan == 'SMP')
+                            selected="" 
+                          @endif value="SMP">SMP</option>
+                          <option @if ($data->siswa_ibu[0]->si_pendidikan == 'SMA')
+                            selected="" 
+                          @endif value="SMA">SMA</option>
+                          <option @if ($data->siswa_ibu[0]->si_pendidikan == 'SARJANA')
+                            selected="" 
+                          @endif value="SARJANA">SARJANA</option>
+
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <th>PEKERJAAN</th>
                       <td>
-                        <input type="text" name="si_pekerjaan" class="si_pekerjaan form-control wajib">
+                        <input value="{{ $data->siswa_ibu[0]->si_pekerjaan }}" type="text" name="si_pekerjaan" class="si_pekerjaan form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>PENGHASILAN</th>
                       <td>
-                        <input type="text" name="si_penghasilan" class="si_penghasilan penghasilan form-control wajib">
+                        <input value="{{ $data->siswa_ibu[0]->si_penghasilan }}" type="text" name="si_penghasilan" class="si_penghasilan penghasilan form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>ALAMAT</th>
                       <td>
-                        <input type="text" name="si_alamat" class="si_alamat form-control wajib">
+                        <input value="{{ $data->siswa_ibu[0]->si_alamat }}" type="text" name="si_alamat" class="si_alamat form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TELPON</th>
                       <td>
-                        <input type="text" name="si_telpon" class="si_telpon hanya_angka form-control wajib">
+                        <input value="{{ $data->siswa_ibu[0]->si_telpon }}" type="text" name="si_telpon" class="si_telpon hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -466,8 +569,12 @@
                       <td>
                         <select class="form-control option si_status" name="si_status">
                           <option value="">Pilih - Data</option>
-                          <option value="H">Masih Hidup</option>
-                          <option value="M">Meninggal</option>
+                          <option @if ($data->siswa_ibu[0]->si_status == 'H')
+                            selected="" 
+                          @endif value="H">Masih Hidup</option>
+                          <option @if ($data->siswa_ibu[0]->si_status == 'M')
+                            selected="" 
+                          @endif value="M">Meninggal</option>
                         </select>
                       </td>
                     </tr>
@@ -483,19 +590,19 @@
                     <tr>
                       <th>NAMA</th>
                       <td>
-                        <input type="text" name="sw_nama" class="sw_nama form-control wajib">
+                        <input value="{{ $data->siswa_wali[0]->sw_nama }}" type="text" name="sw_nama" class="sw_nama form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TEMPAT LAHIR</th>
                       <td>
-                        <input type="text" name="sw_tempat_lahir" class="sw_tempat_lahir form-control wajib">
+                        <input value="{{ $data->siswa_wali[0]->sw_tempat_lahir }}" type="text" name="sw_tempat_lahir" class="sw_tempat_lahir form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TANGGAL LAHIR</th>
                       <td>
-                        <input type="text" name="sw_tanggal_lahir" class="sw_tanggal_lahir date form-control wajib">
+                        <input value="{{ carbon\carbon::parse($data->siswa_wali[0]->sw_tanggal_lahir)->format('d/m/Y') }}" type="text" name="sw_tanggal_lahir" class="sw_tanggal_lahir date form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -503,19 +610,31 @@
                       <td>
                         <select class="form-control option sw_agama" name="sw_agama">
                           <option value="">Pilih - Data</option>
-                          <option value="ISLAM">ISLAM</option>
-                          <option value="KRISTEN">KRISTEN</option>
-                          <option value="KATHOLIK">KATHOLIK</option>
-                          <option value="HINDU">HINDU</option>
-                          <option value="BUDHA">BUDHA</option>
-                          <option value="KONG_HU_CU">KONG HU CU</option>
+                          <option @if ($data->siswa_wali[0]->sw_agama == 'ISLAM')
+                            selected="" 
+                          @endif value="ISLAM">ISLAM</option>
+                          <option @if ($data->siswa_wali[0]->sw_agama == 'KRISTEN')
+                            selected="" 
+                          @endif value="KRISTEN">KRISTEN</option>
+                          <option @if ($data->siswa_wali[0]->sw_agama == 'KATHOLIK')
+                            selected="" 
+                          @endif  value="KATHOLIK">KATHOLIK</option>
+                          <option @if ($data->siswa_wali[0]->sw_agama == 'HINDU')
+                            selected="" 
+                          @endif  value="HINDU">HINDU</option>
+                          <option @if ($data->siswa_wali[0]->sw_agama == 'BUDHA')
+                            selected="" 
+                          @endif  value="BUDHA">BUDHA</option>
+                          <option @if ($data->siswa_wali[0]->sw_agama == 'KONG_HU_CU')
+                            selected="" 
+                          @endif  value="KONG_HU_CU">KONG HU CU</option>
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <th>KEWARGANEGARAAN</th>
                       <td>
-                        <input type="text" name="sw_kewarganegaraan" class="sw_kewarganegaraan form-control wajib">
+                        <input value="{{ $data->siswa_wali[0]->sw_kewarganegaraan }}" type="text" name="sw_kewarganegaraan" class="sw_kewarganegaraan form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -523,37 +642,50 @@
                       <td>
                         <select class="form-control option sw_pendidikan" name="sw_pendidikan">
                           <option value="">Pilih - Data</option>
-                          <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
-                          <option value="TK">TK</option>
-                          <option value="SD">SD</option>
-                          <option value="SMP">SMP</option>
-                          <option value="SMA">SMA</option>
-                          <option value="SARJANA">SARJANA</option>
+                          <option @if ($data->siswa_wali[0]->sw_pendidikan == 'TIDAK SEKOLAH')
+                            selected="" 
+                          @endif value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
+                          <option @if ($data->siswa_wali[0]->sw_pendidikan == 'TK')
+                            selected="" 
+                          @endif value="TK">TK</option>
+                          <option @if ($data->siswa_wali[0]->sw_pendidikan == 'SD')
+                            selected="" 
+                          @endif value="SD">SD</option>
+                          <option @if ($data->siswa_wali[0]->sw_pendidikan == 'SMP')
+                            selected="" 
+                          @endif value="SMP">SMP</option>
+                          <option @if ($data->siswa_wali[0]->sw_pendidikan == 'SMA')
+                            selected="" 
+                          @endif value="SMA">SMA</option>
+                          <option @if ($data->siswa_wali[0]->sw_pendidikan == 'SARJANA')
+                            selected="" 
+                          @endif value="SARJANA">SARJANA</option>
+
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <th>PEKERJAAN</th>
                       <td>
-                        <input type="text" name="sw_pekerjaan" class="sw_pekerjaan form-control wajib">
+                        <input value="{{ $data->siswa_wali[0]->sw_pekerjaan }}" type="text" name="sw_pekerjaan" class="sw_pekerjaan form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>PENGHASILAN</th>
                       <td>
-                        <input type="text" name="sw_penghasilan" class="sw_penghasilan penghasilan form-control wajib">
+                        <input value="{{ $data->siswa_wali[0]->sw_penghasilan }}" type="text" name="sw_penghasilan" class="sw_penghasilan penghasilan form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>ALAMAT</th>
                       <td>
-                        <input type="text" name="sw_alamat" class="sw_alamat form-control wajib">
+                        <input value="{{ $data->siswa_wali[0]->sw_alamat }}" type="text" name="sw_alamat" class="sw_alamat form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TELPON</th>
                       <td>
-                        <input type="text" name="sw_telpon" class="sw_telpon hanya_angka form-control wajib">
+                        <input value="{{ $data->siswa_wali[0]->sw_telpon }}" type="text" name="sw_telpon" class="sw_telpon hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -561,8 +693,12 @@
                       <td>
                         <select class="form-control option sw_status" name="sw_status">
                           <option value="">Pilih - Data</option>
-                          <option value="H">Masih Hidup</option>
-                          <option value="M">Meninggal</option>
+                          <option @if ($data->siswa_wali[0]->sw_status == 'H')
+                            selected="" 
+                          @endif value="H">Masih Hidup</option>
+                          <option @if ($data->siswa_wali[0]->sw_status == 'M')
+                            selected="" 
+                          @endif value="M">Meninggal</option>
                         </select>
                       </td>
                     </tr>
@@ -748,7 +884,7 @@ function simpan_data() {
                 formdata = new FormData(form[0]);
             }
             $.ajax({
-                url:baseUrl +'/penerimaan/simpan_siswa',
+                url:baseUrl +'/penerimaan/update_siswa',
                 type:'POST',
                 data:formdata ? formdata : form.serialize(),
                 dataType:'json',

@@ -1,5 +1,6 @@
  <!-- plugins:js -->
   <script src="{{asset('assets/node_modules/jquery/dist/jquery.min.js')}}"></script>
+  <script src="{{asset('assets/node_modules/jquery/jquery.redirect.js')}}"></script>
   {{-- <script src="{{asset('assets/node_modules/jquery-ui/jquery-ui.js')}}"></script> --}}
   <script src="{{asset('assets/node_modules/popper.js/dist/umd/popper.min.js')}}"></script>
   <script src="{{asset('assets/node_modules/bootstrap-4/js/bootstrap.min.js')}}"></script>
