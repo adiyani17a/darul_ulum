@@ -35,8 +35,12 @@ class penerimaan_controller extends Controller
 
 	public function datatable_siswa()
 	{
-		$data = $this->model->siswa_data_diri()->all();
-		// return $data;
+		if (Auth::user()->akses('PENERIMAAN SISWA BARU','global')) {
+			$data = $this->models->siswa_data_diri()->where('sdd_status','Released')->get();
+		}else{
+			$sekolah = Auth::User()->sekolah_id;
+			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->where('sdd_status','Released')->get();
+		}
 		$data = collect($data);
 		return Datatables::of($data)
 		                ->addColumn('aksi', function ($data) {
@@ -48,14 +52,12 @@ class penerimaan_controller extends Controller
 
 		                
 
-		                	if (Auth::user()->akses('PENERIMAAN SISWA','ubah')) {
-		                		if ($data->km_status == 'RELEASED') {
-		                			$b = '<button type="button" onclick="edit(\''.$data->sdd_id.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
-		                		}
+		                	if (Auth::user()->akses('PENERIMAAN SISWA BARU','ubah')) {
+	                			$b = '<button type="button" onclick="edit(\''.$data->sdd_id.'\')" class="btn btn-warning btn-lg" title="edit"><label class="fa fa-pencil-alt"></label></button>';
 		                	}
 
-		                	if (Auth::user()->akses('PENERIMAAN SISWA','hapus')) {
-		                		if ($data->km_status == 'RELEASED') {
+		                	if (Auth::user()->akses('PENERIMAAN SISWA BARU','hapus')) {
+		                		if ($data->sdd_status == 'Released') {
 		                			$c = '<button type="button" onclick="hapus(\''.$data->sdd_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
 		                		}
 		                	}
@@ -63,18 +65,37 @@ class penerimaan_controller extends Controller
 
 		                    return $a.$b.$c.$d;
 		                })->addColumn('image', function ($data) {
-	                          $thumb = asset('storage/uploads/siswa/thumbnail').'/'.$data->sdd_image;
-	                          return '<img style="width:100px;height:100px;" class="img-fluid img-thumbnail" src="'.$thumb.'">';
+	                          $thumb = asset('storage/uploads/data_siswa/original').'/'.$data->sdd_image;
+	                          return '<img style="width:150px;height:170px;border-radius:0" class="img-fluid img-thumbnail" src="'.$thumb.'">';
 	                    })->addColumn('sekolah', function ($data) {
 		                    return $data->sekolah->s_nama;
+		                })->addColumn('data_siswa', function ($data) {
+		                    return '<table class="table">'.
+			                    		'<tr>'.
+			                    			'<td>NAMA</td>'.
+			                    			'<td>'.$data->sdd_nama.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td>TEMPAT LAHIR</td>'.
+			                    			'<td>'.$data->sdd_tempat_lahir.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td>TANGGAL LAHIR</td>'.
+			                    			'<td>'.carbon::parse($data->sdd_tempat_lahir)->format('d M Y').'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td>NAMA IBU</td>'.
+			                    			'<td>'.$data->siswa_ibu[0]->si_nama.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td>NAMA AYAH</td>'.
+			                    			'<td>'.$data->siswa_ayah[0]->sa_nama.'</td>'.
+			                    		'</tr>'.
+			                    	'</table>';
 		                })->addColumn('status', function ($data) {
-		                   	if ($data->sdd_status == 'Release') {
-								return '<label class="badge badge-warning">RELEASED</label>';
-		                   	}else if ($data->sdd_status == 'Approved') {
-								return '<label class="badge badge-primary">APPROVED</label>';
-		                   	}
+							return '<label class="badge badge-info">Released</label>';
 		                })
-		                ->rawColumns(['aksi','image','sekolah'])
+		                ->rawColumns(['aksi','image','sekolah','data_siswa','status'])
 		                ->addIndexColumn()
 		                ->make(true);
 	}
@@ -82,7 +103,7 @@ class penerimaan_controller extends Controller
 	public function create_siswa()
 	{
 		$data = $this->model->siswa_data_diri()->cari('sdd_id',1);
-		dd($data->siswa_ayah);
+		// dd($data->siswa_ayah->toArray());
 		$sekolah = $this->model->sekolah()->all();
 		return view('siswa.siswa.create_siswa',compact('sekolah'));
 	}

@@ -22,8 +22,11 @@
     <form id="save">
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
+          <div class="card-header">
+            <h4 class="card-title pull-left">PENERIMAAN SISWA BARU</h4>
+            <a href="{{ url('penerimaan/siswa') }}"><button type="button" class="btn btn-warning btn_modal pull-right" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Kembali</button></a>
+          </div>
           <div class="card-body">
-            <h4 class="card-title">PENERIMAAN SISWA BARU</h4>
             <div class="row" style="margin-bottom: 50px">
               <div class="card col-lg-12">
                 <div class="card-header bg-gradient-info text-white">
@@ -334,11 +337,11 @@
                     <tr>
                       <th>PENDIDIKAN TERAKHIR</th>
                       <td>
-                        <select class="form-control option sa_pendidikan" class="sa_pendidikan">
+                        <select class="form-control option sa_pendidikan" name="sa_pendidikan">
                           <option value="">Pilih - Data</option>
                           <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
                           <option value="TK">TK</option>
-                          <option value="KRISTEN">SD</option>
+                          <option value="SD">SD</option>
                           <option value="SMP">SMP</option>
                           <option value="SMA">SMA</option>
                           <option value="SARJANA">SARJANA</option>
@@ -429,11 +432,11 @@
                     <tr>
                       <th>PENDIDIKAN TERAKHIR</th>
                       <td>
-                        <select class="form-control option si_pendidikan" class="si_pendidikan">
+                        <select class="form-control option si_pendidikan" name="si_pendidikan">
                           <option value="">Pilih - Data</option>
                           <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
                           <option value="TK">TK</option>
-                          <option value="KRISTEN">SD</option>
+                          <option value="SD">SD</option>
                           <option value="SMP">SMP</option>
                           <option value="SMA">SMA</option>
                           <option value="SARJANA">SARJANA</option>
@@ -528,7 +531,7 @@
                           <option value="">Pilih - Data</option>
                           <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
                           <option value="TK">TK</option>
-                          <option value="KRISTEN">SD</option>
+                          <option value="SD">SD</option>
                           <option value="SMP">SMP</option>
                           <option value="SMA">SMA</option>
                           <option value="SARJANA">SARJANA</option>
@@ -679,7 +682,6 @@ $(document).on('click','.hapus_riwayat',function(){
   $(par).remove();
 })
 
-    $('.wajib').val('123123');
 
 function simpan_data() {
 
@@ -763,6 +765,7 @@ function simpan_data() {
                           color:'yellow',
                           message: 'Menyimpan Data!',
                     });
+                    location.reload();
                   }else{
                     iziToast.warning({
                           icon: 'fa fa-times',

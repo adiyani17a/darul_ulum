@@ -34,10 +34,7 @@
                     <tr>
                       <th>No</th>
                       <th>Gambar</th>
-                      <th>Nama</th>
-                      <th>Tempat Lahir</th>
-                      <th>Tanggal Lahir</th>
-                      <th>NISN</th>
+                      <th>Data Siswa</th>
                       <th>Pembuat</th>
                       <th>Status</th>
                       <th>Aksi</th>
@@ -73,33 +70,30 @@ $(document).ready(function(){
               table.ajax.reload();
             }
         },
-        // columnDefs: [
-        //         {
-        //            targets: 0 ,
-        //            className: ' tengah'
-        //         },
-        //         {
-        //            targets: 5 ,
-        //            className: ' right'
-        //         },
-        //         {
-        //            targets: 7 ,
-        //            className: ' tengah'
-        //         },
-        //         {
-        //            targets: 8 ,
-        //            className: ' tengah'
-        //         },
-        //       ],
+        columnDefs: [
+                {
+                   targets: 0 ,
+                   className: ' tengah'
+                },
+                {
+                   targets: 1 ,
+                   className: ' tengah'
+                },
+                {
+                   targets: 4 ,
+                   className: ' tengah'
+                },
+                {
+                   targets: 5 ,
+                   className: ' tengah'
+                },
+              ],
         columns: [
           {data: 'DT_Row_Index', name: 'DT_Row_Index'},
           {data: 'image', name: 'image'},
-          {data: 'sdd_nama', name: 'sdd_nama'},
-          {data: 'sdd_tempat_lahir', name: 'sdd_tempat_lahir'},
-          {data: 'sdd_tanggal_lahir', name: 'sdd_tanggal_lahir'},
-          {data: 'sdd_nomor_induk_nasional', name: 'sdd_nomor_induk_nasional'},
+          {data: 'data_siswa', name: 'data_siswa'},
           {data: 'created_by', name: 'created_by'},
-          {data: 'sdd_status', name: 'sdd_status'},
+          {data: 'status', name: 'status'},
           {data: 'aksi'}
         ]
 
