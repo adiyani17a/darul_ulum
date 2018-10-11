@@ -8,7 +8,7 @@ class siswa_pendidikan extends Model
 {
     protected $table = 'd_siswa_pendidikan';
 	protected $primaryKey = 'si_id';
-	public $timestamp = false;
+	public $timestamps = false;
 
 	protected $fillable = ['sp_id',
 						   'sp_detail',

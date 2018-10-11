@@ -62,7 +62,11 @@
                     <tr>
                       <th>JENIS KELAMIN</th>
                       <td>
-                        <input type="text" name="sdd_jenis_kelamin" class="sdd_jenis_kelamin form-control wajib">
+                        <select class="form-control option sdd_jenis_kelamin" name="sdd_jenis_kelamin">
+                          <option value="">Pilih - Data</option>
+                          <option value="L">Laki</option>
+                          <option value="P">Perempuan</option>
+                        </select>
                       </td>
                     </tr>
                     <tr>
@@ -104,9 +108,15 @@
                       </td>
                     </tr>
                     <tr>
-                      <th>ANAK KE</th>
+                      <th>JUMLAH SAUDARA</th>
                       <td>
-                        <input type="text" name="sdd_urutan_anak" class="sdd_urutan_anak hanya_angka form-control wajib">
+                        <input type="text" name="sdd_saudara_kandung" class="sdd_saudara_kandung hanya_angka form-control wajib">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>BAHASA SEHARI HARI</th>
+                      <td>
+                        <input type="text" name="sdd_bahasa" class="sdd_bahasa form-control wajib">
                       </td>
                     </tr>
                   </table>
@@ -133,7 +143,7 @@
                     <tr>
                       <th>TINGGAL DENGAN</th>
                       <td>
-                       <select class="form-control option stt_status_tempat_tinggal" class="stt_status_tempat_tinggal">
+                       <select class="form-control option stt_status_tempat_tinggal" name="stt_status_tempat_tinggal">
                           <option value="">Pilih - Data</option>
                           <option value="ORANG TUA">ORANG TUA</option>
                           <option value="KRISTEN">KONTRAK</option>
@@ -211,7 +221,7 @@
                     <tr>
                       <th>PENDIDIKAN SEBELUMNYA</th>
                       <td>
-                        <select class="form-control option sdd_jenjang_sebelumnya" class="sdd_jenjang_sebelumnya">
+                        <select class="form-control option sdd_jenjang_sebelumnya" name="sdd_jenjang_sebelumnya">
                           <option value="">Pilih - Data</option>
                           <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
                           <option value="TK">TK</option>
@@ -242,6 +252,30 @@
                       <th>TANGGAL IJAZAH TERAKHIR</th>
                       <td>
                         <input type="text" name="sp_tanggal_ijazah" class="sp_tanggal_ijazah date form-control wajib">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>DAFTAR DI SEKOLAH</th>
+                      <td>
+                        @if (Auth::user()->akses('PENERIMAAN SISWA BARU','sekolah'))
+                          <select class="sdd_sekolah form-control option " name="sdd_sekolah">
+                            <option value="">Pilih - Sekolah</option>
+                            @foreach($sekolah as $val)
+                              <option @if (Auth::user()->sekolah_id == $val->s_id)
+                                selected="" 
+                              @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
+                            @endforeach
+                          </select>
+                        @else
+                          <select class="sdd_sekolah form-control option" name="sdd_sekolah">
+                            <option value="">Pilih - Sekolah</option>
+                            @foreach($sekolah as $val)
+                              <option @if (Auth::user()->sekolah_id == $val->s_id)
+                                selected="" 
+                              @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
+                            @endforeach
+                          </select>
+                        @endif
                       </td>
                     </tr>
                     <tr>
@@ -510,7 +544,7 @@
                     <tr>
                       <th>PENGHASILAN</th>
                       <td>
-                        <input type="text" name="sw_penghaswlan" class="sw_penghaswlan form-control wajib">
+                        <input type="text" name="sw_penghasilan" class="sw_penghasilan form-control wajib">
                       </td>
                     </tr>
                     <tr>

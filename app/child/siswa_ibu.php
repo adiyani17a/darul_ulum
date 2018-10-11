@@ -8,7 +8,7 @@ class siswa_ibu extends Model
 {
     protected $table = 'd_siswa_ibu';
 	protected $primaryKey = 'si_id';
-	public $timestamp = false;
+	public $timestamps = false;
 
 	protected $fillable = ['si_id',
 						   'si_nama',

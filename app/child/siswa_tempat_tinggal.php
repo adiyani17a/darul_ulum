@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class siswa_tempat_tinggal extends Model
 {
-    protected $table = 'd_siswa_pendidikan';
-	protected $primaryKey = 'si_id';
-	public $timestamp = false;
+    protected $table = 'd_siswa_tempat_tinggal';
+	protected $primaryKey = 'stt_id';
+	public $timestamps = false;
 
 	protected $fillable = ['stt_id',
 						   'stt_alamat',

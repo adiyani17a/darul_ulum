@@ -8,7 +8,7 @@ class siswa_ayah extends Model
 {
     protected $table = 'd_siswa_ayah';
 	protected $primaryKey = 'sa_id';
-	public $timestamp = false;
+	public $timestamps = false;
 
 	protected $fillable = ['sa_id',
 						   'sa_nama',

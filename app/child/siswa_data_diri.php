@@ -38,7 +38,32 @@ class siswa_data_diri extends Model
 
 	public function siswa_ayah()
 	{
-        return $this->hasOne('App\child\siswa_ayah','sdd_diri');
+        return $this->hasMany('App\child\siswa_ayah','sdd_id');
+	}
+
+	public function siswa_ibu()
+	{
+        return $this->hasMany('App\child\siswa_ibu','sdd_id');
+	}
+
+	public function siswa_wali()
+	{
+        return $this->hasMany('App\child\siswa_wali','sdd_id');
+	}
+
+	public function siswa_kesehatan()
+	{
+        return $this->hasMany('App\child\siswa_kesehatan','sk_id');
+	}
+
+	public function siswa_pendidikan()
+	{
+        return $this->hasMany('App\child\siswa_pendidikan','sp_id');
+	}
+
+	public function siswa_tempat_tinggal()
+	{
+        return $this->hasMany('App\child\siswa_tempat_tinggal','stt_id');
 	}
 
 	public function sekolah()

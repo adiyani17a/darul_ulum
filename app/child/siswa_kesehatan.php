@@ -8,7 +8,7 @@ class siswa_kesehatan extends Model
 {
     protected $table = 'd_siswa_kesehatan';
 	protected $primaryKey = 'si_id';
-	public $timestamp = false;
+	public $timestamps = false;
 
 	protected $fillable = ['sk_id',
 						   'sk_detail',
