@@ -81,7 +81,7 @@ class penerimaan_controller extends Controller
 			                    		'</tr>'.
 			                    		'<tr>'.
 			                    			'<td>TANGGAL LAHIR</td>'.
-			                    			'<td>'.carbon::parse($data->sdd_tempat_lahir)->format('d M Y').'</td>'.
+			                    			'<td>'.carbon::parse($data->sdd_tanggal_lahir)->format('d M Y').'</td>'.
 			                    		'</tr>'.
 			                    		'<tr>'.
 			                    			'<td>NAMA IBU</td>'.
@@ -202,6 +202,8 @@ class penerimaan_controller extends Controller
 	        		$save['si_id'] = $id;
 		        	if ($tes[$i] == 'si_tanggal_lahir') {
 		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
+		        	}else if ($tes[$i] == 'si_penghasilan'){
+		        		$save[$tes[$i]] = filter_var($tes1[$tes[$i]],FILTER_SANITIZE_NUMBER_INT);
 		        	}else{
 		        		$save[$tes[$i]] = $tes1[$tes[$i]];
 		        	}
@@ -214,6 +216,8 @@ class penerimaan_controller extends Controller
 	        		$save['sa_id'] = $id;
 		        	if ($tes[$i] == 'sa_tanggal_lahir') {
 		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
+		        	}else if ($tes[$i] == 'sa_penghasilan'){
+		        		$save[$tes[$i]] = filter_var($tes1[$tes[$i]],FILTER_SANITIZE_NUMBER_INT);
 		        	}else{
 		        		$save[$tes[$i]] = $tes1[$tes[$i]];
 		        	}
@@ -226,6 +230,8 @@ class penerimaan_controller extends Controller
 	        		$save['sw_id'] = $id;
 		        	if ($tes[$i] == 'sw_tanggal_lahir') {
 		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
+		        	}else if ($tes[$i] == 'sw_penghasilan'){
+		        		$save[$tes[$i]] = filter_var($tes1[$tes[$i]],FILTER_SANITIZE_NUMBER_INT);
 		        	}else{
 		        		$save[$tes[$i]] = $tes1[$tes[$i]];
 		        	}

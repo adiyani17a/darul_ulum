@@ -140,7 +140,7 @@
                     <tr>
                       <th>NOMOR TELPON</th>
                       <td>
-                        <input type="text" name="stt_no_telp" class="stt_no_telp form-control wajib">
+                        <input type="text" name="stt_no_telp" class="stt_no_telp hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -252,12 +252,6 @@
                       </td>
                     </tr>
                     <tr>
-                      <th>TANGGAL IJAZAH TERAKHIR</th>
-                      <td>
-                        <input type="text" name="sp_tanggal_ijazah" class="sp_tanggal_ijazah date form-control wajib">
-                      </td>
-                    </tr>
-                    <tr>
                       <th>DAFTAR DI SEKOLAH</th>
                       <td>
                         @if (Auth::user()->akses('PENERIMAAN SISWA BARU','sekolah'))
@@ -357,7 +351,7 @@
                     <tr>
                       <th>PENGHASILAN</th>
                       <td>
-                        <input type="text" name="sa_penghasilan" class="sa_penghasilan form-control wajib">
+                        <input type="text" name="sa_penghasilan" class="sa_penghasilan penghasilan form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -369,7 +363,7 @@
                     <tr>
                       <th>TELPON</th>
                       <td>
-                        <input type="text" name="sa_telpon" class="sa_telpon form-control wajib">
+                        <input type="text" name="sa_telpon" class="sa_telpon hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -452,7 +446,7 @@
                     <tr>
                       <th>PENGHASILAN</th>
                       <td>
-                        <input type="text" name="si_penghasilan" class="si_penghasilan form-control wajib">
+                        <input type="text" name="si_penghasilan" class="si_penghasilan penghasilan form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -464,7 +458,7 @@
                     <tr>
                       <th>TELPON</th>
                       <td>
-                        <input type="text" name="si_telpon" class="si_telpon form-control wajib">
+                        <input type="text" name="si_telpon" class="si_telpon hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -527,7 +521,7 @@
                     <tr>
                       <th>PENDIDIKAN TERAKHIR</th>
                       <td>
-                        <select class="form-control option sw_pendidikan" class="sw_pendidikan">
+                        <select class="form-control option sw_pendidikan" name="sw_pendidikan">
                           <option value="">Pilih - Data</option>
                           <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
                           <option value="TK">TK</option>
@@ -547,7 +541,7 @@
                     <tr>
                       <th>PENGHASILAN</th>
                       <td>
-                        <input type="text" name="sw_penghasilan" class="sw_penghasilan form-control wajib">
+                        <input type="text" name="sw_penghasilan" class="sw_penghasilan penghasilan form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -559,7 +553,7 @@
                     <tr>
                       <th>TELPON</th>
                       <td>
-                        <input type="text" name="sw_telpon" class="sw_telpon form-control wajib">
+                        <input type="text" name="sw_telpon" class="sw_telpon hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -610,9 +604,12 @@
 @endsection
 @section('extra_script')
 <script>
-$('.date').datepicker();
+$('.date').datepicker({
+  format: "dd/mm/yyyy",
+  autoclose: true
+});
 
-
+$('.penghasilan').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
 
 $('#chooseFile').bind('change', function () {
   var filename = $("#chooseFile").val();
