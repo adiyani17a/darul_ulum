@@ -198,13 +198,13 @@
                     <tr>
                       <th>BERAT BADAN</th>
                       <td>
-                        <input value="{{ $data->sdd_berat }}" type="text" name="sdd_berat" class="sdd_berat form-control wajib">
+                        <input value="{{ $data->sdd_berat }}" type="text" name="sdd_berat"  class="sdd_berat hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
                       <th>TINGGI BADAN</th>
                       <td>
-                        <input value="{{ $data->sdd_tinggi }}" type="text" name="sdd_tinggi" class="sdd_tinggi form-control wajib">
+                        <input value="{{ $data->sdd_tinggi }}" type="text" name="sdd_tinggi" class="sdd_tinggi hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
