@@ -32,7 +32,7 @@
             </div>
           @endif
           <div class="col-sm-3" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
-            <select class="form-control filter_bulan">
+            <select class="form-control filter_bulan" onchange="rubah()">
               <option>Pilih - Bulan</option>
               @foreach ($additionalData['bulan_spp'] as $i => $val)
                 <option @if (carbon\carbon::now()->format('m') ==  $additionalData['bulan_spp_number'][$i])
@@ -42,7 +42,7 @@
             </select>
           </div>
           <div class="col-sm-3" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;">
-            <select class="form-control filter_tahun">
+            <select class="form-control filter_tahun" onchange="rubah()">
               <option>Pilih - Tahun</option>
               @foreach ($additionalData['tahun_spp'] as $i => $val)
                 <option @if (carbon\carbon::now()->format('Y') ==  $additionalData['tahun_spp'][$i])
@@ -127,6 +127,11 @@ $(document).ready(function(){
 
   });
 })
+
+function rubah() {
+  var table = $('#table_data').DataTable();
+  table.ajax.reload();
+}
 
 $('.btn_modal').click(function(){
   $('#tambah-akun :input:not(input[name="_token"])').val('');
