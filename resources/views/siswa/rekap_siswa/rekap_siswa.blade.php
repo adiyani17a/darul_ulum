@@ -1,6 +1,10 @@
 @extends('main')
 @section('content')
-
+<style type="text/css">
+  .cursor{
+    cursor: pointer;
+  }
+</style>
 <!-- partial -->
 <div class="content-wrapper">
   <div class="row">
@@ -9,25 +13,25 @@
         <ol class="breadcrumb bg-info">
           <li class="breadcrumb-item"><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a></li>
           <li class="breadcrumb-item">Kesiswaan</li>
-          <li class="breadcrumb-item active" aria-current="page">Penerimaan Siswa Baru</li>
+          <li class="breadcrumb-item active" aria-current="page">Rekap Siswa</li>
         </ol>
       </nav>
     </div>
-  	<div class="col-lg-12 grid-margin stretch-card">
+    <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Data Siswa</h4>
+        </div>
         <div class="card-body">
-          <h4 class="card-title">Penerimaan Siswa Baru</h4>
-          <div class="alert col-sm-6 alert-info alert-dismissible" title="DP sudah Lunas">
+          @if (Session::has('message'))
+            <div class="alert alert-success alert-dismissible" title="DP sudah Lunas">
               <button type="button" class="close" data-dismiss="alert">×</button>
-              <strong>Notice!</strong> <br>
-              Data yang sudah di setujui akan tampil di menu data siswa.
-          </div>
-          <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-          	<a href="{{ url('penerimaan/create_siswa') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
-          </div>
-
+              <strong>Berhasil!</strong> <br>
+              Simpan Data.
+            </div>
+          @endif
           <div class="table-responsive">
-			        <table id="table_data" class="table table-striped table-hover" cellspacing="0">
+              <table id="table_data" class="table table-hover" cellspacing="0">
                   <thead class="bg-gradient-info">
                     <tr>
                       <th>No</th>
@@ -48,8 +52,6 @@
   </div>
 </div>
 
-@include('kas_keluar.konfirmasi_pengeluaran_kas.modal')
-
 <!-- content-wrapper ends -->
 @endsection
 @section('extra_script')
@@ -61,11 +63,11 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url:'{{ route('datatable_siswa') }}',
+            url:'{{ route('datatable_rekap_siswa') }}',
             data:{_token:'{{ csrf_token() }}'},
             error:function(){
               var table = $('#table_data').DataTable();
-              table.ajax.reload();
+              table.ajax.reload(null, false);
             }
         },
         columnDefs: [
@@ -103,28 +105,80 @@ $('.btn_modal').click(function(){
   $('#tambah-akun select:not(.a_akun_dka):not(.a_aktif)').val('').trigger('change');
 })
 
+function edit(id) {
+ location.href = '{{  url('penerimaan/edit_rekap_siswa') }}?id='+id;
+}
 
-function detail(id) {
-  $.ajax({
-      url:baseUrl +'/kas_keluar/detail_konfirmasi_pengeluaran_kas',
-      type:'get',
-      data:{id},
-      success:function(data){
-        $('.table_append').html(data);
-        $('#detail').modal('show');
-      },
-      error:function(){
-        iziToast.warning({
-          icon: 'fa fa-times',
-          message: 'Terjadi Kesalahan!',
-        });
-      }
+function rekap_siswa(id,param) {
+  iziToast.show({
+    overlay: true,
+    close: false,
+    timeout: 20000, 
+    color: 'dark',
+    icon: 'fas fa-question-circle',
+    title: param+' Data!',
+    message: 'Apakah Anda Yakin ?!',
+    position: 'center',
+    progressBarColor: 'rgb(0, 255, 184)',
+    buttons: [
+    [
+        '<button style="background-color:#32CD32;">Ya</button>',
+        function (instance, toast) {
+
+          $.ajaxSetup({
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url:baseUrl +'/penerimaan/simpan_rekap_siswa',
+                type:'get',
+                data:{id,param},
+                dataType:'json',
+                success:function(data){
+                  $('#tambah-jabatan').modal('hide');
+                  var table = $('#table_data').DataTable();
+                  table.ajax.reload(null, false);
+                  if (data.status == 1) {
+                    iziToast.success({
+                          icon: 'fa fa-trash',
+                          title: 'Berhasil',
+                          color:'yellow',
+                          message: data.pesan,
+                    });
+                  }else{
+                    iziToast.warning({
+                          icon: 'fa fa-times',
+                          title: 'Oops,',
+                          message: data.pesan,
+                    });
+                  }
+                },
+                error:function(){
+                  iziToast.warning({
+                    icon: 'fa fa-times',
+                    message: 'Terjadi Kesalahan!',
+                  });
+                }
+            });
+            instance.hide({
+                transitionOut: 'fadeOutUp'
+            }, toast);
+        }
+    ],
+    [
+        '<button style="background-color:#44d7c9;">Cancel</button>',
+        function (instance, toast) {
+          instance.hide({
+            transitionOut: 'fadeOutUp'
+          }, toast);
+        }
+      ]
+    ]
   });
 }
 
-function edit(id) {
- location.href = '{{  url('penerimaan/edit_siswa') }}?id='+id;
-}
 function hapus(id) {
   iziToast.show({
     overlay: true,
@@ -155,7 +209,7 @@ function hapus(id) {
                 success:function(data){
                   $('#tambah-jabatan').modal('hide');
                   var table = $('#table_data').DataTable();
-                  table.ajax.reload();
+                  table.ajax.reload(null, false);
                   if (data.status == 1) {
                     iziToast.success({
                           icon: 'fa fa-trash',
@@ -196,7 +250,41 @@ function hapus(id) {
 }
 
 function cetak(id) {
-  window.open('{{  url('penerimaan/cetak_siswa') }}?id='+id)
+  window.open('{{  url('penerimaan/cetak_rekap_siswa') }}?id='+id)
+}
+
+function ubah_status(id,param) {
+  $.ajax({
+      url:baseUrl +'/penerimaan/ubah_status_rekap_siswa',
+      type:'get',
+      data:{id,param},
+      dataType:'json',
+      success:function(data){
+        $('#tambah-jabatan').modal('hide');
+        var table = $('#table_data').DataTable();
+        table.ajax.reload(null, false );
+        if (data.status == 1) {
+          iziToast.success({
+                icon: 'fa fa-trash',
+                title: 'Berhasil',
+                color:'yellow',
+                message: data.pesan,
+          });
+        }else{
+          iziToast.warning({
+                icon: 'fa fa-times',
+                title: 'Oops,',
+                message: data.pesan,
+          });
+        }
+      },
+      error:function(){
+        iziToast.warning({
+          icon: 'fa fa-times',
+          message: 'Terjadi Kesalahan!',
+        });
+      }
+  });
 }
 </script>
 @endsection

@@ -26,6 +26,6 @@ class siswa_wali extends Model
 
 	public function siswa_data_diri()
 	{
-        return $this->hasOne('App\child\siswa_data_diri','sw_id');
+        return $this->belongsTo('App\child\siswa_data_diri','sw_id','sdd_id');
 	}
 }

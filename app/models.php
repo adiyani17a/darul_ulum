@@ -31,6 +31,7 @@ use App\child\siswa_data_diri;
 use App\child\siswa_kesehatan;
 use App\child\siswa_pendidikan;
 use App\child\siswa_tempat_tinggal;
+use App\child\history_spp;
 class models extends Model
 {
     public function jabatan()
@@ -171,6 +172,11 @@ class models extends Model
 	public function siswa_tempat_tinggal()
 	{
 		return $siswa_tempat_tinggal = new siswa_tempat_tinggal();
+	}
+
+	public function history_spp()
+	{
+		return $history_spp = new history_spp();
 	}
 
 	public function check_jurnal($nota)

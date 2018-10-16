@@ -45,6 +45,7 @@
           <div class="login100-form-title p-b-34 p-t-27">
             <img src="{{asset('assets/images/logo1.png')}}" width="200px" height="200px">
           </div>
+            
           <span class="login100-form-title p-b-34 p-t-27">
             <b>SIM - K</b><br>
             YAYASAN DARUL ULUM

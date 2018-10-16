@@ -14,7 +14,7 @@
               <tr>
                 <td>Kode Akun</td>
                 <td>
-                  <input type="text"  class="a_id1 form-control hanya_angka wajib center" name="a_id1">
+                  <input type="text"  class="a_id1 form-control hanya_angka wajib tengah" name="a_id1">
                   <input type="hidden" class="id" name="id">
                 </td>
                 <td>
@@ -24,7 +24,7 @@
               <tr>
                 <td>Nama Akun</td>
                 <td>
-                  <input type="text"  class="a_nama1 huruf_besar form-control wajib center" name="a_nama1">
+                  <input type="text"  class="a_nama1 huruf_besar form-control wajib tengah" name="a_nama1">
                 </td>
                 <td>
                   <input readonly="" type="text" class="a_nama2 form-control" name="a_nama2">
@@ -131,14 +131,14 @@
               <tr>
                 <td>Kode Akun</td>
                 <td colspan="2">
-                  <input type="text" readonly="" class="e_id1 form-control hanye_angka wajib center" name="e_id1">
+                  <input type="text" readonly="" class="e_id1 form-control hanye_angka wajib tengah" name="e_id1">
                   <input type="hidden" class="id" name="id">
                 </td>
               </tr>
               <tr>
                 <td>Nama Akun</td>
                 <td colspan="2">
-                  <input type="text"  class="e_nama1 huruf_besar form-control wajib center" name="e_nama1">
+                  <input type="text"  class="e_nama1 huruf_besar form-control wajib tengah" name="e_nama1">
                 </td>
               </tr>
               <tr>

@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `d_akun` (
   PRIMARY KEY (`a_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_akun: ~21 rows (approximately)
+-- Dumping data for table darul_ulum.d_akun: ~24 rows (approximately)
 /*!40000 ALTER TABLE `d_akun` DISABLE KEYS */;
 REPLACE INTO `d_akun` (`a_id`, `a_nama`, `a_sekolah`, `a_type_akun`, `a_akun_dka`, `a_aktif`, `a_master_akun`, `a_master_nama`, `a_group_neraca`, `a_group_laba_rugi`, `a_saldo_awal`, `a_tanggal_pembuka`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
 	('111101', 'KAS SDN DARUL ULUM GRESIK', 1, 'OCF', 'DEBET', 'Y', '11110', 'KAS', 1, 3, 5000000, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:20:33', '2018-09-18 19:55:29'),
@@ -49,6 +49,9 @@ REPLACE INTO `d_akun` (`a_id`, `a_nama`, `a_sekolah`, `a_type_akun`, `a_akun_dka
 	('411102', 'PENDAPATAN DANA BOS MTS DARUL ULUM GRESIK', 2, 'OCF', 'KREDIT', 'Y', '41110', 'PENDAPATAN DANA BOS', NULL, 2, 0, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:25:58', '2018-09-12 01:25:58'),
 	('411201', 'PENDAPATAN USAHA SDN DARUL ULUM GRESIK', 1, 'OCF', 'KREDIT', 'Y', '41120', 'PENDAPATAN USAHA', NULL, NULL, 0, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:26:32', '2018-09-12 01:26:32'),
 	('411202', 'PENDAPATAN USAHA MTS DARUL ULUM GRESIK', 2, 'OCF', 'KREDIT', 'Y', '41120', 'PENDAPATAN USAHA', NULL, NULL, 0, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:26:32', '2018-09-12 01:26:32'),
+	('411301', 'PENDAPATAN PEMBAYARAN SPP SDN DARUL ULUM GRESIK', 1, 'OCF', 'KREDIT', 'Y', '41130', 'PENDAPATAN PEMBAYARAN SPP', NULL, NULL, 0, '2018-10-01', 'DASD', 'DASD', '2018-10-16 16:01:41', '2018-10-16 16:01:41'),
+	('411302', 'PENDAPATAN PEMBAYARAN SPP MADRASAH TSANAWIYAH DARUL ULUM GRESIK', 2, 'OCF', 'KREDIT', 'Y', '41130', 'PENDAPATAN PEMBAYARAN SPP', NULL, NULL, 0, '2018-10-01', 'DASD', 'DASD', '2018-10-16 16:01:41', '2018-10-16 16:01:41'),
+	('411303', 'PENDAPATAN PEMBAYARAN SPP SEKOLAH MENENGAH ATAS DARUL ULUM GRESIK', 3, 'OCF', 'KREDIT', 'Y', '41130', 'PENDAPATAN PEMBAYARAN SPP', NULL, NULL, 0, '2018-10-01', 'DASD', 'DASD', '2018-10-16 16:01:41', '2018-10-16 16:01:41'),
 	('610001', 'GAJI STAFF SDN DARUL ULUM GRESIK', 1, 'OCF', 'DEBET', 'Y', '61000', 'GAJI STAFF', NULL, NULL, 0, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:27:02', '2018-09-12 01:27:02'),
 	('610002', 'GAJI STAFF MTS DARUL ULUM GRESIK', 2, 'OCF', 'DEBET', 'Y', '61000', 'GAJI STAFF', NULL, NULL, 0, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:27:02', '2018-09-12 01:27:02'),
 	('621001', 'BIAYA ATK SDN DARUL ULUM GRESIK', 1, 'OCF', 'DEBET', 'Y', '62100', 'BIAYA ATK', NULL, NULL, 0, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:27:43', '2018-09-12 01:27:43'),
@@ -79,8 +82,7 @@ CREATE TABLE IF NOT EXISTS `d_barang` (
 /*!40000 ALTER TABLE `d_barang` DISABLE KEYS */;
 REPLACE INTO `d_barang` (`b_id`, `b_nama`, `b_keterangan`, `b_harga_tertinggi`, `b_akun`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
 	(1, 'KURSI', 'PEMBELIAN KURSI', 250000, '62100', '2018-09-19 21:57:47', '2018-09-22 20:36:56', 'DASD', 'DASD'),
-	(2, 'SAPU', 'PEMBELIAN SAPU', 50000, '62400', '2018-09-19 22:01:26', '2018-09-22 20:38:37', 'DASD', 'DASD'),
-	(3, 'PAPAN TULIS', 'PAPAN TULIS', 200000, '62100', '2018-09-22 20:38:56', '2018-09-22 20:38:56', 'DASD', 'DASD');
+	(2, 'SAPU', 'PEMBELIAN SAPU', 50000, '62400', '2018-09-19 22:01:26', '2018-09-22 20:38:37', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_barang` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_bukti_kas_keluar
@@ -91,6 +93,7 @@ CREATE TABLE IF NOT EXISTS `d_bukti_kas_keluar` (
   `bkk_keterangan` text,
   `bkk_sekolah` int(11) DEFAULT NULL,
   `bkk_tanggal` date DEFAULT NULL,
+  `bkk_status_print` enum('Released','Printed') DEFAULT 'Released',
   `created_by` varchar(50) DEFAULT NULL,
   `updated_by` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -98,10 +101,10 @@ CREATE TABLE IF NOT EXISTS `d_bukti_kas_keluar` (
   PRIMARY KEY (`bkk_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_bukti_kas_keluar: ~2 rows (approximately)
+-- Dumping data for table darul_ulum.d_bukti_kas_keluar: ~1 rows (approximately)
 /*!40000 ALTER TABLE `d_bukti_kas_keluar` DISABLE KEYS */;
-REPLACE INTO `d_bukti_kas_keluar` (`bkk_id`, `bkk_pc_ref`, `bkk_sisa_kembali`, `bkk_keterangan`, `bkk_sekolah`, `bkk_tanggal`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(1, 'PC-092018/2/001', 25000, 'TEWS', 2, '2018-09-24', 'DASD', 'DASD', '2018-09-24 23:28:58', '2018-09-24 23:28:58');
+REPLACE INTO `d_bukti_kas_keluar` (`bkk_id`, `bkk_pc_ref`, `bkk_sisa_kembali`, `bkk_keterangan`, `bkk_sekolah`, `bkk_tanggal`, `bkk_status_print`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+	(1, 'PC-092018/2/001', -50000, 'TES', 2, '2018-09-28', 'Released', 'DASD', 'DASD', '2018-09-28 23:27:05', '2018-09-28 23:27:05');
 /*!40000 ALTER TABLE `d_bukti_kas_keluar` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_bukti_kas_keluar_detail
@@ -120,11 +123,13 @@ CREATE TABLE IF NOT EXISTS `d_bukti_kas_keluar_detail` (
   CONSTRAINT `FK_d_bukti_kas_keluar_detail_d_bukti_kas_keluar` FOREIGN KEY (`bkkd_id`) REFERENCES `d_bukti_kas_keluar` (`bkk_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_bukti_kas_keluar_detail: ~2 rows (approximately)
+-- Dumping data for table darul_ulum.d_bukti_kas_keluar_detail: ~4 rows (approximately)
 /*!40000 ALTER TABLE `d_bukti_kas_keluar_detail` DISABLE KEYS */;
 REPLACE INTO `d_bukti_kas_keluar_detail` (`bkkd_id`, `bkkd_detail`, `bkkd_pcd_detail`, `bkkd_qty`, `bkkd_harga_awal`, `bkkd_harga`, `bkkd_keterangan`, `bkkd_jenis`, `bkkd_akun`, `bkkd_image`) VALUES
-	(1, 1, 1, 1, 200000, 150000, 'TES', 'POSTING', '62100', NULL),
-	(1, 2, 0, 1, 25000, 25000, 'BENSIN', 'BIAYA', '62400', NULL);
+	(1, 1, 1, 10, 2000000, 2000000, '', 'POSTING', '62100', NULL),
+	(1, 2, 2, 5, 750000, 750000, '', 'POSTING', '62100', NULL),
+	(1, 3, 3, 5, 125000, 150000, '', 'POSTING', '62400', NULL),
+	(1, 4, 0, 1, 25000, 25000, 'TES', 'BIAYA', '62400', NULL);
 /*!40000 ALTER TABLE `d_bukti_kas_keluar_detail` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_daftar_menu
@@ -135,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `d_daftar_menu` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`dm_id`,`dm_nama`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table darul_ulum.d_daftar_menu: ~19 rows (approximately)
 /*!40000 ALTER TABLE `d_daftar_menu` DISABLE KEYS */;
@@ -159,7 +164,10 @@ REPLACE INTO `d_daftar_menu` (`dm_id`, `dm_nama`, `dm_group`, `created_at`, `upd
 	(17, 'BARANG', 2, '2018-09-18 20:56:41', '2018-09-18 20:56:41'),
 	(18, 'RENCANA PEMBELIAN', 6, '2018-09-18 20:56:49', '2018-09-18 20:57:36'),
 	(19, 'KONFIRMASI PENGELUARAN', 6, '2018-09-18 20:57:14', '2018-09-18 20:57:14'),
-	(20, 'APPROVE PEMBELIAN', 6, '2018-09-19 23:52:29', '2018-09-19 23:52:29');
+	(20, 'APPROVE PEMBELIAN', 6, '2018-09-19 23:52:29', '2018-09-19 23:52:29'),
+	(21, 'PEMASUKAN KAS', 5, '2018-09-26 06:56:48', '2018-10-03 20:42:09'),
+	(22, 'KONFIRMASI SISWA', 4, '2018-10-13 18:07:28', '2018-10-13 18:07:28'),
+	(23, 'REKAP SISWA', 4, '2018-10-13 19:48:00', '2018-10-13 19:48:00');
 /*!40000 ALTER TABLE `d_daftar_menu` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_group_akun
@@ -181,6 +189,25 @@ REPLACE INTO `d_group_akun` (`ga_id`, `ga_nama`, `ga_jenis_group`, `ga_jenis_ner
 	(2, 'PENDAPATAN DARI NEGARA', 'labarugi', NULL, '2018-09-11 13:58:56', '2018-09-11 20:59:35', 'DASD', 'DASD'),
 	(3, 'TES', 'labarugi', NULL, '2018-09-18 19:55:29', '2018-09-18 19:55:29', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_group_akun` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_group_spp
+CREATE TABLE IF NOT EXISTS `d_group_spp` (
+  `gs_id` int(11) NOT NULL,
+  `gs_nama` varchar(50) DEFAULT NULL,
+  `gs_keterangan` text,
+  `gs_nilai` double DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `updated_by` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`gs_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table darul_ulum.d_group_spp: ~0 rows (approximately)
+/*!40000 ALTER TABLE `d_group_spp` DISABLE KEYS */;
+REPLACE INTO `d_group_spp` (`gs_id`, `gs_nama`, `gs_keterangan`, `gs_nilai`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
+	(1, 'GOLONGAN A', 'GOLONGAN ATAS', 300000, '2018-10-04 22:10:59', '2018-10-04 22:10:59', 'DASD', 'DASD');
+/*!40000 ALTER TABLE `d_group_spp` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_grup_menu
 CREATE TABLE IF NOT EXISTS `d_grup_menu` (
@@ -223,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `d_hak_akses` (
 /*!40000 ALTER TABLE `d_hak_akses` DISABLE KEYS */;
 REPLACE INTO `d_hak_akses` (`ha_id`, `ha_dt`, `ha_level`, `ha_menu`, `aktif`, `tambah`, `ubah`, `hapus`, `sekolah`, `global`, `print`, `created_at`, `updated_at`) VALUES
 	(5, 1, 1, 'SETTING USER', b'1', b'1', b'1', b'1', b'1', b'1', b'1', '2018-09-09 20:14:05', '2018-09-11 23:16:04'),
-	(5, 2, 2, 'SETTING USER', b'1', b'1', b'1', b'1', b'1', b'1', b'1', '2018-09-09 20:14:05', '2018-09-11 23:14:58'),
+	(5, 2, 2, 'SETTING USER', b'1', b'1', b'1', b'1', b'1', b'1', b'1', '2018-09-09 20:14:05', '2018-10-02 20:30:59'),
 	(5, 3, 3, 'SETTING USER', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-09-09 20:14:05', '2018-09-09 20:14:05'),
 	(5, 4, 4, 'SETTING USER', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-09-09 20:14:05', '2018-09-09 20:14:05'),
 	(5, 5, 5, 'SETTING USER', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-09-09 20:14:05', '2018-09-09 20:14:05'),
@@ -321,8 +348,43 @@ REPLACE INTO `d_hak_akses` (`ha_id`, `ha_dt`, `ha_level`, `ha_menu`, `aktif`, `t
 	(25, 2, 2, 'APPROVE PEMBELIAN', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-09-19 23:52:29', '2018-09-19 23:52:29'),
 	(25, 3, 3, 'APPROVE PEMBELIAN', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-09-19 23:52:29', '2018-09-19 23:52:29'),
 	(25, 4, 4, 'APPROVE PEMBELIAN', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-09-19 23:52:29', '2018-09-19 23:52:29'),
-	(25, 5, 5, 'APPROVE PEMBELIAN', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-09-19 23:52:29', '2018-09-19 23:52:29');
+	(25, 5, 5, 'APPROVE PEMBELIAN', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-09-19 23:52:29', '2018-09-19 23:52:29'),
+	(26, 1, 1, 'PEMASUKAN KAS', b'1', b'1', b'1', b'1', b'1', b'1', b'1', '2018-10-03 20:42:09', '2018-10-03 20:43:55'),
+	(26, 2, 2, 'PEMASUKAN KAS', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-03 20:42:09', '2018-10-03 20:42:09'),
+	(26, 3, 3, 'PEMASUKAN KAS', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-03 20:42:09', '2018-10-03 20:42:09'),
+	(26, 4, 4, 'PEMASUKAN KAS', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-03 20:42:09', '2018-10-03 20:42:09'),
+	(26, 5, 5, 'PEMASUKAN KAS', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-03 20:42:09', '2018-10-03 20:42:09'),
+	(27, 1, 1, 'KONFIRMASI SISWA', b'1', b'1', b'1', b'1', b'1', b'1', b'1', '2018-10-13 18:07:29', '2018-10-13 18:07:29'),
+	(27, 2, 2, 'KONFIRMASI SISWA', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-13 18:07:29', '2018-10-13 18:07:29'),
+	(27, 3, 3, 'KONFIRMASI SISWA', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-13 18:07:29', '2018-10-13 18:07:29'),
+	(27, 4, 4, 'KONFIRMASI SISWA', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-13 18:07:29', '2018-10-13 18:07:29'),
+	(27, 5, 5, 'KONFIRMASI SISWA', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-13 18:07:29', '2018-10-13 18:07:29'),
+	(28, 1, 1, 'REKAP SISWA', b'1', b'1', b'1', b'1', b'1', b'1', b'1', '2018-10-13 19:48:00', '2018-10-13 19:48:00'),
+	(28, 2, 2, 'REKAP SISWA', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-13 19:48:00', '2018-10-13 19:48:00'),
+	(28, 3, 3, 'REKAP SISWA', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-13 19:48:00', '2018-10-13 19:48:00'),
+	(28, 4, 4, 'REKAP SISWA', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-13 19:48:00', '2018-10-13 19:48:00'),
+	(28, 5, 5, 'REKAP SISWA', b'0', b'0', b'0', b'0', b'0', b'0', b'0', '2018-10-13 19:48:00', '2018-10-13 19:48:00');
 /*!40000 ALTER TABLE `d_hak_akses` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_history_spp
+CREATE TABLE IF NOT EXISTS `d_history_spp` (
+  `hs_id` int(11) NOT NULL,
+  `hs_detail` int(11) NOT NULL,
+  `hs_tanggal` date DEFAULT NULL,
+  `hs_keterangan` text,
+  `hs_akun_kas` varchar(50) DEFAULT NULL,
+  `hs_akun_pendapatan` varchar(50) DEFAULT NULL,
+  `hs_jumlah` double DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `updated_by` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`hs_id`,`hs_detail`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table darul_ulum.d_history_spp: ~0 rows (approximately)
+/*!40000 ALTER TABLE `d_history_spp` DISABLE KEYS */;
+/*!40000 ALTER TABLE `d_history_spp` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_jabatan
 CREATE TABLE IF NOT EXISTS `d_jabatan` (
@@ -359,16 +421,15 @@ CREATE TABLE IF NOT EXISTS `d_jurnal` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_by` varchar(50) DEFAULT NULL,
   `updated_by` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`j_id`),
-  KEY `FK_d_jurnal_d_petty_cash` (`j_ref`),
-  CONSTRAINT `FK_d_jurnal_d_petty_cash` FOREIGN KEY (`j_ref`) REFERENCES `d_petty_cash` (`pc_nota`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`j_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_jurnal: ~2 rows (approximately)
+-- Dumping data for table darul_ulum.d_jurnal: ~3 rows (approximately)
 /*!40000 ALTER TABLE `d_jurnal` DISABLE KEYS */;
 REPLACE INTO `d_jurnal` (`j_id`, `j_tahun`, `j_tanggal`, `j_keterangan`, `j_sekolah`, `j_detail`, `j_ref`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
-	(3, '2018', '2018-09-12', 'TES', 1, 'ANGGARAN', 'PC-092018/1/001', '2018-09-23 15:20:34', '2018-09-23 15:20:34', 'DASD', 'DASD'),
-	(4, '2018', '2018-09-24', 'TEWS', 2, 'BUKTI KAS KELUAR', 'PC-092018/2/001', '2018-09-24 23:28:58', '2018-09-24 23:28:58', 'DASD', 'DASD');
+	(1, '2018', '2018-09-28', 'TES', 2, 'ANGGARAN', 'PC-092018/2/001', '2018-09-28 23:21:01', '2018-09-28 23:21:01', 'DASD', 'DASD'),
+	(2, '2018', '2018-09-28', 'TES', 2, 'BUKTI KAS KELUAR', 'PC-092018/2/001', '2018-09-28 23:27:05', '2018-09-28 23:27:05', 'DASD', 'DASD'),
+	(3, '2018', '2018-10-03', 'TES', 2, 'PEMASUKAN KAS', 'KM-102018/2/001', '2018-10-03 22:05:57', '2018-10-03 22:05:57', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_jurnal` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_jurnal_dt
@@ -383,17 +444,60 @@ CREATE TABLE IF NOT EXISTS `d_jurnal_dt` (
   CONSTRAINT `FK_d_jurnal_dt_d_jurnal` FOREIGN KEY (`jd_id`) REFERENCES `d_jurnal` (`j_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_jurnal_dt: ~7 rows (approximately)
+-- Dumping data for table darul_ulum.d_jurnal_dt: ~8 rows (approximately)
 /*!40000 ALTER TABLE `d_jurnal_dt` DISABLE KEYS */;
 REPLACE INTO `d_jurnal_dt` (`jd_id`, `jd_detail`, `jd_akun`, `jd_keterangan`, `jd_statusdk`, `jd_value`) VALUES
-	(3, 1, '111101', 'KAS SDN DARUL ULUM GRESIK TES', 'KREDIT', -376666),
-	(3, 2, '621001', 'BIAYA ATK SDN DARUL ULUM GRESIK TES', 'DEBET', 30000),
-	(3, 3, '621001', 'BIAYA ATK SDN DARUL ULUM GRESIK TES', 'DEBET', 23333),
-	(3, 4, '626001', 'BIAYA PERAWATAN SDN DARUL ULUM GRESIK FDF', 'DEBET', 323333),
-	(4, 1, '111102', 'KAS MTS DARUL ULUM GRESIK TEWS', 'DEBET', 25000),
-	(4, 2, '621002', 'BIAYA ATK MTS DARUL ULUM GRESIK TES', 'KREDIT', -50000),
-	(4, 3, '624002', 'BIAYA LAIN MTS DARUL ULUM GRESIK BENSIN', 'DEBET', 25000);
+	(1, 1, '111102', 'KAS MTS DARUL ULUM GRESIK TES', 'KREDIT', -2875000),
+	(1, 2, '621002', 'BIAYA ATK MTS DARUL ULUM GRESIK ', 'DEBET', 2000000),
+	(1, 3, '621002', 'BIAYA ATK MTS DARUL ULUM GRESIK ', 'DEBET', 750000),
+	(1, 4, '624002', 'BIAYA LAIN MTS DARUL ULUM GRESIK ', 'DEBET', 125000),
+	(2, 1, '111102', 'KAS MTS DARUL ULUM GRESIK TES', 'KREDIT', -50000),
+	(2, 2, '624002', 'BIAYA LAIN MTS DARUL ULUM GRESIK ', 'DEBET', 25000),
+	(2, 3, '624002', 'BIAYA LAIN MTS DARUL ULUM GRESIK TES', 'DEBET', 25000),
+	(3, 1, '111102', 'KAS MTS DARUL ULUM GRESIK TES', 'DEBET', 2500000),
+	(3, 2, '411102', 'PENDAPATAN DANA BOS MTS DARUL ULUM GRESIK TES', 'KREDIT', 2500000);
 /*!40000 ALTER TABLE `d_jurnal_dt` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_kas_masuk
+CREATE TABLE IF NOT EXISTS `d_kas_masuk` (
+  `km_id` int(11) NOT NULL,
+  `km_sekolah` int(11) NOT NULL,
+  `km_nota` varchar(50) DEFAULT NULL,
+  `km_akun_kas` varchar(300) DEFAULT NULL,
+  `km_ref` varchar(300) DEFAULT NULL,
+  `km_tanggal` date DEFAULT NULL,
+  `km_keterangan` text,
+  `km_total` double DEFAULT NULL,
+  `km_status` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `updated_by` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`km_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table darul_ulum.d_kas_masuk: ~1 rows (approximately)
+/*!40000 ALTER TABLE `d_kas_masuk` DISABLE KEYS */;
+REPLACE INTO `d_kas_masuk` (`km_id`, `km_sekolah`, `km_nota`, `km_akun_kas`, `km_ref`, `km_tanggal`, `km_keterangan`, `km_total`, `km_status`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
+	(1, 2, 'KM-102018/2/001', '11110', NULL, '2018-10-03', 'TES', 2500000, 'RELEASED', '2018-10-03 22:05:57', '2018-10-03 22:05:57', 'DASD', 'DASD');
+/*!40000 ALTER TABLE `d_kas_masuk` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_kas_masuk_detail
+CREATE TABLE IF NOT EXISTS `d_kas_masuk_detail` (
+  `kmd_id` int(11) NOT NULL,
+  `kmd_detail` int(11) NOT NULL,
+  `kmd_total` double NOT NULL,
+  `kmd_akun_pendapatan` varchar(50) DEFAULT NULL,
+  `kmd_keterangan` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`kmd_id`,`kmd_detail`),
+  CONSTRAINT `FK_d_kas_masuk_detail_d_kas_masuk` FOREIGN KEY (`kmd_id`) REFERENCES `d_kas_masuk` (`km_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table darul_ulum.d_kas_masuk_detail: ~1 rows (approximately)
+/*!40000 ALTER TABLE `d_kas_masuk_detail` DISABLE KEYS */;
+REPLACE INTO `d_kas_masuk_detail` (`kmd_id`, `kmd_detail`, `kmd_total`, `kmd_akun_pendapatan`, `kmd_keterangan`) VALUES
+	(1, 1, 2500000, '41110', 'tes');
+/*!40000 ALTER TABLE `d_kas_masuk_detail` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_petty_cash
 CREATE TABLE IF NOT EXISTS `d_petty_cash` (
@@ -416,13 +520,10 @@ CREATE TABLE IF NOT EXISTS `d_petty_cash` (
   UNIQUE KEY `pc_nota` (`pc_nota`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_petty_cash: ~4 rows (approximately)
+-- Dumping data for table darul_ulum.d_petty_cash: ~0 rows (approximately)
 /*!40000 ALTER TABLE `d_petty_cash` DISABLE KEYS */;
 REPLACE INTO `d_petty_cash` (`pc_id`, `pc_nota`, `pc_akun_kas`, `pc_keterangan`, `pc_pemohon`, `pc_sekolah`, `pc_status`, `pc_tanggal`, `pc_total`, `pc_jenis`, `pc_ref`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
-	(1, 'PC-092018/1/001', '11110', 'TES', 'TES', 1, 'APPROVED', '2018-09-12', 376666, 'PETTY', NULL, '2018-09-12 04:01:42', '2018-09-23 15:20:34', 'DASD', 'DASD'),
-	(2, 'PC-092018/2/001', '11110', 'TES', 'TES', 2, 'POSTING', '2018-09-22', 200000, 'ANGGARAN', 'RP-092018/2/001', '2018-09-22 23:11:55', '2018-09-23 15:19:45', 'DASD', 'DASD'),
-	(3, 'PC-092018/2/002', '11110', 'TES', 'TES', 2, 'REJECTED', '2018-09-23', 650000, 'ANGGARAN', 'RP-092018/2/001', '2018-09-23 15:21:23', '2018-09-23 15:22:11', 'DASD', 'DASD'),
-	(4, 'PC-092018/2/003', '11110', 'TES', 'TES', 2, 'REJECTED', '2018-09-23', 232323, 'PETTY', NULL, '2018-09-23 15:26:22', '2018-09-23 15:26:28', 'DASD', 'DASD');
+	(1, 'PC-092018/2/001', '11110', 'TES', 'TES', 2, 'POSTING', '2018-09-28', 2875000, 'ANGGARAN', 'RP-092018/2/001', '2018-09-28 23:20:50', '2018-09-28 23:27:05', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_petty_cash` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_petty_cash_detail
@@ -439,17 +540,12 @@ CREATE TABLE IF NOT EXISTS `d_petty_cash_detail` (
   CONSTRAINT `FK_d_petty_cash_detail_d_petty_cash` FOREIGN KEY (`pcd_id`) REFERENCES `d_petty_cash` (`pc_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_petty_cash_detail: ~7 rows (approximately)
+-- Dumping data for table darul_ulum.d_petty_cash_detail: ~2 rows (approximately)
 /*!40000 ALTER TABLE `d_petty_cash_detail` DISABLE KEYS */;
 REPLACE INTO `d_petty_cash_detail` (`pcd_id`, `pcd_detail`, `pcd_akun_biaya`, `pcd_keterangan`, `pcd_jumlah`, `pcd_qty`, `pcd_rpd_detail`, `pcd_barang`) VALUES
-	(1, 1, '62100', 'tes', 30000, 1, NULL, NULL),
-	(1, 2, '62100', 'tes', 23333, 1, NULL, NULL),
-	(1, 3, '62600', 'fdf', 323333, 1, NULL, NULL),
-	(2, 1, '62100', 'tes', 200000, 1, 1, 1),
-	(2, 2, '62400', NULL, 0, 0, 2, 2),
-	(3, 1, '62100', '1', 200000, 2, 1, 1),
-	(3, 2, '62400', '3', 50000, 5, 2, 2),
-	(4, 1, '61000', 'tes', 232323, 1, NULL, NULL);
+	(1, 1, '62100', NULL, 200000, 10, 1, 1),
+	(1, 2, '62100', NULL, 150000, 5, 2, 3),
+	(1, 3, '62400', NULL, 25000, 5, 3, 2);
 /*!40000 ALTER TABLE `d_petty_cash_detail` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_posisi
@@ -489,11 +585,10 @@ CREATE TABLE IF NOT EXISTS `d_rencana_pembelian` (
   PRIMARY KEY (`rp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_rencana_pembelian: ~2 rows (approximately)
+-- Dumping data for table darul_ulum.d_rencana_pembelian: ~1 rows (approximately)
 /*!40000 ALTER TABLE `d_rencana_pembelian` DISABLE KEYS */;
 REPLACE INTO `d_rencana_pembelian` (`rp_id`, `rp_kode`, `rp_tahun`, `rp_tanggal`, `rp_keterangan`, `rp_total`, `rp_status`, `rp_sekolah`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
-	(1, 'RP-092018/2/001', '2018', '2018-09-20', 'TES', 2250000, 'Berjalan', 2, '2018-09-20 00:06:32', '2018-09-23 15:22:11', 'DASD', 'DASD'),
-	(2, 'RP-092018/1/001', '2018', '2018-09-20', 'TES', 1450000, 'Berjalan', 1, '2018-09-20 00:24:06', '2018-09-20 00:24:11', 'DASD', 'DASD');
+	(1, 'RP-092018/2/001', '2018', '2018-09-28', 'TES', 10000000, 'Berjalan', 2, '2018-09-28 23:20:01', '2018-09-28 23:20:08', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_rencana_pembelian` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_rencana_pembelian_detail
@@ -507,13 +602,12 @@ CREATE TABLE IF NOT EXISTS `d_rencana_pembelian_detail` (
   CONSTRAINT `FK_d_rencana_pembelian_detail_d_rencana_pembelian` FOREIGN KEY (`rpd_id`) REFERENCES `d_rencana_pembelian` (`rp_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_rencana_pembelian_detail: ~4 rows (approximately)
+-- Dumping data for table darul_ulum.d_rencana_pembelian_detail: ~3 rows (approximately)
 /*!40000 ALTER TABLE `d_rencana_pembelian_detail` DISABLE KEYS */;
 REPLACE INTO `d_rencana_pembelian_detail` (`rpd_id`, `rpd_detail`, `rpd_barang`, `rpd_jumlah`, `rpd_sisa`) VALUES
-	(1, 1, 1, 5, 4),
-	(1, 2, 2, 20, 20),
-	(2, 1, 1, 5, 5),
-	(2, 2, 2, 4, 4);
+	(1, 1, 1, 20, 10),
+	(1, 2, 3, 20, 15),
+	(1, 3, 2, 20, 15);
 /*!40000 ALTER TABLE `d_rencana_pembelian_detail` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_sekolah
@@ -528,12 +622,225 @@ CREATE TABLE IF NOT EXISTS `d_sekolah` (
   PRIMARY KEY (`s_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table darul_ulum.d_sekolah: ~1 rows (approximately)
+-- Dumping data for table darul_ulum.d_sekolah: ~3 rows (approximately)
 /*!40000 ALTER TABLE `d_sekolah` DISABLE KEYS */;
 REPLACE INTO `d_sekolah` (`s_id`, `s_nama`, `s_telpon`, `s_alamat`, `s_logo`, `created_at`, `updated_at`) VALUES
 	(1, 'SDN DARUL ULUM GRESIK', '9092312321', 'JALAN GRESIK', 'sekolah_1_.png', '2018-09-10 16:13:48', '2018-09-10 16:27:29'),
-	(2, 'MTS DARUL ULUM GRESIK', '092738293', 'JL GAJAH MADA', 'sekolah_2_.png', '2018-09-11 13:06:24', '2018-09-11 13:06:24');
+	(2, 'MADRASAH TSANAWIYAH DARUL ULUM GRESIK', '092738293', 'JL. MOJOSARIREJO NO .1 GRESIK 61177', 'sekolah_2_.png', '2018-09-11 13:06:24', '2018-09-26 06:42:30'),
+	(3, 'SEKOLAH MENENGAH ATAS DARUL ULUM GRESIK', '09008098', 'JL. MOJOSARIREJO NO .1 GRESIK 61177', 'sekolah_3_.jpeg', '2018-09-26 06:44:29', '2018-09-26 06:45:11');
 /*!40000 ALTER TABLE `d_sekolah` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_siswa
+CREATE TABLE IF NOT EXISTS `d_siswa` (
+  `s_id` int(11) NOT NULL,
+  `s_nomor_induk_siswa` varchar(50) NOT NULL,
+  `s_jenjang_pendidikan` varchar(50) NOT NULL,
+  `s_group_spp` int(11) NOT NULL,
+  `s_sekolah` int(11) NOT NULL,
+  `s_nama` varchar(50) DEFAULT NULL,
+  `s_nomor_induk_nasional` varchar(50) DEFAULT NULL,
+  `s_jenis_kelamin` enum('L','P') DEFAULT NULL,
+  `s_tempat_lahir` varchar(50) DEFAULT NULL,
+  `s_tanggal_lahir` date DEFAULT NULL,
+  `s_agama` varchar(50) DEFAULT NULL,
+  `s_urutan_anak` int(11) DEFAULT NULL,
+  `s_jumlah_saudara_kandung` int(11) DEFAULT NULL,
+  `s_alamat` varchar(50) DEFAULT NULL,
+  `Column 11` varchar(50) DEFAULT NULL,
+  `s_tinggi` int(11) DEFAULT NULL,
+  `s_berat` int(11) DEFAULT NULL,
+  `s_asal_sekolah` varchar(50) DEFAULT NULL,
+  `s_ijazah_sd` varchar(50) DEFAULT NULL,
+  `s_ijazah_smp` varchar(50) DEFAULT NULL,
+  `s_ijazah_sma` varchar(50) DEFAULT NULL,
+  `s_nama_ibu` varchar(50) DEFAULT NULL,
+  `s_pekerjaan_ibu` varchar(50) DEFAULT NULL,
+  `s_nama_ayah` varchar(50) DEFAULT NULL,
+  `s_pekerjaan_ayah` varchar(50) DEFAULT NULL,
+  `s_alamat_orang_tua` varchar(50) DEFAULT NULL,
+  `s_nama_wali` varchar(50) DEFAULT NULL,
+  `s_pekerjaan_wali` varchar(50) DEFAULT NULL,
+  `s_alamat_wali` varchar(50) DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  `updated_at` date DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `updated_by` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`s_id`),
+  KEY `FK_d_siswa_d_sekolah` (`s_sekolah`),
+  KEY `FK_d_siswa_d_group_spp` (`s_group_spp`),
+  CONSTRAINT `FK_d_siswa_d_group_spp` FOREIGN KEY (`s_group_spp`) REFERENCES `d_group_spp` (`gs_id`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_d_siswa_d_sekolah` FOREIGN KEY (`s_sekolah`) REFERENCES `d_sekolah` (`s_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table darul_ulum.d_siswa: ~0 rows (approximately)
+/*!40000 ALTER TABLE `d_siswa` DISABLE KEYS */;
+/*!40000 ALTER TABLE `d_siswa` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_siswa_ayah
+CREATE TABLE IF NOT EXISTS `d_siswa_ayah` (
+  `sa_id` int(11) NOT NULL,
+  `sa_nama` varchar(50) DEFAULT NULL,
+  `sa_tempat_lahir` varchar(50) DEFAULT NULL,
+  `sa_tanggal_lahir` date DEFAULT NULL,
+  `sa_agama` varchar(50) DEFAULT NULL,
+  `sa_kewarganegaraan` varchar(50) DEFAULT NULL,
+  `sa_pendidikan` varchar(50) DEFAULT NULL,
+  `sa_pekerjaan` varchar(50) DEFAULT NULL,
+  `sa_penghasilan` double DEFAULT NULL,
+  `sa_alamat` varchar(50) DEFAULT NULL,
+  `sa_telpon` varchar(50) DEFAULT NULL,
+  `sa_status` enum('H','M') DEFAULT NULL,
+  PRIMARY KEY (`sa_id`),
+  CONSTRAINT `FK_d_siswa_ayah_d_siswa_data_diri` FOREIGN KEY (`sa_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table darul_ulum.d_siswa_ayah: ~2 rows (approximately)
+/*!40000 ALTER TABLE `d_siswa_ayah` DISABLE KEYS */;
+REPLACE INTO `d_siswa_ayah` (`sa_id`, `sa_nama`, `sa_tempat_lahir`, `sa_tanggal_lahir`, `sa_agama`, `sa_kewarganegaraan`, `sa_pendidikan`, `sa_pekerjaan`, `sa_penghasilan`, `sa_alamat`, `sa_telpon`, `sa_status`) VALUES
+	(3, '3232', 'fdsfds', '2018-10-31', 'ISLAM', '433', 'SARJANA', '223', 23223333, '3232', '323232', 'H');
+/*!40000 ALTER TABLE `d_siswa_ayah` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_siswa_data_diri
+CREATE TABLE IF NOT EXISTS `d_siswa_data_diri` (
+  `sdd_id` int(11) NOT NULL,
+  `sdd_nomor_induk` varchar(50) NOT NULL,
+  `sdd_nomor_induk_nasional` varchar(50) NOT NULL,
+  `sdd_nama` varchar(50) NOT NULL,
+  `sdd_panggilan` varchar(50) NOT NULL,
+  `sdd_jenis_kelamin` enum('L','P') NOT NULL,
+  `sdd_golongan_darah` varchar(50) NOT NULL,
+  `sdd_tempat_lahir` varchar(50) NOT NULL,
+  `sdd_tanggal_lahir` date NOT NULL,
+  `sdd_tinggi` int(11) NOT NULL,
+  `sdd_berat` int(11) NOT NULL,
+  `sdd_agama` varchar(50) NOT NULL,
+  `sdd_urutan_anak` int(11) NOT NULL,
+  `sdd_saudara_kandung` int(11) NOT NULL,
+  `sdd_saudara_tiri` int(11) NOT NULL,
+  `sdd_bahasa` varchar(50) NOT NULL,
+  `sdd_jenjang_sebelumnya` varchar(100) NOT NULL,
+  `sdd_kewarganegaraan` varchar(100) NOT NULL,
+  `sdd_image` varchar(100) NOT NULL,
+  `sdd_sekolah` int(11) NOT NULL,
+  `sdd_status` varchar(50) DEFAULT 'Released',
+  `sdd_status_siswa` enum('ACTIVE','INACTIVE') DEFAULT 'ACTIVE',
+  `sdd_group_spp` int(11) DEFAULT NULL,
+  `sdd_tahun_ajaran` year(4) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` varchar(50) NOT NULL,
+  `updated_by` varchar(50) NOT NULL,
+  PRIMARY KEY (`sdd_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table darul_ulum.d_siswa_data_diri: ~0 rows (approximately)
+/*!40000 ALTER TABLE `d_siswa_data_diri` DISABLE KEYS */;
+REPLACE INTO `d_siswa_data_diri` (`sdd_id`, `sdd_nomor_induk`, `sdd_nomor_induk_nasional`, `sdd_nama`, `sdd_panggilan`, `sdd_jenis_kelamin`, `sdd_golongan_darah`, `sdd_tempat_lahir`, `sdd_tanggal_lahir`, `sdd_tinggi`, `sdd_berat`, `sdd_agama`, `sdd_urutan_anak`, `sdd_saudara_kandung`, `sdd_saudara_tiri`, `sdd_bahasa`, `sdd_jenjang_sebelumnya`, `sdd_kewarganegaraan`, `sdd_image`, `sdd_sekolah`, `sdd_status`, `sdd_status_siswa`, `sdd_group_spp`, `sdd_tahun_ajaran`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
+	(3, '10000000000000000', '23123123', 'anya', '345435435', 'L', 'b', '345454', '2018-10-29', 178, 45, 'ISLAM', 454, 45, 0, 'hggfh', 'TK', 'INDONESIA', 'data_siswa_3_.jpg', 2, 'Setujui', 'ACTIVE', 1, '2017', '2018-10-16 11:57:53', '2018-10-16 11:57:53', 'DASD', 'DASD');
+/*!40000 ALTER TABLE `d_siswa_data_diri` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_siswa_ibu
+CREATE TABLE IF NOT EXISTS `d_siswa_ibu` (
+  `si_id` int(11) NOT NULL,
+  `si_nama` varchar(50) DEFAULT NULL,
+  `si_tempat_lahir` varchar(50) DEFAULT NULL,
+  `si_tanggal_lahir` date DEFAULT NULL,
+  `si_agama` varchar(50) DEFAULT NULL,
+  `si_kewarganegaraan` varchar(50) DEFAULT NULL,
+  `si_pendidikan` varchar(50) DEFAULT NULL,
+  `si_pekerjaan` varchar(50) DEFAULT NULL,
+  `si_penghasilan` double DEFAULT NULL,
+  `si_alamat` varchar(50) DEFAULT NULL,
+  `si_telpon` varchar(50) DEFAULT NULL,
+  `si_status` enum('H','M') DEFAULT NULL,
+  PRIMARY KEY (`si_id`),
+  CONSTRAINT `FK_d_siswa_ibu_d_siswa_data_diri` FOREIGN KEY (`si_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table darul_ulum.d_siswa_ibu: ~1 rows (approximately)
+/*!40000 ALTER TABLE `d_siswa_ibu` DISABLE KEYS */;
+REPLACE INTO `d_siswa_ibu` (`si_id`, `si_nama`, `si_tempat_lahir`, `si_tanggal_lahir`, `si_agama`, `si_kewarganegaraan`, `si_pendidikan`, `si_pekerjaan`, `si_penghasilan`, `si_alamat`, `si_telpon`, `si_status`) VALUES
+	(3, 'dfdf', 'dfdfd', '2018-10-11', 'ISLAM', '434', 'SARJANA', '2323', 23232323, '323', '2232', 'H');
+/*!40000 ALTER TABLE `d_siswa_ibu` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_siswa_kesehatan
+CREATE TABLE IF NOT EXISTS `d_siswa_kesehatan` (
+  `sk_id` int(11) NOT NULL,
+  `sk_detail` int(11) NOT NULL,
+  `sk_nama_penyakit` varchar(50) NOT NULL,
+  `sk_keterangan` varchar(300) NOT NULL,
+  PRIMARY KEY (`sk_id`,`sk_detail`),
+  CONSTRAINT `FK_d_siswa_kesehatan_d_siswa_data_diri` FOREIGN KEY (`sk_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table darul_ulum.d_siswa_kesehatan: ~4 rows (approximately)
+/*!40000 ALTER TABLE `d_siswa_kesehatan` DISABLE KEYS */;
+REPLACE INTO `d_siswa_kesehatan` (`sk_id`, `sk_detail`, `sk_nama_penyakit`, `sk_keterangan`) VALUES
+	(3, 1, '545', '54545'),
+	(3, 2, '545', '54545'),
+	(3, 3, '545', '54545'),
+	(3, 4, '545', '54545');
+/*!40000 ALTER TABLE `d_siswa_kesehatan` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_siswa_pendidikan
+CREATE TABLE IF NOT EXISTS `d_siswa_pendidikan` (
+  `sp_id` int(11) NOT NULL,
+  `sp_detail` int(11) NOT NULL,
+  `sp_tingkat_pendidikan` varchar(50) DEFAULT NULL,
+  `sp_nama_sekolah` varchar(300) NOT NULL,
+  `sp_keterangan` varchar(300) NOT NULL,
+  `sp_ijazah` varchar(50) NOT NULL,
+  `sp_tanggal_ijazah` date NOT NULL,
+  PRIMARY KEY (`sp_id`,`sp_detail`),
+  CONSTRAINT `FK_d_siswa_pendidikan_d_siswa_data_diri` FOREIGN KEY (`sp_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table darul_ulum.d_siswa_pendidikan: ~1 rows (approximately)
+/*!40000 ALTER TABLE `d_siswa_pendidikan` DISABLE KEYS */;
+REPLACE INTO `d_siswa_pendidikan` (`sp_id`, `sp_detail`, `sp_tingkat_pendidikan`, `sp_nama_sekolah`, `sp_keterangan`, `sp_ijazah`, `sp_tanggal_ijazah`) VALUES
+	(3, 1, NULL, '4545', '2323323', '45454', '2018-10-16');
+/*!40000 ALTER TABLE `d_siswa_pendidikan` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_siswa_tempat_tinggal
+CREATE TABLE IF NOT EXISTS `d_siswa_tempat_tinggal` (
+  `stt_id` int(11) NOT NULL,
+  `stt_alamat` varchar(300) DEFAULT NULL,
+  `stt_no_telp` varchar(50) DEFAULT NULL,
+  `stt_status_tempat_tinggal` varchar(50) DEFAULT NULL,
+  `stt_jarak_rumah` int(11) DEFAULT NULL,
+  PRIMARY KEY (`stt_id`),
+  CONSTRAINT `FK_d_siswa_tempat_tinggal_d_siswa_data_diri` FOREIGN KEY (`stt_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table darul_ulum.d_siswa_tempat_tinggal: ~1 rows (approximately)
+/*!40000 ALTER TABLE `d_siswa_tempat_tinggal` DISABLE KEYS */;
+REPLACE INTO `d_siswa_tempat_tinggal` (`stt_id`, `stt_alamat`, `stt_no_telp`, `stt_status_tempat_tinggal`, `stt_jarak_rumah`) VALUES
+	(3, 'ghfghfg', '4545454', 'ORANG TUA', 4545);
+/*!40000 ALTER TABLE `d_siswa_tempat_tinggal` ENABLE KEYS */;
+
+-- Dumping structure for table darul_ulum.d_siswa_wali
+CREATE TABLE IF NOT EXISTS `d_siswa_wali` (
+  `sw_id` int(11) NOT NULL,
+  `sw_nama` varchar(50) DEFAULT NULL,
+  `sw_tempat_lahir` varchar(50) DEFAULT NULL,
+  `sw_tanggal_lahir` date DEFAULT NULL,
+  `sw_agama` varchar(50) DEFAULT NULL,
+  `sw_kewarganegaraan` varchar(50) DEFAULT NULL,
+  `sw_pendidikan` varchar(50) DEFAULT NULL,
+  `sw_pekerjaan` varchar(50) DEFAULT NULL,
+  `sw_penghasilan` double DEFAULT NULL,
+  `sw_alamat` varchar(50) DEFAULT NULL,
+  `sw_telpon` varchar(50) DEFAULT NULL,
+  `sw_status` enum('H','M') DEFAULT NULL,
+  PRIMARY KEY (`sw_id`),
+  CONSTRAINT `FK_d_siswa_wali_d_siswa_data_diri` FOREIGN KEY (`sw_id`) REFERENCES `d_siswa_data_diri` (`sdd_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table darul_ulum.d_siswa_wali: ~1 rows (approximately)
+/*!40000 ALTER TABLE `d_siswa_wali` DISABLE KEYS */;
+REPLACE INTO `d_siswa_wali` (`sw_id`, `sw_nama`, `sw_tempat_lahir`, `sw_tanggal_lahir`, `sw_agama`, `sw_kewarganegaraan`, `sw_pendidikan`, `sw_pekerjaan`, `sw_penghasilan`, `sw_alamat`, `sw_telpon`, `sw_status`) VALUES
+	(3, '3213', '123213', '2018-10-11', 'ISLAM', '2323', 'SD', 'wfewfew', 23333333, '2323', '232323', 'H');
+/*!40000 ALTER TABLE `d_siswa_wali` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_staff
 CREATE TABLE IF NOT EXISTS `d_staff` (
@@ -557,8 +864,7 @@ CREATE TABLE IF NOT EXISTS `d_staff` (
 /*!40000 ALTER TABLE `d_staff` DISABLE KEYS */;
 REPLACE INTO `d_staff` (`st_id`, `st_nama`, `st_alamat`, `st_tanggal_lahir`, `st_tempat_lahir`, `st_telpon`, `st_image`, `st_posisi`, `st_sekolah`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
 	(1, 'riani', 'medokan', '1995-07-05', 'surabaya', '09829323', 'staff_2_.jpg', 1, 2, '2018-09-11 03:56:20', '2018-09-18 19:38:36', 'DASD', 'DASD'),
-	(2, 'tam', 'medokan', '1995-11-27', 'surabaya', '2321312', 'staff_2_.jpg', 2, 1, '2018-09-11 05:17:53', '2018-09-11 05:19:09', 'DASD', 'DASD'),
-	(3, 'reni', 'jalan jalan', '2018-09-18', 'surabaya', '082123213', 'staff_3_.jpg', 3, 1, '2018-09-18 19:39:00', '2018-09-18 19:39:00', 'DASD', 'DASD');
+	(2, 'tam', 'medokan', '1995-11-27', 'surabaya', '2321312', 'staff_2_.jpg', 2, 1, '2018-09-11 05:17:53', '2018-09-11 05:19:09', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_staff` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.migrations
@@ -610,7 +916,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table darul_ulum.users: ~0 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 REPLACE INTO `users` (`id`, `name`, `username`, `email`, `jabatan_id`, `image`, `sekolah_id`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `last_login`) VALUES
-	(1, 'DASD', 'superuser', 'dewa17a@gmail.com', 1, 'user_1_.jpg', 2, NULL, '$2y$10$cVM5X9ul9anYahkLdxWWwOblwyXA5dpsDcdg6Iha6wysxoE79j.ri', 'WTnHyfgSVEjKWhmlqLQrdMJ4tDkJ7VBHaxv2k8Qm1B0dG7Tqx7vfaWzAcWRJ', '2018-09-09 05:09:27', '2018-09-18 15:33:34', NULL);
+	(1, 'DASD', 'superuser', 'dewa17a@gmail.com', 1, 'user_1_.jpg', 2, NULL, '$2y$10$cVM5X9ul9anYahkLdxWWwOblwyXA5dpsDcdg6Iha6wysxoE79j.ri', 'A8YetrKrdf7EaFpPCSzfix5eD2Y1PQmhyu6fJbiuKOPlyOjOwMpq5eRHfc5L', '2018-09-09 05:09:27', '2018-09-18 15:33:34', NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

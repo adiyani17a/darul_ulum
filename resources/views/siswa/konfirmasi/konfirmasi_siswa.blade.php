@@ -16,14 +16,16 @@
   	<div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Penerimaan Siswa Baru</h4>
-          <div class="alert col-sm-6 alert-info alert-dismissible" title="DP sudah Lunas">
+          @if (Session::has('message'))
+            <div class="alert alert-success alert-dismissible" title="DP sudah Lunas">
               <button type="button" class="close" data-dismiss="alert">×</button>
-              <strong>Notice!</strong> <br>
-              Data yang sudah di setujui akan tampil di menu data siswa.
-          </div>
+              <strong>Berhasil!</strong> <br>
+              Simpan Data.
+            </div>
+          @endif
+          <h4 class="card-title">Penerimaan Siswa Baru</h4>
           <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-          	<a href="{{ url('penerimaan/create_siswa') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
+          	<a href="{{ url('penerimaan/konfirmasi') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
           </div>
 
           <div class="table-responsive">
@@ -61,7 +63,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url:'{{ route('datatable_siswa') }}',
+            url:'{{ route('datatable_konfirmasi') }}',
             data:{_token:'{{ csrf_token() }}'},
             error:function(){
               var table = $('#table_data').DataTable();
@@ -103,7 +105,6 @@ $('.btn_modal').click(function(){
   $('#tambah-akun select:not(.a_akun_dka):not(.a_aktif)').val('').trigger('change');
 })
 
-
 function detail(id) {
   $.ajax({
       url:baseUrl +'/kas_keluar/detail_konfirmasi_pengeluaran_kas',
@@ -123,8 +124,79 @@ function detail(id) {
 }
 
 function edit(id) {
- location.href = '{{  url('penerimaan/edit_siswa') }}?id='+id;
+ location.href = '{{  url('penerimaan/edit_konfirmasi') }}?id='+id;
 }
+
+function konfirmasi(id,param) {
+  iziToast.show({
+    overlay: true,
+    close: false,
+    timeout: 20000, 
+    color: 'dark',
+    icon: 'fas fa-question-circle',
+    title: param+' Data!',
+    message: 'Apakah Anda Yakin ?!',
+    position: 'center',
+    progressBarColor: 'rgb(0, 255, 184)',
+    buttons: [
+    [
+        '<button style="background-color:#32CD32;">Ya</button>',
+        function (instance, toast) {
+
+          $.ajaxSetup({
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url:baseUrl +'/penerimaan/simpan_konfirmasi',
+                type:'get',
+                data:{id,param},
+                dataType:'json',
+                success:function(data){
+                  $('#tambah-jabatan').modal('hide');
+                  var table = $('#table_data').DataTable();
+                  table.ajax.reload();
+                  if (data.status == 1) {
+                    iziToast.success({
+                          icon: 'fa fa-trash',
+                          title: 'Berhasil',
+                          color:'yellow',
+                          message: data.pesan,
+                    });
+                  }else{
+                    iziToast.warning({
+                          icon: 'fa fa-times',
+                          title: 'Oops,',
+                          message: data.pesan,
+                    });
+                  }
+                },
+                error:function(){
+                  iziToast.warning({
+                    icon: 'fa fa-times',
+                    message: 'Terjadi Kesalahan!',
+                  });
+                }
+            });
+            instance.hide({
+                transitionOut: 'fadeOutUp'
+            }, toast);
+        }
+    ],
+    [
+        '<button style="background-color:#44d7c9;">Cancel</button>',
+        function (instance, toast) {
+          instance.hide({
+            transitionOut: 'fadeOutUp'
+          }, toast);
+        }
+      ]
+    ]
+  });
+}
+
 function hapus(id) {
   iziToast.show({
     overlay: true,

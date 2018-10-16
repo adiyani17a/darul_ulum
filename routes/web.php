@@ -103,18 +103,20 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/penerimaan/edit_siswa', 'penerimaan_controller@edit_siswa');
         Route::post('/penerimaan/update_siswa', 'penerimaan_controller@update_siswa');
         Route::get('/penerimaan/hapus_siswa', 'penerimaan_controller@hapus_siswa');
+        Route::get('/penerimaan/cetak_siswa', 'penerimaan_controller@cetak_siswa');
         // KONFIRMASI
         Route::get('/penerimaan/konfirmasi', 'penerimaan_controller@konfirmasi');
         Route::get('/penerimaan/datatable_konfirmasi', 'penerimaan_controller@datatable_konfirmasi')->name('datatable_konfirmasi');
-        Route::post('/penerimaan/simpan_konfirmasi', 'penerimaan_controller@simpan_konfirmasi');
-        Route::get('/penerimaan/hapus_konfirmasi', 'penerimaan_controller@hapus_konfirmasi');
-        Route::get('/penerimaan/edit_konfirmasi', 'penerimaan_controller@edit_konfirmasi');
+        Route::get('/penerimaan/simpan_konfirmasi', 'penerimaan_controller@simpan_konfirmasi');
         // DATA SISWA
         Route::get('/penerimaan/rekap_siswa', 'penerimaan_controller@rekap_siswa');
         Route::get('/penerimaan/datatable_rekap_siswa', 'penerimaan_controller@datatable_rekap_siswa')->name('datatable_rekap_siswa');
         Route::post('/penerimaan/simpan_rekap_siswa', 'penerimaan_controller@simpan_rekap_siswa');
         Route::get('/penerimaan/hapus_rekap_siswa', 'penerimaan_controller@hapus_rekap_siswa');
         Route::get('/penerimaan/edit_rekap_siswa', 'penerimaan_controller@edit_rekap_siswa');
+        Route::get('/penerimaan/cetak_rekap_siswa', 'penerimaan_controller@cetak_rekap_siswa');
+        Route::post('/penerimaan/update_rekap_siswa', 'penerimaan_controller@update_rekap_siswa');
+        Route::get('/penerimaan/ubah_status_rekap_siswa', 'penerimaan_controller@ubah_status_rekap_siswa');
         // ALUMNI
         Route::get('/penerimaan/alumni', 'penerimaan_controller@alumni');
         Route::get('/penerimaan/datatable_alumni', 'penerimaan_controller@datatable_alumni')->name('datatable_alumni');
@@ -136,7 +138,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_masuk/datatable_spp', 'kas_masuk_controller@datatable_spp')->name('datatable_spp');
         Route::post('/kas_masuk/simpan_spp', 'kas_masuk_controller@simpan_spp');
         Route::get('/kas_masuk/hapus_spp', 'kas_masuk_controller@hapus_spp');
-        Route::get('/kas_masuk/edit_spp', 'kas_masuk_controller@edit_petty_cash');
+        Route::get('/kas_masuk/edit_spp', 'kas_masuk_controller@edit_spp');
+        Route::post('/kas_masuk/simpan_spp', 'kas_masuk_controller@simpan_spp');
     // KAS KELUAR
         // RENCANA PEMBELIAN
         Route::get('/kas_keluar/rencana_pembelian', 'kas_keluar_controller@rencana_pembelian');

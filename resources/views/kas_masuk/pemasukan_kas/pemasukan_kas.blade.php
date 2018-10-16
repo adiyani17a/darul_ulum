@@ -66,7 +66,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url:'{{ route('datatable_siswa') }}',
+            url:'{{ route('datatable_pemasukan_kas') }}',
             data:{_token:'{{ csrf_token() }}'},
             error:function(){
               var table = $('#table_data').DataTable();

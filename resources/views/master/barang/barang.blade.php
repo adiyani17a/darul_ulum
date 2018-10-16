@@ -150,7 +150,6 @@
   });
 
   function edit(a) {
-    
     var par   = $(a).parents('tr');
     var id    = $(par).find('.d_id').text();
     var nama  = $(par).find('.d_nama').text();
@@ -166,8 +165,6 @@
     $('.b_akun').val(akun).trigger('change');
     $('.b_harga_tertinggi').maskMoney('mask',harga);
     $('#tambah-jabatan').modal('show');
-
-
   }
 
 

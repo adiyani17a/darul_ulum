@@ -33,6 +33,10 @@ class siswa_data_diri extends Model
 						   'sdd_image',
 						   'sdd_jenjang',
 						   'sdd_sekolah',
+						   'sdd_status',
+						   'sdd_status_siswa',
+						   'sdd_group_spp',
+						   'sdd_tahun_ajaran',
 						   'created_by',
 						   'updated_by',
 						];
@@ -67,8 +71,18 @@ class siswa_data_diri extends Model
         return $this->hasMany('App\child\siswa_tempat_tinggal','stt_id');
 	}
 
+	public function history_spp()
+	{
+        return $this->hasMany('App\child\history_spp','hs_id');
+	}
+
 	public function sekolah()
     {
         return $this->belongsTo('App\child\sekolah','sdd_sekolah','s_id');
+    }
+
+    public function group_spp()
+    {
+        return $this->belongsTo('App\child\group_spp','sdd_group_spp','gs_id');
     }
 }
