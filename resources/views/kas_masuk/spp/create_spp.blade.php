@@ -11,10 +11,17 @@
         <div class="row">
             <table class="table tabel_modal">
               <tr>
+                <td>Nota SPP</td>
+                <td colspan="2">
+                  <input readonly="" type="text" placeholder="Harus diisi" name="hs_nota" class="huruf_besar hs_nota form-control form-control-sm">
+                </td>
+              </tr>
+              <tr>
                 <td>Nama Siswa</td>
                 <td colspan="2">
                   <input readonly="" type="text" placeholder="Harus diisi" class="huruf_besar sdd_nama form-control form-control-sm">
                   <input type="hidden" name="id" class="id">
+                  <input type="hidden" name="detail" class="detail">
                 </td>
               </tr>
               <tr>

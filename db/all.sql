@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `d_akun` (
 REPLACE INTO `d_akun` (`a_id`, `a_nama`, `a_sekolah`, `a_type_akun`, `a_akun_dka`, `a_aktif`, `a_master_akun`, `a_master_nama`, `a_group_neraca`, `a_group_laba_rugi`, `a_saldo_awal`, `a_tanggal_pembuka`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
 	('111101', 'KAS SDN DARUL ULUM GRESIK', 1, 'OCF', 'DEBET', 'Y', '11110', 'KAS', 1, 3, 5000000, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:20:33', '2018-09-18 19:55:29'),
 	('111102', 'KAS MTS DARUL ULUM GRESIK', 2, 'OCF', 'DEBET', 'Y', '11110', 'KAS', 1, 3, 5000000, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:20:33', '2018-09-18 19:55:29'),
+	('111103', 'KAS SEKOLAH MENENGAH ATAS DARUL ULUM GRESIK', 3, 'OCF', 'DEBET', 'Y', '11110', 'KAS', NULL, NULL, 0, '2018-10-01', 'DASD', 'DASD', '2018-10-16 23:57:35', '2018-10-16 23:57:35'),
 	('111201', 'KAS BANK SDN DARUL ULUM GRESIK', 1, 'OCF', 'DEBET', 'Y', '11120', 'KAS BANK', 1, 3, 0, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:21:40', '2018-09-18 19:55:29'),
 	('111202', 'KAS BANK MTS DARUL ULUM GRESIK', 2, 'OCF', 'DEBET', 'Y', '11120', 'KAS BANK', 1, 3, 0, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:21:40', '2018-09-18 19:55:29'),
 	('112101', 'PIUTANG USAHA SDN DARUL ULUM GRESIK', 1, 'OCF', 'DEBET', 'Y', '11210', 'PIUTANG USAHA', NULL, 3, 0, '2018-09-12', 'DASD', 'DASD', '2018-09-12 01:23:12', '2018-09-18 19:55:29'),
@@ -370,10 +371,12 @@ REPLACE INTO `d_hak_akses` (`ha_id`, `ha_dt`, `ha_level`, `ha_menu`, `aktif`, `t
 CREATE TABLE IF NOT EXISTS `d_history_spp` (
   `hs_id` int(11) NOT NULL,
   `hs_detail` int(11) NOT NULL,
-  `hs_tanggal` date DEFAULT NULL,
+  `hs_nota` varchar(50) NOT NULL,
+  `hs_bulan` varchar(50) DEFAULT NULL,
+  `hs_tahun` year(4) DEFAULT NULL,
   `hs_keterangan` text,
   `hs_akun_kas` varchar(50) DEFAULT NULL,
-  `hs_akun_pendapatan` varchar(50) DEFAULT NULL,
+  `hs_akun` varchar(50) DEFAULT NULL,
   `hs_jumlah` double DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -384,6 +387,12 @@ CREATE TABLE IF NOT EXISTS `d_history_spp` (
 
 -- Dumping data for table darul_ulum.d_history_spp: ~0 rows (approximately)
 /*!40000 ALTER TABLE `d_history_spp` DISABLE KEYS */;
+REPLACE INTO `d_history_spp` (`hs_id`, `hs_detail`, `hs_nota`, `hs_bulan`, `hs_tahun`, `hs_keterangan`, `hs_akun_kas`, `hs_akun`, `hs_jumlah`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
+	(3, 1, 'SPP-1010/2/00001', 'Oktober', '2018', NULL, '11110', NULL, 300000, '2018-10-16 23:37:21', '2018-10-16 23:37:21', 'DASD', NULL),
+	(3, 2, 'SPP-1010/2/00001', 'Oktober', '2018', NULL, '11110', '41130', 300000, '2018-10-16 23:47:19', '2018-10-16 23:47:19', 'DASD', 'DASD'),
+	(3, 3, 'SPP-1010/2/00001', 'Oktober', '2018', NULL, '11110', '41130', 300000, '2018-10-16 23:57:11', '2018-10-16 23:57:11', 'DASD', 'DASD'),
+	(4, 1, 'SPP-1010/3/00001', 'Oktober', '2018', NULL, '11110', '41130', 300000, '2018-10-16 23:57:56', '2018-10-16 23:57:56', 'DASD', 'DASD'),
+	(5, 1, 'SPP-102018/3/00002', 'Oktober', '2018', NULL, '11110', '41130', 300000, '2018-10-17 00:00:28', '2018-10-17 00:00:28', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_history_spp` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_jabatan
@@ -429,7 +438,12 @@ CREATE TABLE IF NOT EXISTS `d_jurnal` (
 REPLACE INTO `d_jurnal` (`j_id`, `j_tahun`, `j_tanggal`, `j_keterangan`, `j_sekolah`, `j_detail`, `j_ref`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
 	(1, '2018', '2018-09-28', 'TES', 2, 'ANGGARAN', 'PC-092018/2/001', '2018-09-28 23:21:01', '2018-09-28 23:21:01', 'DASD', 'DASD'),
 	(2, '2018', '2018-09-28', 'TES', 2, 'BUKTI KAS KELUAR', 'PC-092018/2/001', '2018-09-28 23:27:05', '2018-09-28 23:27:05', 'DASD', 'DASD'),
-	(3, '2018', '2018-10-03', 'TES', 2, 'PEMASUKAN KAS', 'KM-102018/2/001', '2018-10-03 22:05:57', '2018-10-03 22:05:57', 'DASD', 'DASD');
+	(3, '2018', '2018-10-03', 'TES', 2, 'PEMASUKAN KAS', 'KM-102018/2/001', '2018-10-03 22:05:57', '2018-10-03 22:05:57', 'DASD', 'DASD'),
+	(4, '2018', '2018-10-16', '', 2, 'PEMBAYARAN SPP', 'SPP-1010/2/00001', '2018-10-16 23:37:21', '2018-10-16 23:37:21', 'DASD', 'DASD'),
+	(5, '2018', '2018-10-16', '', 2, 'PEMBAYARAN SPP', 'SPP-1010/2/00001', '2018-10-16 23:47:19', '2018-10-16 23:47:19', 'DASD', 'DASD'),
+	(6, '2018', '2018-10-16', '', 2, 'PEMBAYARAN SPP', 'SPP-1010/2/00001', '2018-10-16 23:57:12', '2018-10-16 23:57:12', 'DASD', 'DASD'),
+	(7, '2018', '2018-10-16', '', 3, 'PEMBAYARAN SPP', 'SPP-1010/3/00001', '2018-10-16 23:57:57', '2018-10-16 23:57:57', 'DASD', 'DASD'),
+	(8, '2018', '2018-10-17', '', 3, 'PEMBAYARAN SPP', 'SPP-102018/3/00002', '2018-10-17 00:00:28', '2018-10-17 00:00:28', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_jurnal` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_jurnal_dt
@@ -455,7 +469,17 @@ REPLACE INTO `d_jurnal_dt` (`jd_id`, `jd_detail`, `jd_akun`, `jd_keterangan`, `j
 	(2, 2, '624002', 'BIAYA LAIN MTS DARUL ULUM GRESIK ', 'DEBET', 25000),
 	(2, 3, '624002', 'BIAYA LAIN MTS DARUL ULUM GRESIK TES', 'DEBET', 25000),
 	(3, 1, '111102', 'KAS MTS DARUL ULUM GRESIK TES', 'DEBET', 2500000),
-	(3, 2, '411102', 'PENDAPATAN DANA BOS MTS DARUL ULUM GRESIK TES', 'KREDIT', 2500000);
+	(3, 2, '411102', 'PENDAPATAN DANA BOS MTS DARUL ULUM GRESIK TES', 'KREDIT', 2500000),
+	(4, 1, '111102', 'KAS MTS DARUL ULUM GRESIK ', 'DEBET', 300000),
+	(4, 2, '411302', 'PENDAPATAN PEMBAYARAN SPP MADRASAH TSANAWIYAH DARUL ULUM GRESIK ', 'KREDIT', 300000),
+	(5, 1, '111102', 'KAS MTS DARUL ULUM GRESIK ', 'DEBET', 300000),
+	(5, 2, '411302', 'PENDAPATAN PEMBAYARAN SPP MADRASAH TSANAWIYAH DARUL ULUM GRESIK ', 'KREDIT', 300000),
+	(6, 1, '111102', 'KAS MTS DARUL ULUM GRESIK ', 'DEBET', 300000),
+	(6, 2, '411302', 'PENDAPATAN PEMBAYARAN SPP MADRASAH TSANAWIYAH DARUL ULUM GRESIK ', 'KREDIT', 300000),
+	(7, 1, '111103', 'KAS SEKOLAH MENENGAH ATAS DARUL ULUM GRESIK ', 'DEBET', 300000),
+	(7, 2, '411303', 'PENDAPATAN PEMBAYARAN SPP SEKOLAH MENENGAH ATAS DARUL ULUM GRESIK ', 'KREDIT', 300000),
+	(8, 1, '111103', 'KAS SEKOLAH MENENGAH ATAS DARUL ULUM GRESIK ', 'DEBET', 300000),
+	(8, 2, '411303', 'PENDAPATAN PEMBAYARAN SPP SEKOLAH MENENGAH ATAS DARUL ULUM GRESIK ', 'KREDIT', 300000);
 /*!40000 ALTER TABLE `d_jurnal_dt` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_kas_masuk
@@ -697,7 +721,9 @@ CREATE TABLE IF NOT EXISTS `d_siswa_ayah` (
 -- Dumping data for table darul_ulum.d_siswa_ayah: ~2 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_ayah` DISABLE KEYS */;
 REPLACE INTO `d_siswa_ayah` (`sa_id`, `sa_nama`, `sa_tempat_lahir`, `sa_tanggal_lahir`, `sa_agama`, `sa_kewarganegaraan`, `sa_pendidikan`, `sa_pekerjaan`, `sa_penghasilan`, `sa_alamat`, `sa_telpon`, `sa_status`) VALUES
-	(3, '3232', 'fdsfds', '2018-10-31', 'ISLAM', '433', 'SARJANA', '223', 23223333, '3232', '323232', 'H');
+	(3, '3232', 'fdsfds', '2018-10-31', 'ISLAM', '433', 'SARJANA', '223', 23223333, '3232', '323232', 'H'),
+	(4, 'Asgard', 'Asgard', '2018-10-30', 'ISLAM', 'Asgard', 'SARJANA', 'Asgard', 10000000, 'Asgard', '09090909', 'H'),
+	(5, 'Tes', 'Tes', '2018-10-29', 'ISLAM', 'Tes', 'SARJANA', 'Tes', 23232, 'Tes', '23232', 'H');
 /*!40000 ALTER TABLE `d_siswa_ayah` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_data_diri
@@ -736,7 +762,9 @@ CREATE TABLE IF NOT EXISTS `d_siswa_data_diri` (
 -- Dumping data for table darul_ulum.d_siswa_data_diri: ~0 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_data_diri` DISABLE KEYS */;
 REPLACE INTO `d_siswa_data_diri` (`sdd_id`, `sdd_nomor_induk`, `sdd_nomor_induk_nasional`, `sdd_nama`, `sdd_panggilan`, `sdd_jenis_kelamin`, `sdd_golongan_darah`, `sdd_tempat_lahir`, `sdd_tanggal_lahir`, `sdd_tinggi`, `sdd_berat`, `sdd_agama`, `sdd_urutan_anak`, `sdd_saudara_kandung`, `sdd_saudara_tiri`, `sdd_bahasa`, `sdd_jenjang_sebelumnya`, `sdd_kewarganegaraan`, `sdd_image`, `sdd_sekolah`, `sdd_status`, `sdd_status_siswa`, `sdd_group_spp`, `sdd_tahun_ajaran`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
-	(3, '10000000000000000', '23123123', 'anya', '345435435', 'L', 'b', '345454', '2018-10-29', 178, 45, 'ISLAM', 454, 45, 0, 'hggfh', 'TK', 'INDONESIA', 'data_siswa_3_.jpg', 2, 'Setujui', 'ACTIVE', 1, '2017', '2018-10-16 11:57:53', '2018-10-16 11:57:53', 'DASD', 'DASD');
+	(3, '10000000000000000', '23123123', 'anya', '345435435', 'L', 'b', '345454', '2018-10-29', 178, 45, 'ISLAM', 454, 45, 0, 'hggfh', 'TK', 'INDONESIA', 'data_siswa_3_.jpg', 2, 'Setujui', 'ACTIVE', 1, '2017', '2018-10-16 11:57:53', '2018-10-16 11:57:53', 'DASD', 'DASD'),
+	(4, '02323233', '232323233', 'Rina Permatasari', 'Rina', 'P', 'B', 'surabaya', '2004-02-04', 165, 51, 'ISLAM', 2, 2, 0, 'indonesia', 'SMP', 'indonesia', 'data_siswa_4_.jpg', 3, 'Setujui', 'ACTIVE', 1, '2018', '2018-10-16 23:52:13', '2018-10-16 23:52:13', 'DASD', 'DASD'),
+	(5, '0232323', '02323232', 'Tes', 'Tes', 'P', 'Tes', 'Tes', '2018-11-05', 232, 2332, 'ISLAM', 1, 1, 0, 'Tes', 'SMP', 'Tes', 'data_siswa_5_.jpg', 3, 'Setujui', 'ACTIVE', 1, '2018', '2018-10-16 23:55:52', '2018-10-16 23:55:52', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_siswa_data_diri` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_ibu
@@ -760,7 +788,9 @@ CREATE TABLE IF NOT EXISTS `d_siswa_ibu` (
 -- Dumping data for table darul_ulum.d_siswa_ibu: ~1 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_ibu` DISABLE KEYS */;
 REPLACE INTO `d_siswa_ibu` (`si_id`, `si_nama`, `si_tempat_lahir`, `si_tanggal_lahir`, `si_agama`, `si_kewarganegaraan`, `si_pendidikan`, `si_pekerjaan`, `si_penghasilan`, `si_alamat`, `si_telpon`, `si_status`) VALUES
-	(3, 'dfdf', 'dfdfd', '2018-10-11', 'ISLAM', '434', 'SARJANA', '2323', 23232323, '323', '2232', 'H');
+	(3, 'dfdf', 'dfdfd', '2018-10-11', 'ISLAM', '434', 'SARJANA', '2323', 23232323, '323', '2232', 'H'),
+	(4, 'Hera', 'Asgard', '2018-11-07', 'ISLAM', 'Asgard', 'SARJANA', 'Asgard', 30300000, 'Asgard', '23232323', 'H'),
+	(5, 'Tes', 'Tes', '2018-10-16', 'ISLAM', 'Tes', 'SARJANA', 'Tes', 232323, 'Tes', '23232', 'H');
 /*!40000 ALTER TABLE `d_siswa_ibu` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_kesehatan
@@ -776,10 +806,7 @@ CREATE TABLE IF NOT EXISTS `d_siswa_kesehatan` (
 -- Dumping data for table darul_ulum.d_siswa_kesehatan: ~4 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_kesehatan` DISABLE KEYS */;
 REPLACE INTO `d_siswa_kesehatan` (`sk_id`, `sk_detail`, `sk_nama_penyakit`, `sk_keterangan`) VALUES
-	(3, 1, '545', '54545'),
-	(3, 2, '545', '54545'),
-	(3, 3, '545', '54545'),
-	(3, 4, '545', '54545');
+	(5, 1, '-', '-');
 /*!40000 ALTER TABLE `d_siswa_kesehatan` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_pendidikan
@@ -798,7 +825,9 @@ CREATE TABLE IF NOT EXISTS `d_siswa_pendidikan` (
 -- Dumping data for table darul_ulum.d_siswa_pendidikan: ~1 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_pendidikan` DISABLE KEYS */;
 REPLACE INTO `d_siswa_pendidikan` (`sp_id`, `sp_detail`, `sp_tingkat_pendidikan`, `sp_nama_sekolah`, `sp_keterangan`, `sp_ijazah`, `sp_tanggal_ijazah`) VALUES
-	(3, 1, NULL, '4545', '2323323', '45454', '2018-10-16');
+	(3, 1, NULL, '4545', '2323323', '45454', '2018-10-16'),
+	(4, 1, NULL, 'smpn 17 surabaya', '-', '098098909809', '2018-10-16'),
+	(5, 1, NULL, 'Tes', 'Tes', '2323232', '2018-10-16');
 /*!40000 ALTER TABLE `d_siswa_pendidikan` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_tempat_tinggal
@@ -815,7 +844,9 @@ CREATE TABLE IF NOT EXISTS `d_siswa_tempat_tinggal` (
 -- Dumping data for table darul_ulum.d_siswa_tempat_tinggal: ~1 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_tempat_tinggal` DISABLE KEYS */;
 REPLACE INTO `d_siswa_tempat_tinggal` (`stt_id`, `stt_alamat`, `stt_no_telp`, `stt_status_tempat_tinggal`, `stt_jarak_rumah`) VALUES
-	(3, 'ghfghfg', '4545454', 'ORANG TUA', 4545);
+	(3, 'ghfghfg', '4545454', 'ORANG TUA', 4545),
+	(4, '-', '0898989', 'ORANG TUA', 12),
+	(5, 'Tes', '23232', 'ORANG TUA', 23);
 /*!40000 ALTER TABLE `d_siswa_tempat_tinggal` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_siswa_wali
@@ -839,7 +870,9 @@ CREATE TABLE IF NOT EXISTS `d_siswa_wali` (
 -- Dumping data for table darul_ulum.d_siswa_wali: ~1 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_wali` DISABLE KEYS */;
 REPLACE INTO `d_siswa_wali` (`sw_id`, `sw_nama`, `sw_tempat_lahir`, `sw_tanggal_lahir`, `sw_agama`, `sw_kewarganegaraan`, `sw_pendidikan`, `sw_pekerjaan`, `sw_penghasilan`, `sw_alamat`, `sw_telpon`, `sw_status`) VALUES
-	(3, '3213', '123213', '2018-10-11', 'ISLAM', '2323', 'SD', 'wfewfew', 23333333, '2323', '232323', 'H');
+	(3, '3213', '123213', '2018-10-11', 'ISLAM', '2323', 'SD', 'wfewfew', 23333333, '2323', '232323', 'H'),
+	(4, 'Asgard', 'Asgard', '2018-11-06', 'ISLAM', 'Asgard', 'SARJANA', 'Asgard', 23232323, 'Asgard', 'Asgard', 'H'),
+	(5, 'Tes', 'Tes', '2018-10-16', 'ISLAM', 'Tes', 'SARJANA', 'Tes', 12323232, 'Tes', '23232', 'H');
 /*!40000 ALTER TABLE `d_siswa_wali` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_staff

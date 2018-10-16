@@ -13,13 +13,15 @@ class history_spp extends Model
 
 	protected $fillable = ['hs_id',
 						   'hs_detail',
-						   'hs_tanggal',
+						   'hs_nota',
+						   'hs_bulan',
+						   'hs_tahun',
 						   'hs_keterangan',
 						   'hs_akun',
 						   'hs_akun_kas',
 						   'hs_jumlah',
 						   'created_by',
-						   'updated_at',
+						   'updated_by',
 						];
 
 	public function siswa_data_diri()

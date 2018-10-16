@@ -149,9 +149,13 @@ function edit(id) {
               $('.hs_keterangan').val(data.history.hs_keterangan);
               $('.hs_bulan').val(data.additionalData.bulan);
               $('.hs_tahun').val(data.additionalData.tahun);
+              $('.hs_nota').val(data.history.hs_nota);
+              $('.detail').val(data.history.hs_detail);
             }else{
               $('.hs_bulan').val(data.additionalData.bulan);
               $('.hs_tahun').val(data.additionalData.tahun);
+              $('.hs_nota').val(data.nota);
+              $('.detail').val('');
             }
             $('.hs_jumlah').val(accounting.formatMoney(data.spp.gs_nilai,"", 0, ".",','));
 

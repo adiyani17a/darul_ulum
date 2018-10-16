@@ -290,11 +290,16 @@ class kas_masuk_controller extends Controller
 	public function datatable_spp(Request $req)
 	{	
 		if (Auth::user()->akses('PEMBAYARAN SPP','global')) {
-			$data = $this->models->siswa_data_diri()->where('sdd_status','=','Setujui')->get();
+			$data = $this->models->siswa_data_diri()->where('sdd_status','=','Setujui')->where('sdd_nomor_induk','!=',null)->get();
 		}else{
 			$sekolah = Auth::User()->sekolah_id;
-			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->where('sdd_status','Released')->get();
+			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->where('sdd_status','Released')->where('sdd_nomor_induk','!=',null)->get();
 		}
+		foreach ($data as $key => $value) {
+			$data[$key]->filter_bulan = $req->filter_bulan;
+			$data[$key]->filter_tahun = $req->filter_tahun;
+		}
+
 		$data = collect($data);
 		return Datatables::of($data)
 		                ->addColumn('aksi', function ($data) {
@@ -328,9 +333,9 @@ class kas_masuk_controller extends Controller
 		                	}
 
 		                	for ($i=0; $i < count($data->history_spp); $i++) { 
-		                		$bulan = Date::parse($data->history_spp[$i]->hs_tanggal)->format('F');
-		                		$tahun = carbon::parse($data->history_spp[$i]->hs_tanggal)->format('Y');
-		                		if ( $bulan ==  $req->filter_bulan and $tahun == $req->filter_tahun) {
+		                		$bulan = $data->history_spp[$i]->hs_bulan;
+		                		$tahun = carbon::parse($data->history_spp[$i]->hs_tahun)->format('Y');
+		                		if ( $bulan ==  $data->filter_bulan and $tahun == $data->filter_tahun) {
 		                			return '<label class="badge badge-success">Terbayar</label>';
 		                		}
 		                	}
@@ -343,9 +348,9 @@ class kas_masuk_controller extends Controller
 		                	}
 
 		                	for ($i=0; $i < count($data->history_spp); $i++) { 
-		                		$bulan = Date::parse($data->history_spp[$i]->hs_tanggal)->format('F');
-		                		$tahun = carbon::parse($data->history_spp[$i]->hs_tanggal)->format('Y');
-		                		if ( $bulan ==  $req->filter_bulan and $tahun == $req->filter_tahun) {
+		                		$bulan = $data->history_spp[$i]->hs_bulan;
+		                		$tahun = carbon::parse($data->history_spp[$i]->hs_tahun)->format('Y');
+		                		if ( $bulan ==  $data->filter_bulan and $tahun == $data->filter_tahun) {
 		                			return $data->history_spp[$i]->updated_by;
 		                		}
 		                	}
@@ -388,19 +393,32 @@ class kas_masuk_controller extends Controller
 
 	public function edit_spp(Request $req)
 	{
+
+		$bulan = Date::parse($req->filter_bulan)->format('F');
+		$bulan_angka = Date::parse($req->filter_bulan)->format('m');
+		$tahun = Date::parse($req->filter_tahun)->format('Y');
+
+		$cari = $this->models->history_spp()
+							   ->selectRaw("substring(max(hs_nota),14,5) as id")
+							   ->whereRaw("hs_bulan = '$bulan' and hs_tahun = '$tahun'")
+							   ->first();
+        $index = (integer)$cari->id + 1;
+        $index = str_pad($index, 5, '0', STR_PAD_LEFT);
+
 		$data = $this->model->siswa_data_diri()->cari('sdd_id',$req->id);
+        $nota = 'SPP-'. $bulan_angka . $tahun . '/' . $data->sdd_sekolah . '/' . $index;
 
 		$spp  = $data->group_spp;
-		$bulan = Date::parse($req->filter_bulan)->format('m');
-		$history  = $this->models->history_spp()->whereRaw("MONTH(hs_tanggal) = '$bulan' and YEAR(hs_tanggal) = '$req->filter_tahun'")->first();
+		$bulan = Date::parse($req->filter_bulan)->format('F');
+		$history  = $this->models->history_spp()->whereRaw("MONTH(hs_bulan) = '$bulan' and YEAR(hs_tahun) = '$req->filter_tahun'")->first();
 		if ($history != null) {
-			$additionalData['bulan'] = Date::parse($history->hs_tanggal)->format('F');
-			$additionalData['tahun'] = Date::parse($history->hs_tanggal)->format('Y');
+			$additionalData['bulan'] = Date::parse($history->hs_bulan)->format('F');
+			$additionalData['tahun'] = Date::parse($history->hs_tahun)->format('Y');
 		}else{
 			$additionalData['bulan'] = $req->filter_bulan;
 			$additionalData['tahun'] = $req->filter_tahun;
 		}
-		return response()->json(['data'=>$data,'spp'=>$spp,'history'=>$history,'additionalData'=>$additionalData]);
+		return response()->json(['data'=>$data,'spp'=>$spp,'history'=>$history,'additionalData'=>$additionalData,'nota'=>$nota]);
 	}
 
 	public function simpan_spp(Request $req)
@@ -409,17 +427,18 @@ class kas_masuk_controller extends Controller
 		try {
 			$data = $this->model->siswa_data_diri()->cari('sdd_id',$req->id);
 			$id = $this->models->history_spp()->where('hs_id',$req->id)->max('hs_detail')+1;
-			$tanggal =  Date::parse($req->hs_tahun.'-'.$req->hs_bulan.'-'.'01')->format('Y-m-d');
 			$save = array(
 							'hs_id'			=> $req->id,
 							'hs_detail'		=> $id,
-							'hs_tanggal'	=> $tanggal,
+							'hs_nota'		=> $req->hs_nota,
+							'hs_bulan'  	=> $req->hs_bulan,
+							'hs_tahun'  	=> $req->hs_tahun,
 							'hs_keterangan'	=> $req->hs_keterangan,
 							'hs_akun'		=> $req->hs_akun,
 							'hs_akun_kas'	=> $req->hs_akun_kas,
 							'hs_jumlah'		=> $data->group_spp->gs_nilai,
 							'created_by'	=> Auth::user()->name,
-							'updated_at'	=> Auth::user()->name,
+							'updated_by'	=> Auth::user()->name,
 						);
 
 			$this->model->history_spp()->create($save);
@@ -432,17 +451,19 @@ class kas_masuk_controller extends Controller
 			$id_jurnal = $this->model->jurnal()->max('j_id');
 			$save = array(
 		                   'j_id'			=> $id_jurnal,
-						   'j_tahun'		=> carbon::parse($req->pc_tanggal)->format('Y'),
-						   'j_tanggal'		=> carbon::parse($req->pc_tanggal)->format('Y-m-d'),
-						   'j_keterangan'	=> strtoupper($req->km_keterangan),
+						   'j_tahun'		=> $req->hs_tahun,
+						   'j_tanggal'		=> carbon::now()->format('Y-m-d'),
+						   'j_keterangan'	=> strtoupper($req->hs_keterangan),
 						   'j_sekolah'		=> $data->sdd_sekolah,
-						   'j_ref'			=> $req->km_nota,
-						   'j_detail'		=> 'PEMASUKAN KAS',
+						   'j_ref'			=> $req->hs_nota,
+						   'j_detail'		=> 'PEMBAYARAN SPP',
 						   'created_by'		=> Auth::user()->name,
 						   'updated_by'		=> Auth::user()->name,
             		);
 
 			$this->model->jurnal()->create($save);
+			$akun = [];
+			$akun_val = [];
 			$akun_kas = $this->model->akun()->show_detail_one('a_master_akun',$req->hs_akun_kas,'a_sekolah',$data->sdd_sekolah);
 			if ($akun_kas == null) {
 				DB::rollBack();
@@ -470,14 +491,14 @@ class kas_masuk_controller extends Controller
 						$data_akun[$i]['jd_detail']	= $i+1;
 						$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
 						$data_akun[$i]['jd_value'] 	= $akun_val[$i];
-                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . strtoupper($req->hs_keterangan);
 						$data_akun[$i]['jd_statusdk'] = 'DEBET';
 					}else{
 						$data_akun[$i]['jd_id'] 	= $id_jurnal;
 						$data_akun[$i]['jd_keterangan']	= $i+1;
 						$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
 						$data_akun[$i]['jd_value'] 	= $akun_val[$i];
-                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . strtoupper($req->hs_keterangan);
 						$data_akun[$i]['jd_statusdk'] = 'KREDIT';
 					}
 				}if (substr($akun[$i],0, 2)>11) {
@@ -486,23 +507,23 @@ class kas_masuk_controller extends Controller
 						$data_akun[$i]['jd_detail']	= $i+1;
 						$data_akun[$i]['jd_akun'] 	= $akun[$i];
 						$data_akun[$i]['jd_value'] 	= $akun_val[$i];
-                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . strtoupper($req->hs_keterangan);
 						$data_akun[$i]['jd_statusdk'] = 'DEBET';
 					}else{
 						$data_akun[$i]['jd_id'] 	= $id_jurnal;
 						$data_akun[$i]['jd_detail']	= $i+1;
 						$data_akun[$i]['jd_akun'] 	 	= $akun[$i];
 						$data_akun[$i]['jd_value'] 	= $akun_val[$i];
-                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . $akun_ket[$i];
+                		$data_akun[$i]['jd_keterangan']   = $cari_coa->a_nama . ' ' . strtoupper($req->hs_keterangan);
 						$data_akun[$i]['jd_statusdk'] = 'KREDIT';
 					}
 				}
 			}
 
 			$jurnal_dt = $this->models->jurnal_dt()->insert($data_akun);
-				
+			
 			$lihat = $this->model->jurnal_dt()->show('jd_id',$id_jurnal);
-			$check = $this->models->check_jurnal($req->km_nota);
+			$check = $this->models->check_jurnal($req->hs_nota);
 			if ($check == 0) {
 				DB::rollBack();
 				return Response::json(['status'=>0,'pesan'=>'Jurnal Tidak Balance']);
