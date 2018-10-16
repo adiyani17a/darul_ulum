@@ -52,6 +52,10 @@
           serverSide: true,
           ajax: {
               url:'{{ route('datatable_posisi') }}',
+              error:function(){
+                var table = $('#table_data').DataTable();
+                table.ajax.reload(null,false);
+              }
           },
           columnDefs: [
 
