@@ -67,6 +67,24 @@
                         <input maxlength="50" type="text" value="{{ $data->sdd_nomor_induk }}" placeholder="Untuk Sementara Masih Manual" class="form-control sdd_nomor_induk wajib" name="sdd_nomor_induk">
                       </td>
                     </tr>
+                    <tr>
+                      <td>Kelas</td>
+                      <td>
+                        <input maxlength="50" type="text" value="{{ $data->sdd_kelas }}" placeholder="Untuk Sementara Masih Manual" class="form-control sdd_kelas wajib" name="sdd_kelas">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Nama Kelas</td>
+                      <td>
+                        <input maxlength="50" type="text" value="{{ $data->sdd_nama_kelas }}" placeholder="Untuk Sementara Masih Manual" class="form-control sdd_nama_kelas wajib huruf_besar" name="sdd_nama_kelas">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Jurusan</td>
+                      <td>
+                        <input maxlength="50" type="text" value="{{ $data->sdd_jurusan }}" placeholder="Untuk Sementara Masih Manual" class="form-control sdd_jurusan wajib" name="sdd_jurusan">
+                      </td>
+                    </tr>
                   </table>
                 </div>
               </div>

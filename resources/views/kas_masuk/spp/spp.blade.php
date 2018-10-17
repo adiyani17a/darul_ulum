@@ -150,13 +150,14 @@ function edit(id) {
             $('.id').val(data.data.sdd_id);
             $('.sdd_group_spp').val(data.spp.gs_nama);
             $('.sdd_nama').val(data.data.sdd_nama);
-            if (data.history_spp != null) {
+            if (data.history != null) {
               $('.hs_keterangan').val(data.history.hs_keterangan);
               $('.hs_bulan').val(data.additionalData.bulan);
               $('.hs_tahun').val(data.additionalData.tahun);
               $('.hs_nota').val(data.history.hs_nota);
               $('.detail').val(data.history.hs_detail);
             }else{
+              $('.hs_keterangan').val('');
               $('.hs_bulan').val(data.additionalData.bulan);
               $('.hs_tahun').val(data.additionalData.tahun);
               $('.hs_nota').val(data.nota);
@@ -345,41 +346,10 @@ function hapus(id) {
 }
 
 function cetak(id) {
-  window.open('{{  url('penerimaan/cetak_rekap_siswa') }}?id='+id)
+  var filter_bulan = $('.filter_bulan').val();
+  var filter_tahun = $('.filter_tahun').val();
+  window.open('{{  url('kas_masuk/cetak_spp') }}?id='+id+'&filter_bulan='+filter_bulan+'&filter_tahun='+filter_tahun);
 }
 
-function ubah_status(id,param) {
-  $.ajax({
-      url:baseUrl +'/penerimaan/ubah_status_rekap_siswa',
-      type:'get',
-      data:{id,param},
-      dataType:'json',
-      success:function(data){
-        $('#tambah-jabatan').modal('hide');
-        var table = $('#table_data').DataTable();
-        table.ajax.reload(null, false );
-        if (data.status == 1) {
-          iziToast.success({
-                icon: 'fa fa-trash',
-                title: 'Berhasil',
-                color:'yellow',
-                message: data.pesan,
-          });
-        }else{
-          iziToast.warning({
-                icon: 'fa fa-times',
-                title: 'Oops,',
-                message: data.pesan,
-          });
-        }
-      },
-      error:function(){
-        iziToast.warning({
-          icon: 'fa fa-times',
-          message: 'Terjadi Kesalahan!',
-        });
-      }
-  });
-}
 </script>
 @endsection

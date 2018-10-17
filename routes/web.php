@@ -140,6 +140,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_masuk/hapus_spp', 'kas_masuk_controller@hapus_spp');
         Route::get('/kas_masuk/edit_spp', 'kas_masuk_controller@edit_spp');
         Route::post('/kas_masuk/simpan_spp', 'kas_masuk_controller@simpan_spp');
+        Route::get('/kas_masuk/cetak_spp', 'kas_masuk_controller@cetak_spp');
     // KAS KELUAR
         // RENCANA PEMBELIAN
         Route::get('/kas_keluar/rencana_pembelian', 'kas_keluar_controller@rencana_pembelian');

@@ -166,7 +166,7 @@ class penerimaan_controller extends Controller
 		        	if ($tes[$i] == 'sdd_tanggal_lahir') {
 		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
 		        	}else{
-		        		$save[$tes[$i]] = $tes1[$tes[$i]];
+		        		$save[$tes[$i]] = strtoupper($tes1[$tes[$i]]);
 		        	}
 		        	$save['created_by'] = Auth::user()->name;
 		        	$save['updated_by'] = Auth::user()->name;
@@ -361,7 +361,7 @@ class penerimaan_controller extends Controller
 		        	if ($tes[$i] == 'sp_tanggal_ijazah') {
 		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
 		        	}else{
-		        		$save[$tes[$i]] = $tes1[$tes[$i]];
+		        		$save[$tes[$i]] = strtoupper($tes1[$tes[$i]]);
 		        	}
 	        	}
 	        }
@@ -673,7 +673,7 @@ class penerimaan_controller extends Controller
 		        	if ($tes[$i] == 'sdd_tanggal_lahir') {
 		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
 		        	}else{
-		        		$save[$tes[$i]] = $tes1[$tes[$i]];
+		        		$save[$tes[$i]] = strtoupper($tes1[$tes[$i]]);
 		        	}
 		        	$save['updated_by'] = Auth::user()->name;
 		        	$save['sdd_image']  = $file_name;
