@@ -28,6 +28,7 @@ class siswa_data_diri extends Model
 						   'sdd_saudara_kandung',
 						   'sdd_kewarganegaraan',
 						   'sdd_saudara_tiri',
+						   'sdd_saudara_angkat',
 						   'sdd_bahasa',
 						   'sdd_tempat_tinggal',
 						   'sdd_image',

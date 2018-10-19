@@ -76,6 +76,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/master/simpan_group_spp', 'master_controller@simpan_group_spp');
         Route::get('/master/hapus_group_spp', 'master_controller@hapus_group_spp');
         Route::get('/master/edit_group_spp', 'master_controller@edit_group_spp');
+        // Kelas
+        Route::get('/master/kelas', 'master_controller@kelas');
+        Route::get('/master/datatable_kelas', 'master_controller@datatable_kelas')->name('datatable_kelas');
+        Route::post('/master/simpan_kelas', 'master_controller@simpan_kelas');
+        Route::get('/master/hapus_kelas', 'master_controller@hapus_kelas');
+        Route::get('/master/edit_kelas', 'master_controller@edit_kelas');
     // KEUANGAN
         // MASTER AKUN KEUANGAN
         Route::get('/keuangan/keuangan', 'keuangan_controller@keuangan');

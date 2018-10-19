@@ -265,7 +265,7 @@ function ubah_status(id,param) {
         table.ajax.reload(null, false );
         if (data.status == 1) {
           iziToast.success({
-                icon: 'fa fa-trash',
+                icon: 'fa fa-check',
                 title: 'Berhasil',
                 color:'yellow',
                 message: data.pesan,

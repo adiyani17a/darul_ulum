@@ -33,6 +33,7 @@ use App\child\siswa_kesehatan;
 use App\child\siswa_pendidikan;
 use App\child\siswa_tempat_tinggal;
 use App\child\history_spp;
+use App\child\kelas;
 use App\Repositories\TestRepo;
 
 class all_model extends Model
@@ -214,5 +215,11 @@ class all_model extends Model
 	{
 		$history_spp = new history_spp();
         return $history_spp = new TestRepo($history_spp);
+	}
+
+	public function kelas()
+	{
+		$kelas = new kelas();
+        return $kelas = new TestRepo($kelas);
 	}
 }

@@ -53,7 +53,6 @@
   </div>
 </div>
 
-@include('kas_keluar.konfirmasi_pengeluaran_kas.modal')
 
 <!-- content-wrapper ends -->
 @endsection
@@ -111,28 +110,10 @@ $('.btn_modal').click(function(){
   $('#tambah-akun select:not(.a_akun_dka):not(.a_aktif)').val('').trigger('change');
 })
 
-
-function detail(id) {
-  $.ajax({
-      url:baseUrl +'/kas_keluar/detail_konfirmasi_pengeluaran_kas',
-      type:'get',
-      data:{id},
-      success:function(data){
-        $('.table_append').html(data);
-        $('#detail').modal('show');
-      },
-      error:function(){
-        iziToast.warning({
-          icon: 'fa fa-times',
-          message: 'Terjadi Kesalahan!',
-        });
-      }
-  });
-}
-
 function edit(id) {
- location.href = '{{  url('kas_keluar/edit_petty_cash') }}?id='+id;
+ location.href = '{{  url('kas_masuk/edit_pemasukan_kas') }}?id='+id;
 }
+
 function hapus(id) {
   iziToast.show({
     overlay: true,
@@ -156,7 +137,7 @@ function hapus(id) {
             });
 
             $.ajax({
-                url:baseUrl +'/kas_keluar/hapus_petty_cash',
+                url:baseUrl +'/kas_masuk/hapus_pemasukan_kas',
                 type:'get',
                 data:{id},
                 dataType:'json',

@@ -98,7 +98,11 @@ class penerimaan_controller extends Controller
 			                    		'</tr>'.
 			                    	'</table>';
 		                })->addColumn('status', function ($data) {
-							return '<label class="badge badge-info">Released</label>';
+		                	if ($data->sdd_status == 'Released') {
+								return '<label class="badge badge-warning">Released</label>';
+		                	}elseif ($data->sdd_status == 'Printed'){
+								return '<label class="badge badge-info">Printed</label>';
+		                	}
 		                })
 		                ->rawColumns(['aksi','image','sekolah','data_siswa','status'])
 		                ->addIndexColumn()
@@ -162,7 +166,6 @@ class penerimaan_controller extends Controller
 	        		$save['sdd_id'] = $id;
 		        	$save['sdd_nomor_induk_nasional'] = 0;
 		        	$save['sdd_nomor_induk'] = 0;
-		        	$save['sdd_saudara_tiri'] = 0;
 		        	if ($tes[$i] == 'sdd_tanggal_lahir') {
 		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
 		        	}else{
@@ -448,7 +451,7 @@ class penerimaan_controller extends Controller
 	public function datatable_konfirmasi()
 	{
 		if (Auth::user()->akses('KONFIRMASI SISWA','global')) {
-			$data = $this->models->siswa_data_diri()->where('sdd_status','!=','Setujui')->get();
+			$data = $this->models->siswa_data_diri()->where('sdd_status','=','Printed')->get();
 		}else{
 			$sekolah = Auth::User()->sekolah_id;
 			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->where('sdd_status','Released')->get();
@@ -569,6 +572,14 @@ class penerimaan_controller extends Controller
 			                    			'<td>'.$data->sdd_nama.'</td>'.
 			                    		'</tr>'.
 			                    		'<tr>'.
+			                    			'<td>NISN</td>'.
+			                    			'<td>'.$data->sdd_nomor_induk_nasional.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td>NIS</td>'.
+			                    			'<td>'.$data->sdd_nomor_induk.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
 			                    			'<td>TEMPAT LAHIR</td>'.
 			                    			'<td>'.$data->sdd_tempat_lahir.'</td>'.
 			                    		'</tr>'.
@@ -617,12 +628,18 @@ class penerimaan_controller extends Controller
 		if (Auth::User()->akses('REKAP SISWA','ubah')) {
 			$sekolah 	= $this->model->sekolah()->all();
 			$data    	= $this->model->siswa_data_diri()->cari('sdd_id',$req->id);
+			$kelas    	= $this->model->kelas()->all();
 			$group_spp  = $this->model->group_spp()->all();
 			$additionalData['tahun_ajaran'] = [];
+			$tingkat = [];
+			for ($i=0; $i < 12; $i++) { 
+				$tingkat[$i] = $i+1;
+			}
+
 			for ($i=0; $i < 20; $i++) { 
 				array_push($additionalData['tahun_ajaran'], carbon::now()->subYear($i)->format('Y'));
 			}
-			return view('siswa.rekap_siswa.edit_rekap_siswa',compact('sekolah','data','group_spp','additionalData'));
+			return view('siswa.rekap_siswa.edit_rekap_siswa',compact('sekolah','data','group_spp','additionalData','kelas','tingkat'));
 		}else{
 			Auth::logout();
 		    Session::flush();
@@ -665,12 +682,26 @@ class penerimaan_controller extends Controller
 	        }else{
 	          $file_name = $data->sdd_image;
 	        }
+
+	        $nisn = $this->models->siswa_data_diri()->where('sdd_nomor_induk_nasional',$req->sdd_nomor_induk_nasional)->where('sdd_id','!=',$req->id)->first();
+	        if ($nisn != null) {
+	        	DB::rollBack();
+	        	return Response::json(['status'=>0,'pesan'=>'Nisn Sudah Terpakai']);
+	        }
+
+	        $nis = $this->models->siswa_data_diri()->where('sdd_nomor_induk',$req->sdd_nomor_induk)->where('sdd_id','!=',$req->id)->first();
+	        if ($nis != null) {
+	        	DB::rollBack();
+	        	return Response::json(['status'=>0,'pesan'=>'Nisn Sudah Terpakai']);
+	        }
 	        // SAVE DATA SISWA
 			$save = [];
 	        for ($i=0; $i < count($tes); $i++) { 
 	        	if (substr($tes[$i], 0,3) == 'sdd') {
 	        		$save['sdd_id'] = $id;
 		        	if ($tes[$i] == 'sdd_tanggal_lahir') {
+		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
+		        	}if ($tes[$i] == 'sdd_tanggal_lahir') {
 		        		$save[$tes[$i]] = carbon::parse(str_replace('/','-',$tes1[$tes[$i]]))->format('Y-m-d');
 		        	}else{
 		        		$save[$tes[$i]] = strtoupper($tes1[$tes[$i]]);

@@ -13,9 +13,9 @@
       <nav aria-label="breadcrumb" role="navigation">
         <ol class="breadcrumb bg-info">
           <li class="breadcrumb-item"><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a></li>
-          <li class="breadcrumb-item">Kas Keluar</li>
-          <li class="breadcrumb-item" aria-current="page">Bukti Kas Keluar</li>
-          <li class="breadcrumb-item active" aria-current="page">Tambah Data</li>
+          <li class="breadcrumb-item">Kesiswaan</li>
+          <li class="breadcrumb-item" aria-current="page">Rekap Siswa</li>
+          <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
         </ol>
       </nav>
     </div>
@@ -36,7 +36,7 @@
                 <div class="card-body">
                   <table class="table table-hover no-border data_sekolah">
                     <tr>
-                      <td width="474px">Group SPP</td>
+                      <th width="474px">Group SPP</th>
                       <td>
                         <select class="sdd_group_spp form-control option" name="sdd_group_spp">
                           <option value="">Pillih - Data</option>
@@ -49,7 +49,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td>Tahun Ajaran</td>
+                      <th>Tahun Ajaran</th>
                       <td>
                         <select class="sdd_tahun_ajaran form-control option" name="sdd_tahun_ajaran">
                           <option value="">Pillih - Data</option>
@@ -62,25 +62,45 @@
                       </td>
                     </tr>
                     <tr>
-                      <td>NIS</td>
+                      <th>NOMOR INDUK SISWA NASIONAL</th>
+                      <td>
+                        <input maxlength="10" type="text" value="{{ $data->sdd_nomor_induk_nasional }}" name="sdd_nomor_induk_nasional" class="sdd_nomor_induk_nasional form-control wajib">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>NIS</th>
                       <td>
                         <input maxlength="50" type="text" value="{{ $data->sdd_nomor_induk }}" placeholder="Untuk Sementara Masih Manual" class="form-control sdd_nomor_induk wajib" name="sdd_nomor_induk">
                       </td>
                     </tr>
                     <tr>
-                      <td>Kelas</td>
+                      <th>Tingkat Kelas</th>
                       <td>
-                        <input maxlength="50" type="text" value="{{ $data->sdd_kelas }}" placeholder="Untuk Sementara Masih Manual" class="form-control sdd_kelas wajib" name="sdd_kelas">
+                       <select class="form-control option sdd_kelas" name="sdd_kelas">
+                          <option value="">Pilih - Data</option>
+                          @foreach ($tingkat as $i => $k)
+                            <option @if ($data->sdd_kelas == $tingkat[$i] )
+                              selected="" 
+                            @endif value="{{ $tingkat[$i] }}">{{ $tingkat[$i] }}</option>
+                          @endforeach
+                        </select>
                       </td>
                     </tr>
                     <tr>
-                      <td>Nama Kelas</td>
+                      <th>Nama Kelas</th>
                       <td>
-                        <input maxlength="50" type="text" value="{{ $data->sdd_nama_kelas }}" placeholder="Untuk Sementara Masih Manual" class="form-control sdd_nama_kelas wajib huruf_besar" name="sdd_nama_kelas">
+                       <select class="form-control option sdd_nama_kelas" name="sdd_nama_kelas">
+                          <option value="">Pilih - Data</option>
+                          @foreach ($kelas as $i => $k)
+                            <option @if ($data->sdd_nama_kelas == $k->k_id)
+                              selected="" 
+                            @endif value="{{ $k->k_id }}">{{ $k->k_nama }}</option>
+                          @endforeach
+                        </select>
                       </td>
                     </tr>
                     <tr>
-                      <td>Jurusan</td>
+                      <th>Jurusan</th>
                       <td>
                         <input maxlength="50" type="text" value="{{ $data->sdd_jurusan }}" placeholder="Untuk Sementara Masih Manual" class="form-control sdd_jurusan wajib" name="sdd_jurusan">
                       </td>
@@ -121,12 +141,6 @@
                       <th>NAMA PANGGILAN</th>
                       <td>
                         <input type="text" value="{{ $data->sdd_panggilan }}" name="sdd_panggilan" class="sdd_panggilan form-control wajib">
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>NOMOR INDUK SISWA NASIONAL</th>
-                      <td>
-                        <input maxlength="10" type="text" value="{{ $data->sdd_nomor_induk_nasional }}" name="sdd_nomor_induk_nasional" class="sdd_nomor_induk_nasional form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -194,9 +208,21 @@
                       </td>
                     </tr>
                     <tr>
-                      <th>JUMLAH SAUDARA</th>
+                      <th>JUMLAH SAUDARA KANDUNG</th>
                       <td>
-                        <input value="{{ $data->sdd_saudara_kandung }}" type="text" name="sdd_saudara_kandung" class="sdd_saudara_kandung hanya_angka form-control wajib">
+                        <input value="{{ $data->sdd_saudara_kandung }}"  type="text" name="sdd_saudara_kandung" class="sdd_saudara_kandung hanya_angka form-control wajib">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>JUMLAH SAUDARA TIRI</th>
+                      <td>
+                        <input value="{{ $data->sdd_saudara_tiri }}"  type="text" name="sdd_saudara_tiri" class="sdd_saudara_tiri hanya_angka form-control wajib">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>JUMLAH SAUDARA ANGKAT</th>
+                      <td>
+                        <input value="{{ $data->sdd_saudara_angkat }}"  type="text" name="sdd_saudara_angkat" class="sdd_saudara_angkat hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -401,6 +427,20 @@
                       <th>KETERANGAN</th>
                       <td>
                         <input value="{{ $data->siswa_pendidikan[0]->sp_keterangan }}" type="text" name="sp_keterangan" class="sp_keterangan form-control wajib">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>STATUS</th>
+                      <td>
+                        <select class="sp_status form-control option" name="sp_status">
+                            <option value="">Pilih - Data</option>
+                            <option @if ($data->siswa_pendidikan[0]->sp_status == 'SISWA BARU')
+                              selected="" 
+                            @endif value="SISWA BARU">Siswa Baru</option>
+                            <option @if ($data->siswa_pendidikan[0]->sp_status == 'PINDAHAN')
+                              selected="" 
+                            @endif value="PINDAHAN">Pindahan</option>
+                        </select>
                       </td>
                     </tr>
                   </table>

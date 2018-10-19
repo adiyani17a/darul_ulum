@@ -111,9 +111,21 @@
                       </td>
                     </tr>
                     <tr>
-                      <th>JUMLAH SAUDARA</th>
+                      <th>JUMLAH SAUDARA KANDUNG</th>
                       <td>
                         <input type="text" name="sdd_saudara_kandung" class="sdd_saudara_kandung hanya_angka form-control wajib">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>JUMLAH SAUDARA TIRI</th>
+                      <td>
+                        <input type="text" name="sdd_saudara_tiri" class="sdd_saudara_tiri hanya_angka form-control wajib">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>JUMLAH SAUDARA ANGKAT</th>
+                      <td>
+                        <input type="text" name="sdd_saudara_angkat" class="sdd_saudara_angkat hanya_angka form-control wajib">
                       </td>
                     </tr>
                     <tr>
@@ -264,14 +276,16 @@
                             @endforeach
                           </select>
                         @else
-                          <select class="sdd_sekolah form-control option" name="sdd_sekolah">
-                            <option value="">Pilih - Sekolah</option>
-                            @foreach($sekolah as $val)
-                              <option @if (Auth::user()->sekolah_id == $val->s_id)
-                                selected="" 
-                              @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
-                            @endforeach
-                          </select>
+                          <div class="disabled">
+                            <select class="sdd_sekolah form-control option" name="sdd_sekolah">
+                              <option value="">Pilih - Sekolah</option>
+                              @foreach($sekolah as $val)
+                                <option @if (Auth::user()->sekolah_id == $val->s_id)
+                                  selected="" 
+                                @endif value="{{$val->s_id}}">{{$val->s_nama}}</option>
+                              @endforeach
+                            </select>
+                          </div>
                         @endif
                       </td>
                     </tr>
@@ -279,6 +293,16 @@
                       <th>KETERANGAN</th>
                       <td>
                         <input type="text" name="sp_keterangan" class="sp_keterangan form-control wajib">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>STATUS</th>
+                      <td>
+                        <select class="sp_status form-control option" name="sp_status">
+                            <option value="">Pilih - Data</option>
+                            <option value="SISWA BARU">Siswa Baru</option>
+                            <option value="PINDAHAN">Pindahan</option>
+                        </select>
                       </td>
                     </tr>
                   </table>
@@ -679,6 +703,8 @@ $(document).on('click','.hapus_riwayat',function(){
   $(par).remove();
 })
 
+// $('.wajib:not(.hanya_angka):not(.date)').val('tessdsdsdsds');
+// $('.hanya_angka').val(12312312);
 
 function simpan_data() {
 

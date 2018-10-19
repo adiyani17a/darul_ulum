@@ -20,7 +20,8 @@
           <div class="alert col-sm-6 alert-info alert-dismissible" title="DP sudah Lunas">
               <button type="button" class="close" data-dismiss="alert">×</button>
               <strong>Notice!</strong> <br>
-              Data yang sudah di setujui akan tampil di menu data siswa.
+              1. Harap Klik Print Terlebih Dahulu Agar Data Muncul di Menu konfirmasi.<br>
+              2. Data yang sudah di setujui akan tampil di menu data siswa.
           </div>
           <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
           	<a href="{{ url('penerimaan/create_siswa') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>

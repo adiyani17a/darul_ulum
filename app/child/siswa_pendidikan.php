@@ -17,6 +17,7 @@ class siswa_pendidikan extends Model
 						   'sp_keterangan',
 						   'sp_ijazah',
 						   'sp_tanggal_ijazah',
+						   'sp_status',
 						];
 
 	public function siswa_data_diri()

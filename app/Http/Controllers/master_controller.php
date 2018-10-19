@@ -557,4 +557,81 @@ class master_controller extends Controller
     return response()->json(['status' => 1]);
   }
 
+  public function kelas()
+  {
+    $kelas = $this->model->kelas()->all();
+    return view('master.kelas.kelas',compact('kelas'));
+  }
+
+  public function datatable_kelas()
+  {
+    $data = $this->model->kelas()->all();
+    
+    // return $data;
+    $data = collect($data);
+    return Datatables::of($data)
+                    ->addColumn('aksi', function ($data) {
+                      return   '<div class="btn-group">'.
+                               '<button type="button" onclick="edit(\''.$data->k_id.'\')" class="btn btn-info btn-lg" title="detail">'.
+                               '<label class="fa fa-pencil-alt"></label></button>'.
+                               '<button type="button" onclick="hapus(\''.$data->k_id.'\')" class="btn btn-danger btn-lg" title="hapus">'.
+                               '<label class="fa fa-trash"></label></button>'.
+                               '</div>';
+                    })
+                    ->addColumn('none', function ($data) {
+                        return '-';
+                    })
+                    ->rawColumns(['aksi', 'none','sekolah','foto'])
+                    ->addIndexColumn()
+                    ->make(true);
+  }
+
+  public function simpan_kelas(request $req)
+  {
+    DB::BeginTransaction();
+    try{
+      if ($req->id == null) {
+        $id = $this->model->kelas()->max('k_id');
+        $save = array(
+                  'k_id'         => $id,
+                  'k_nama'       => strtoupper($req->k_nama),
+                  'k_keterangan' => strtoupper($req->k_keterangan),
+                  'created_by'    => Auth::user()->name,
+                  'updated_by'    => Auth::user()->name,
+                 );
+        $this->model->kelas()->create($save);
+        DB::commit();
+        return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+      }else{
+        $id = $req->id;
+        $save = array(
+                  'k_id'         => $id,
+                  'k_nama'       => strtoupper($req->k_nama),
+                  'k_keterangan' => strtoupper($req->k_keterangan),
+                  'created_by'    => Auth::user()->name,
+                  'updated_by'    => Auth::user()->name,
+                 );
+        $this->model->kelas()->update($save,'k_id',$id);
+        DB::commit();
+        return Response::json(['status'=>1,'pesan'=>'Simpan Data!']);
+      }
+      
+    }catch(Exception $er){
+      dd($er);
+      DB::rollBack();
+    }
+  }
+
+  public function edit_kelas(request $req)
+  {
+    $data = $this->model->kelas()->cari('k_id',$req->id);
+    return response()->json(['data' => $data]);
+  }
+
+  public function hapus_kelas(Request $req)
+  {
+    $data = $this->model->kelas()->cari('k_id',$req->id);
+    $data = $this->model->kelas()->delete('k_id',$req->id);
+    return response()->json(['status' => 1]);
+  }
 }

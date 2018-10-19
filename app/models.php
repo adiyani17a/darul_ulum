@@ -32,6 +32,7 @@ use App\child\siswa_kesehatan;
 use App\child\siswa_pendidikan;
 use App\child\siswa_tempat_tinggal;
 use App\child\history_spp;
+use App\child\kelas;
 class models extends Model
 {
     public function jabatan()
@@ -178,6 +179,12 @@ class models extends Model
 	{
 		return $history_spp = new history_spp();
 	}
+
+	public function kelas()
+	{
+		return $kelas = new kelas();
+	}
+
 
 	public function check_jurnal($nota)
 	{
