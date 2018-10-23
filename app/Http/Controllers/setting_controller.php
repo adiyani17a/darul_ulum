@@ -434,13 +434,6 @@ class setting_controller extends Controller
   {
     $data = $this->model->hak_akses()->show('ha_level',$req->level);
     $grup_menu = $this->model->grup_menu()->all();
-    foreach ($data as $key => $value) {
-      try {
-        $value->daftar_menu->grup_menu;
-      } catch (Exception $e) {
-        dd($value->toArray());
-      }
-    }
     return view('setting.hak_akses.table_data',compact('data','grup_menu','hak_akses'));
   }
   public function centang(request $req)

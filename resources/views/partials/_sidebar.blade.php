@@ -154,13 +154,20 @@
               </a>
               <div class="collapse {{Request::is('setting') ? 'show' : '' || Request::is('setting/*') ? 'show' : '' }}" id="setting">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="{{ url('/setting/jabatan/') }}" class="nav-link {{Request::is('setting/jabatan') ? 'active' : '' || Request::is('setting/jabatan/*') ? 'active' : '' }}">Setting Jabatan</a></li>
+                  @if (Auth::user()->akses('aktif','SETTING JABATAN'))
+                    <li class="nav-item" > <a href="{{ url('/setting/jabatan/') }}" class="nav-link {{Request::is('setting/jabatan') ? 'active' : '' || Request::is('setting/jabatan/*') ? 'active' : '' }}">Setting Jabatan</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','SETTING USER'))
+                    <li class="nav-item"> <a href="{{ url('/setting/akun/') }}" class="nav-link {{Request::is('setting/akun') ? 'active' : '' || Request::is('setting/akun/*') ? 'active' : '' }}">Setting User </a></li>
+                  @endif
 
-                  <li class="nav-item"> <a href="{{ url('/setting/akun/') }}" class="nav-link {{Request::is('setting/akun') ? 'active' : '' || Request::is('setting/akun/*') ? 'active' : '' }}">Setting User </a></li>
+                  @if (Auth::user()->akses('aktif','SETTING HAK AKSES'))
+                    <li class="nav-item"> <a href="{{ url('/setting/hak_akses/') }}" class="nav-link {{Request::is('setting/hak_akses') ? 'active' : '' || Request::is('setting/hak_akses/*') ? 'active' : '' }}">Setting Hak Akses</a></li>
+                  @endif
 
-                  <li class="nav-item"> <a href="{{ url('/setting/hak_akses/') }}" class="nav-link {{Request::is('setting/hak_akses') ? 'active' : '' || Request::is('setting/hak_akses/*') ? 'active' : '' }}">Setting Hak Akses</a></li>
-
-                  <li class="nav-item"> <a href="{{ url('/setting/daftar_menu/') }}" class="nav-link {{Request::is('setting/daftar_menu') ? 'active' : '' || Request::is('setting/daftar_menu/*') ? 'active' : '' }}">Setting Daftar Menu</a></li>
+                  @if (Auth::user()->akses('aktif','SETTING DAFTAR MENU'))
+                    <li class="nav-item"> <a href="{{ url('/setting/daftar_menu/') }}" class="nav-link {{Request::is('setting/daftar_menu') ? 'active' : '' || Request::is('setting/daftar_menu/*') ? 'active' : '' }}">Setting Daftar Menu</a></li>
+                  @endif
                 </ul>
                 </div>
             </li>
@@ -181,12 +188,24 @@
               </a>
               <div class="collapse {{Request::is('master') ? 'show' : '' || Request::is('master/*') ? 'show' : '' }}" id="master">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="{{ url('/master/sekolah/') }}" class="nav-link {{Request::is('master/sekolah') ? 'active' : '' || Request::is('master/sekolah/*') ? 'active' : '' }}">Master Sekolah</a></li>
-                  <li class="nav-item" > <a href="{{ url('/master/posisi/') }}" class="nav-link {{Request::is('master/posisi') ? 'active' : '' || Request::is('master/posisi/*') ? 'active' : '' }}">Master Posisi</a></li>
-                  <li class="nav-item" > <a href="{{ url('/master/staff/') }}" class="nav-link {{Request::is('master/staff') ? 'active' : '' || Request::is('master/staff/*') ? 'active' : '' }}">Master Staff</a></li>
-                  <li class="nav-item" > <a href="{{ url('/master/barang/') }}" class="nav-link {{Request::is('master/barang') ? 'active' : '' || Request::is('master/barang/*') ? 'active' : '' }}">Master Barang</a></li>
-                  <li class="nav-item" > <a href="{{ url('/master/group_spp/') }}" class="nav-link {{Request::is('master/group_spp') ? 'active' : '' || Request::is('master/group_spp/*') ? 'active' : '' }}">Master Group SPP</a></li>
-                  <li class="nav-item" > <a href="{{ url('/master/kelas/') }}" class="nav-link {{Request::is('master/kelas') ? 'active' : '' || Request::is('master/kelas/*') ? 'active' : '' }}">Master kelas</a></li>
+                  @if (Auth::user()->akses('aktif','MASTER SEKOLAH'))
+                    <li class="nav-item" > <a href="{{ url('/master/sekolah/') }}" class="nav-link {{Request::is('master/sekolah') ? 'active' : '' || Request::is('master/sekolah/*') ? 'active' : '' }}">Master Sekolah</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','MASTER POSISI'))
+                    <li class="nav-item" > <a href="{{ url('/master/posisi/') }}" class="nav-link {{Request::is('master/posisi') ? 'active' : '' || Request::is('master/posisi/*') ? 'active' : '' }}">Master Posisi</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','MASTER STAFF'))
+                    <li class="nav-item" > <a href="{{ url('/master/staff/') }}" class="nav-link {{Request::is('master/staff') ? 'active' : '' || Request::is('master/staff/*') ? 'active' : '' }}">Master Staff</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','MASTER BARANG'))
+                    <li class="nav-item" > <a href="{{ url('/master/barang/') }}" class="nav-link {{Request::is('master/barang') ? 'active' : '' || Request::is('master/barang/*') ? 'active' : '' }}">Master Barang</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','MASTER GROUP SPP'))
+                    <li class="nav-item" > <a href="{{ url('/master/group_spp/') }}" class="nav-link {{Request::is('master/group_spp') ? 'active' : '' || Request::is('master/group_spp/*') ? 'active' : '' }}">Master Group SPP</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','MASTER KELAS'))
+                    <li class="nav-item" > <a href="{{ url('/master/kelas/') }}" class="nav-link {{Request::is('master/kelas') ? 'active' : '' || Request::is('master/kelas/*') ? 'active' : '' }}">Master kelas</a></li>
+                  @endif
                 </ul>
                 </div>
             </li>
@@ -203,8 +222,12 @@
               </a>
               <div class="collapse {{Request::is('keuangan') ? 'show' : '' || Request::is('keuangan/*') ? 'show' : '' }}" id="keuangan">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="{{ url('/keuangan/group_akun/') }}" class="nav-link {{Request::is('keuangan/group_akun') ? 'active' : '' || Request::is('keuangan/group_akun/*') ? 'active' : '' }}">Group Akun Keuangan</a></li>
-                  <li class="nav-item" > <a href="{{ url('/keuangan/keuangan/') }}" class="nav-link {{Request::is('keuangan/keuangan') ? 'active' : '' || Request::is('keuangan/keuangan/*') ? 'active' : '' }}">Master Akun Keuangan</a></li>
+                  @if (Auth::user()->akses('aktif','GROUP AKUN KEUANGAN'))
+                    <li class="nav-item" > <a href="{{ url('/keuangan/group_akun/') }}" class="nav-link {{Request::is('keuangan/group_akun') ? 'active' : '' || Request::is('keuangan/group_akun/*') ? 'active' : '' }}">Group Akun Keuangan</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','MASTER AKUN KEUANGAN'))
+                    <li class="nav-item" > <a href="{{ url('/keuangan/keuangan/') }}" class="nav-link {{Request::is('keuangan/keuangan') ? 'active' : '' || Request::is('keuangan/keuangan/*') ? 'active' : '' }}">Master Akun Keuangan</a></li>
+                  @endif
                 </ul>
                 </div>
             </li>
@@ -221,10 +244,15 @@
               </a>
               <div class="collapse {{Request::is('penerimaan') ? 'show' : '' || Request::is('penerimaan/*') ? 'show' : '' }}" id="penerimaan">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="{{ url('/penerimaan/siswa/') }}" class="nav-link {{Request::is('penerimaan/siswa') ? 'active' : '' || Request::is('penerimaan/siswa/*') ? 'active' : '' }}">Penerimaan Siswa Baru</a></li>
-                  <li class="nav-item" > <a href="{{ url('/penerimaan/konfirmasi/') }}" class="nav-link {{Request::is('penerimaan/konfirmasi') ? 'active' : '' || Request::is('penerimaan/konfirmasi/*') ? 'active' : '' }}">Konfirmasi Siswa Baru</a></li>
-                  <li class="nav-item" > <a href="{{ url('/penerimaan/rekap_siswa/') }}" class="nav-link {{Request::is('penerimaan/rekap_siswa') ? 'active' : '' || Request::is('penerimaan/rekap_siswa/*') ? 'active' : '' }}">Data Siswa</a></li>
-                  {{-- <li class="nav-item" > <a href="{{ url('/penerimaan/alumni/') }}" class="nav-link {{Request::is('penerimaan/alumni') ? 'active' : '' || Request::is('penerimaan/alumni/*') ? 'active' : '' }}">Alumni Siswa</a></li> --}}
+                  @if (Auth::user()->akses('aktif','PENERIMAAN SISWA BARU'))
+                    <li class="nav-item" > <a href="{{ url('/penerimaan/siswa/') }}" class="nav-link {{Request::is('penerimaan/siswa') ? 'active' : '' || Request::is('penerimaan/siswa/*') ? 'active' : '' }}">Penerimaan Siswa Baru</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','KONFIRMASI SISWA BARU'))
+                    <li class="nav-item" > <a href="{{ url('/penerimaan/konfirmasi/') }}" class="nav-link {{Request::is('penerimaan/konfirmasi') ? 'active' : '' || Request::is('penerimaan/konfirmasi/*') ? 'active' : '' }}">Konfirmasi Siswa Baru</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','DATA SISWA'))
+                    <li class="nav-item" > <a href="{{ url('/penerimaan/rekap_siswa/') }}" class="nav-link {{Request::is('penerimaan/rekap_siswa') ? 'active' : '' || Request::is('penerimaan/rekap_siswa/*') ? 'active' : '' }}">Data Siswa</a></li>
+                  @endif
                 </ul>
                 </div>
             </li>
@@ -241,8 +269,12 @@
               </a>
               <div class="collapse {{Request::is('kas_masuk') ? 'show' : '' || Request::is('kas_masuk/*') ? 'show' : '' }}" id="kas_masuk">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="{{ url('/kas_masuk/pemasukan_kas/') }}" class="nav-link {{Request::is('kas_masuk/pemasukan_kas') ? 'active' : '' || Request::is('kas_masuk/pemasukan_kas/*') ? 'active' : '' }}">Pemasukan Kas</a></li>
-                  <li class="nav-item" > <a href="{{ url('/kas_masuk/spp/') }}" class="nav-link {{Request::is('kas_masuk/spp') ? 'active' : '' || Request::is('kas_masuk/spp/*') ? 'active' : '' }}">Pembayaran SPP</a></li>
+                  @if (Auth::user()->akses('aktif','PEMASUKAN KAS'))
+                    <li class="nav-item" > <a href="{{ url('/kas_masuk/pemasukan_kas/') }}" class="nav-link {{Request::is('kas_masuk/pemasukan_kas') ? 'active' : '' || Request::is('kas_masuk/pemasukan_kas/*') ? 'active' : '' }}">Pemasukan Kas</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','PEMBAYARAN SPP'))
+                    <li class="nav-item" > <a href="{{ url('/kas_masuk/spp/') }}" class="nav-link {{Request::is('kas_masuk/spp') ? 'active' : '' || Request::is('kas_masuk/spp/*') ? 'active' : '' }}">Pembayaran SPP</a></li>
+                  @endif
                 </ul>
                 </div>
             </li>
@@ -262,12 +294,21 @@
               </a>
               <div class="collapse {{Request::is('kas_keluar') ? 'show' : '' || Request::is('kas_keluar/*') ? 'show' : '' }}" id="kas_keluar">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="{{ url('/kas_keluar/rencana_pembelian/') }}" class="nav-link {{Request::is('kas_keluar/rencana_pembelian') ? 'active' : '' || Request::is('kas_keluar/rencana_pembelian/*') ? 'active' : '' }}">Rencana Pembelian</a></li>
-                  <li class="nav-item" > <a href="{{ url('/kas_keluar/pengeluaran_anggaran/') }}" class="nav-link {{Request::is('kas_keluar/pengeluaran_anggaran') ? 'active' : '' || Request::is('kas_keluar/pengeluaran_anggaran/*') ? 'active' : '' }}">Pengeluaran Anggaran</a></li>
-                  <li class="nav-item" > <a href="{{ url('/kas_keluar/petty_cash/') }}" class="nav-link {{Request::is('kas_keluar/petty_cash') ? 'active' : '' || Request::is('kas_keluar/petty_cash/*') ? 'active' : '' }}">Petty Cash</a></li>
-                  <li class="nav-item" > <a href="{{ url('/kas_keluar/konfirmasi_pengeluaran_kas/') }}" class="nav-link {{Request::is('kas_keluar/konfirmasi_pengeluaran_kas') ? 'active' : '' || Request::is('kas_keluar/konfirmasi_pengeluaran_kas/*') ? 'active' : '' }}">Konfirmasi Pengeluaran Kas</a></li>
-
-                  <li class="nav-item" > <a href="{{ url('/kas_keluar/bukti_kas_keluar/') }}" class="nav-link {{Request::is('kas_keluar/bukti_kas_keluar') ? 'active' : '' || Request::is('kas_keluar/bukti_kas_keluar/*') ? 'active' : '' }}">Bukti Kas Keluar</a></li>
+                  @if (Auth::user()->akses('aktif','RENCANA PEMBELIAN'))
+                    <li class="nav-item" > <a href="{{ url('/kas_keluar/rencana_pembelian/') }}" class="nav-link {{Request::is('kas_keluar/rencana_pembelian') ? 'active' : '' || Request::is('kas_keluar/rencana_pembelian/*') ? 'active' : '' }}">Rencana Pembelian</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','PENGELUARAN ANGGARAN'))
+                    <li class="nav-item" > <a href="{{ url('/kas_keluar/pengeluaran_anggaran/') }}" class="nav-link {{Request::is('kas_keluar/pengeluaran_anggaran') ? 'active' : '' || Request::is('kas_keluar/pengeluaran_anggaran/*') ? 'active' : '' }}">Pengeluaran Anggaran</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','PETTY CASH'))
+                    <li class="nav-item" > <a href="{{ url('/kas_keluar/petty_cash/') }}" class="nav-link {{Request::is('kas_keluar/petty_cash') ? 'active' : '' || Request::is('kas_keluar/petty_cash/*') ? 'active' : '' }}">Petty Cash</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','KONFIRMASI PENGELUARAN KAS'))
+                    <li class="nav-item" > <a href="{{ url('/kas_keluar/konfirmasi_pengeluaran_kas/') }}" class="nav-link {{Request::is('kas_keluar/konfirmasi_pengeluaran_kas') ? 'active' : '' || Request::is('kas_keluar/konfirmasi_pengeluaran_kas/*') ? 'active' : '' }}">Konfirmasi Pengeluaran Kas</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','BUKTI KAS KELUAR'))
+                    <li class="nav-item" > <a href="{{ url('/kas_keluar/bukti_kas_keluar/') }}" class="nav-link {{Request::is('kas_keluar/bukti_kas_keluar') ? 'active' : '' || Request::is('kas_keluar/bukti_kas_keluar/*') ? 'active' : '' }}">Bukti Kas Keluar</a></li>
+                  @endif
                 </ul>
                 </div>
             </li>
@@ -276,16 +317,20 @@
               <a class="nav-link " data-toggle="collapse" href="#laporan" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-title">Laporan</span>
                 <span class="d-none">
-                  LAPORAN PETTY CASH
-                  LAPORAN PIUTANG
-                  LAPORAN 
+                  LAPORAN REGISTER JURNAL
+                  LAPORAN LABA RUGI
                 </span>
                 <i class="menu-arrow"></i>
                 <i class="mdi menu-icon mdi-chart-areaspline"></i>
               </a>
               <div class="collapse {{Request::is('laporan') ? 'show' : '' || Request::is('laporan/*') ? 'show' : '' }}" id="laporan">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item" > <a href="{{ url('/laporan/sekolah/') }}" class="nav-link {{Request::is('laporan/sekolah') ? 'active' : '' || Request::is('laporan/sekolah/*') ? 'active' : '' }}">Laporan Petty Cash</a></li>
+                  @if (Auth::user()->akses('aktif','LAPORAN REGISTER JURNAL'))
+                    <li class="nav-item" > <a href="{{ url('/laporan/register_jurnal/') }}" class="nav-link {{Request::is('laporan/register_jurnal') ? 'active' : '' || Request::is('laporan/register_jurnal/*') ? 'active' : '' }}">Laporan Register Jurnal</a></li>
+                  @endif
+                  @if (Auth::user()->akses('aktif','LAPORAN LABA RUGI'))
+                    <li class="nav-item" > <a href="{{ url('/laporan/laba_rugi/') }}" class="nav-link {{Request::is('laporan/laba_rugi') ? 'active' : '' || Request::is('laporan/laba_rugi/*') ? 'active' : '' }}">Laporan Laba Rugi</a></li>
+                  @endif
                 </ul>
                 </div>
             </li>
