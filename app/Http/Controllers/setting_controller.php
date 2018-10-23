@@ -438,7 +438,7 @@ class setting_controller extends Controller
       try {
         $value->daftar_menu->grup_menu;
       } catch (Exception $e) {
-        dd($value);
+        dd($value->toArray());
       }
     }
     return view('setting.hak_akses.table_data',compact('data','grup_menu','hak_akses'));
