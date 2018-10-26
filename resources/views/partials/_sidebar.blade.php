@@ -250,7 +250,7 @@
                   @if (Auth::user()->akses('KONFIRMASI SISWA BARU','aktif'))
                     <li class="nav-item" > <a href="{{ url('/penerimaan/konfirmasi/') }}" class="nav-link {{Request::is('penerimaan/konfirmasi') ? 'active' : '' || Request::is('penerimaan/konfirmasi/*') ? 'active' : '' }}">Konfirmasi Siswa Baru</a></li>
                   @endif
-                  @if (Auth::user()->akses('DATA SISWA','aktif'))
+                  @if (Auth::user()->akses('REKAP SISWA','aktif'))
                     <li class="nav-item" > <a href="{{ url('/penerimaan/rekap_siswa/') }}" class="nav-link {{Request::is('penerimaan/rekap_siswa') ? 'active' : '' || Request::is('penerimaan/rekap_siswa/*') ? 'active' : '' }}">Data Siswa</a></li>
                   @endif
                 </ul>
