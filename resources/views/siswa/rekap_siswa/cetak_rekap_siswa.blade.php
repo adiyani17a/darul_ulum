@@ -26,7 +26,7 @@
 						<div class="col-sm-2">
 							<img style="width: 100%;" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
 						</div>
-						<div class="col-sm-8"  align="center" style="display: table;>
+						<div class="col-sm-8"  align="center" style="display: table;">
 							<h5 style="color: #3b734c">YAYASAN DARUL ULUM GRESIK</h5>
 							<h4 style="color: #374a3d">{{ $siswa->sekolah->s_nama }}</h4>
 							<p>{{ $siswa->sekolah->s_alamat }}</p>
@@ -35,8 +35,8 @@
 							<img style="width: 100%;" src="{{ asset('assets/sekolah_1_.png') }}">
 						</div>
 					</div>
-					<div class="col-sm-12 row" style="margin-top: 100px">
-						<div class="col-sm-4">
+					<div class="col-sm-12 row" style="margin-top: 100px;margin-bottom: 50px">
+						<div class="col-sm-4" style="margin-left: 30%">
 							<h6 class="label" align="center">FOTO</h6>
 							<img style="width: 150px;height: 200px; margin-left: 22%" src="{{ asset('storage/uploads/data_siswa/original') }}/{{ $siswa->sdd_image }}">
 						</div>
