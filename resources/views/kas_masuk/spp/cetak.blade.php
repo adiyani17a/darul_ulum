@@ -40,7 +40,7 @@
 							<p>{{ $siswa->sekolah->s_alamat }}</p>
 						</div>
 						<div class="col-sm-2 col-xs-2" style="height: 150px">
-							<img style="width: 100%;" src="{{ asset('assets/sekolah_1_.png') }}">
+							<img style="width: 140px;height: 140px" src="{{ asset('assets/sekolah_1_.png') }}">
 						</div>
 					</div>
 					<div class="col-sm-12" style="margin-top: 20px">
