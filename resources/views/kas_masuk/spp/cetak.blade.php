@@ -14,7 +14,7 @@
 
 	@media print
 	{
-		body {margin-left: 0 !important;margin-right: 0 !important;height: 0px;background-color: white !important}
+		body {background-color: white !important}
 	}
 	.printArea{
 		padding-right:50px;
@@ -29,7 +29,7 @@
 	}
 </style>
 
-<body class="body" style="background-color: grey;margin-left: 200px;margin-right: 200px;">
+<body class="body" style="background-color: grey;">
 	<div class="container" >
 		<div class="row">
 			<div style="background-color: white;" class="row printArea">
