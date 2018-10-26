@@ -27,7 +27,7 @@
 		<div class="container" >
 		  <div class="row">
 		    <a href="{{ url('/') }}" class="col-sm-6 nopadding-left" style="padding-top: 20px">
-		      <label style="color: white;cursor: pointer;">PT JAWA PRATAMA MANDIRI</label>
+		      <label style="color: white;cursor: pointer;">YAYASAN DARUL ULUM</label>
 		    </a>
 		  </div>
 		</div>
@@ -42,7 +42,9 @@
 		</div>
 		<div class="col-sm-12">
         	<table class="table">
-        		
+        		<tr>
+        			<th>No</th>
+        		</tr>
         	</table>
       	</div>
     </div>
