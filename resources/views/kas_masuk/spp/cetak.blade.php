@@ -30,24 +30,24 @@
 		<div class="container" >
 			<div class="row">
 				<div style="background-color: white;" class="row printArea">
-					<div class="col-md-12 row" style="margin-top: 15px;border-bottom: 2px solid black;height:160px " >
-						<div class="col-md-2" style="height: 150px">
-							<img style="width: 140px;height: 140px" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
+					<div class="col-sm-12 row" style="margin-top: 15px;border-bottom: 2px solid black;height:160px " >
+						<div class="col-sm-2 col-xs-2" style="height: 150px">
+							<img style="width: 100%;" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
 						</div>
-						<div class="col-md-8"  align="center" style="height: 150px">
+						<div class="col-sm-8 col-xs-8"  align="center" style="height: 150px">
 							<h5 style="color: #3b734c">YAYASAN DARUL ULUM GRESIK</h5>
 							<h4 style="color: #374a3d">{{ $siswa->sekolah->s_nama }}</h4>
 							<p>{{ $siswa->sekolah->s_alamat }}</p>
 						</div>
-						<div class="col-md-2" style="height: 150px">
-							<img style="width: 140px;height: 140px" src="{{ asset('assets/sekolah_1_.png') }}">
+						<div class="col-sm-2 col-xs-2" style="height: 150px">
+							<img style="width: 100%;" src="{{ asset('assets/sekolah_1_.png') }}">
 						</div>
 					</div>
-					<div class="col-md-12" style="margin-top: 20px">
+					<div class="col-sm-12" style="margin-top: 20px">
 						<h4 class="text-center">KWITANSI</h4>
 					</div>
-					<div class="col-md-12 row">
-						<table class="table col-md-4">
+					<div class="col-sm-12 row">
+						<table class="table col-sm-4">
 							<tr>
 								<td>Nota</td>
 								<td>: {{ $history_spp->hs_nota }}</td>
@@ -70,10 +70,10 @@
 							</tr>		
 						</table>
 					</div>
-					<div class="col-md-4">
+					<div class="col-sm-4">
 						
 					</div>
-					<div class="col-md-8">
+					<div class="col-sm-8">
 						<table class="table ">
 							<tr>
 								<td>Telah Diterima Dari</td>
@@ -90,24 +90,24 @@
 						</table>
 						
 					</div>
-					<div class="col-md-12">
-						<div class="col-md-3" style="border:3px solid black;margin-top: 600px;margin-right: 100px!important">
+					<div class="col-sm-12">
+						<div class="col-sm-3" style="border:3px solid black;margin-top: 600px;margin-right: 100px!important">
 							<i><b>Kwitansi : Rp. {{ number_format($history_spp->hs_jumlah,0,',','.') }}</b></i>
 						</div>
 					</div>
-					<div class="col-md-12 row" style="margin-top: 100px">
-						<div class="col-md-6">
+					<div class="col-sm-12 row" style="margin-top: 100px">
+						<div class="col-sm-6">
 							
 						</div>
-						<div class="col-md-6 row d-flex">
+						<div class="col-sm-6 row d-flex">
 							<p style="width: 100%;text-align: center">ADMIN SEKOLAH</p>
 						</div>
 					</div>
-					<div class="col-md-12 row" style="margin-top: 100px;">
-						<div class="col-md-6">
+					<div class="col-sm-12 row" style="margin-top: 100px;">
+						<div class="col-sm-6">
 							
 						</div>
-						<div class="col-md-6 row d-flex" style="padding-right: 120px;padding-left: 120px">
+						<div class="col-sm-6 row d-flex" style="padding-right: 120px;padding-left: 120px">
 							<p style="width: 100%;text-align: center;border-bottom: 1px solid black;"></p>
 						</div>
 					</div>
