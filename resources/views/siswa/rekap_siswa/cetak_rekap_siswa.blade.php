@@ -27,20 +27,17 @@
 		<div class="container" >
 			<div class="row">
 				<div style="background-color: white;" class="row printArea">
-					<div class="col-sm-12 row" style="margin-top: 15px" >
+					<div class="col-sm-12 row" style="margin-top: 15px;border-bottom: 2px solid black; " >
 						<div class="col-sm-2">
-							<img style="width: 140px;height: 140px" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
+							<img style="width: 100%;" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
 						</div>
-						<div class="col-sm-8"  align="center">
+						<div class="col-sm-8"  align="center" style="display: table;margin-top: 20px">
 							<h5 style="color: #3b734c">YAYASAN DARUL ULUM GRESIK</h5>
 							<h4 style="color: #374a3d">{{ $siswa->sekolah->s_nama }}</h4>
 							<p>{{ $siswa->sekolah->s_alamat }}</p>
 						</div>
 						<div class="col-sm-2">
-							<img style="width: 140px;height: 140px" src="{{ asset('assets/sekolah_1_.png') }}">
-						</div>
-						<div class="col-sm-12">
-						<hr class="black" style="border-bottom: 2px solid black">
+							<img style="width: 100%;" src="{{ asset('assets/sekolah_1_.png') }}">
 						</div>
 					</div>
 					<div class="col-sm-12 row" >
