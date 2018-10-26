@@ -26,7 +26,7 @@
 						<div class="col-sm-2">
 							<img style="width: 100%;" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
 						</div>
-						<div class="col-sm-8"  align="center" style="display: table;margin-top: 20px">
+						<div class="col-sm-8"  align="center" style="display: table;>
 							<h5 style="color: #3b734c">YAYASAN DARUL ULUM GRESIK</h5>
 							<h4 style="color: #374a3d">{{ $siswa->sekolah->s_nama }}</h4>
 							<p>{{ $siswa->sekolah->s_alamat }}</p>
