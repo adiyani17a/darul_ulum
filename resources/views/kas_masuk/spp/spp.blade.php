@@ -81,8 +81,8 @@
             </select>
           </div>
           <div class="form-group col-sm-3" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;">
+            <label>Tahun SPP</label>
             <select class="form-control filter_tahun" onchange="rubah()">
-              <label>Tahun SPP</label>
               <option>Pilih - Tahun</option>
               @foreach ($additionalData['tahun_spp'] as $i => $val)
                 <option @if (carbon\carbon::now()->format('Y') ==  $additionalData['tahun_spp'][$i])

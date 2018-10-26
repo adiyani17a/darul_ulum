@@ -195,8 +195,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/kas_keluar/update_bukti_kas_keluar', 'kas_keluar_controller@update_bukti_kas_keluar');
         Route::get('/kas_keluar/hapus_bukti_kas_keluar', 'kas_keluar_controller@hapus_bukti_kas_keluar');
         Route::get('/kas_keluar/cetak_bukti_kas_keluar', 'kas_keluar_controller@cetak_bukti_kas_keluar');
-
     // LAPORAN
+        Route::get('/laporan/register_jurnal', 'laporan_controller@register_jurnal');
 
 
 });
