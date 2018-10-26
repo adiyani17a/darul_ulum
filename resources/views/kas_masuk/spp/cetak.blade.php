@@ -90,7 +90,7 @@
 					
 				</div>
 				<div class="col-sm-12">
-					<div class="col-sm-3" style="border:3px solid black;margin-top: 600px;margin-right: 100px!important">
+					<div class="col-sm-3" style="border:3px solid black;margin-top: 300px;margin-right: 100px!important">
 						<i><b>Kwitansi : Rp. {{ number_format($history_spp->hs_jumlah,0,',','.') }}</b></i>
 					</div>
 				</div>
