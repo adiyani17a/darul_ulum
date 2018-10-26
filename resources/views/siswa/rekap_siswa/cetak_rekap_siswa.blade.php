@@ -35,7 +35,7 @@
 							<img style="width: 100%;" src="{{ asset('assets/sekolah_1_.png') }}">
 						</div>
 					</div>
-					<div class="col-sm-12 row" >
+					<div class="col-sm-12 row" style="margin-top: 100px">
 						<div class="col-sm-4">
 							<h6 class="label" align="center">FOTO</h6>
 							<img style="width: 150px;height: 200px; margin-left: 22%" src="{{ asset('storage/uploads/data_siswa/original') }}/{{ $siswa->sdd_image }}">
