@@ -433,6 +433,8 @@ class kas_masuk_controller extends Controller
 		$additionalData['bulan_spp'] = [];
 		$additionalData['bulan_spp_number'] = [];
 		$additionalData['tahun_spp'] = [];
+		$additionalData['tahun_ajaran'] = [];
+
 		$akun = $this->models->akun()->select('a_master_akun','a_master_nama')
 									 ->where('a_master_akun','like','4%')
 									 ->groupBy('a_master_akun','a_master_nama')
@@ -450,21 +452,73 @@ class kas_masuk_controller extends Controller
 		for ($i=0; $i < 20; $i++) { 
 			array_push($additionalData['tahun_spp'], Date::now()->subYear($i)->format('Y'));
 		}
-		return view('kas_masuk.spp.spp',compact('additionalData','akun','akun_kas'));
+
+		$sekolah = $this->model->sekolah()->all();
+		$kelas   = $this->model->kelas()->all();
+		$tingkat = [];
+		for ($i=0; $i < 12; $i++) { 
+			$tingkat[$i] = $i+1;
+		}
+
+		for ($i=0; $i < 20; $i++) { 
+			array_push($additionalData['tahun_ajaran'], carbon::now()->subYear($i)->format('Y'));
+		}
+		return view('kas_masuk.spp.spp',compact('additionalData','akun','akun_kas','sekolah','tingkat','additionalData','kelas'));
 	}
 
 	public function datatable_spp(Request $req)
 	{	
+
+		if ($req->sdd_sekolah != '') {
+          $sdd_sekolah = 'and sdd_sekolah = '."'$req->sdd_sekolah'";
+        }else{
+          $sdd_sekolah = '';
+        }
+
+        if ($req->sdd_kelas != '') {
+          $sdd_kelas = 'and sdd_kelas = '."'$req->sdd_kelas'";
+        }else{
+          $sdd_kelas = '';
+        }
+
+        if ($req->sdd_nama_kelas != '') {
+          $sdd_nama_kelas = 'and sdd_nama_kelas = '."'$req->sdd_nama_kelas'";
+        }else{
+          $sdd_nama_kelas = '';
+        }
+
+        if ($req->sdd_tahun_ajaran != '') {
+          $sdd_tahun_ajaran = 'and sdd_tahun_ajaran = '."'$req->sdd_tahun_ajaran'";
+        }else{
+          $sdd_tahun_ajaran = '';
+        }
+
+
+		if (Auth::user()->akses('REKAP SISWA','global')) {
+			$data = $this->models->siswa_data_diri()->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran")->get();
+		}else{
+			$sekolah = Auth::User()->sekolah_id;
+			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran")->get();
+		}
+
+
 		if (Auth::user()->akses('PEMBAYARAN SPP','global')) {
-			$data = $this->models->siswa_data_diri()->where('sdd_status','=','Setujui')
-													->where('sdd_nomor_induk','!=',null)
+			$data = $this->models->siswa_data_diri()->where('sdd_nomor_induk','!=',null)
 													->where('sdd_nomor_induk_nasional','!=',null)
 													->where('sdd_group_spp','!=',null)
+													->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_sekolah")
 													->get();
 		}else{
 			$sekolah = Auth::User()->sekolah_id;
-			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->where('sdd_status','Released')->where('sdd_nomor_induk','!=',null)->get();
+			$data = $this->models->siswa_data_diri()->where('sdd_nomor_induk','!=',null)
+													->where('sdd_nomor_induk_nasional','!=',null)
+													->where('sdd_sekolah','=',$sekolah)
+													->where('sdd_group_spp','!=',null)
+													->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran")
+													->get();
 		}
+
+
 		foreach ($data as $key => $value) {
 			$data[$key]->filter_bulan = $req->filter_bulan;
 			$data[$key]->filter_tahun = $req->filter_tahun;

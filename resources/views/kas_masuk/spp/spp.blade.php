@@ -31,7 +31,46 @@
               Simpan Data.
             </div>
           @endif
-          <div class="col-sm-3" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+          <div class="col-md-12 row">
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+             <label>Sekolah</label>
+             <select class="form-control sdd_sekolah" onchange="rubah()">
+               <option value="">Semua</option>
+               @foreach ($sekolah as $i => $s)
+                <option value="{{ $s->s_id }}">{{ $s->s_nama }}</option>
+               @endforeach
+             </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+              <label>Tingkat Kelas</label>
+              <select class="form-control sdd_kelas" name="sdd_kelas" onchange="rubah()">
+                <option value="">Semua</option>
+                @foreach ($tingkat as $i => $k)
+                  <option value="{{ $tingkat[$i] }}">{{ $tingkat[$i] }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+              <label>Nama Kelas</label>
+              <select class="form-control sdd_nama_kelas" name="sdd_nama_kelas" onchange="rubah()">
+                <option value="">Semua</option>
+                @foreach ($kelas as $i => $k)
+                  <option value="{{ $k->k_id }}">{{ $k->k_nama }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+              <label>Tahun Ajaran</label>
+              <select class="form-control sdd_tahun_ajaran" name="sdd_tahun_ajaran" onchange="rubah()">
+                <option value="">Semua</option>
+                @foreach ($additionalData['tahun_ajaran'] as $i => $th)
+                  <option value="{{ $additionalData['tahun_ajaran'][$i] }}">{{ $additionalData['tahun_ajaran'][$i] }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-sm-3" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+            <label>Bulan SPP</label>
             <select class="form-control filter_bulan" onchange="rubah()">
               <option>Pilih - Bulan</option>
               @foreach ($additionalData['bulan_spp'] as $i => $val)
@@ -41,8 +80,9 @@
               @endforeach
             </select>
           </div>
-          <div class="col-sm-3" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;">
+          <div class="form-group col-sm-3" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;">
             <select class="form-control filter_tahun" onchange="rubah()">
+              <label>Tahun SPP</label>
               <option>Pilih - Tahun</option>
               @foreach ($additionalData['tahun_spp'] as $i => $val)
                 <option @if (carbon\carbon::now()->format('Y') ==  $additionalData['tahun_spp'][$i])
@@ -87,7 +127,11 @@ $(document).ready(function(){
         ajax: {
             url:'{{ route('datatable_spp') }}',
             data:{filter_bulan: function() { return $('.filter_bulan option:selected').val() },
-                  filter_tahun: function() { return $('.filter_tahun option:selected').val() }},
+                  filter_tahun: function() { return $('.filter_tahun option:selected').val() },
+                  sdd_sekolah: function() { return $('.sdd_sekolah option:selected').val() },
+                  sdd_kelas: function() { return $('.sdd_kelas option:selected').val() },
+                  sdd_nama_kelas: function() { return $('.sdd_nama_kelas option:selected').val() },
+                  sdd_tahun_ajaran: function() { return $('.sdd_tahun_ajaran option:selected').val() }},
             error:function(){
               var table = $('#table_data').DataTable();
               table.ajax.reload(null, false);

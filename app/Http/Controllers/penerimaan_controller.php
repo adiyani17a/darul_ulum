@@ -530,17 +530,57 @@ class penerimaan_controller extends Controller
 
 	public function rekap_siswa()
 	{
-		return view('siswa.rekap_siswa.rekap_siswa');
+		$sekolah = $this->model->sekolah()->all();
+		$kelas   = $this->model->kelas()->all();
+		$tingkat = [];
+		$additionalData['tahun_ajaran'] = [];
+		for ($i=0; $i < 12; $i++) { 
+			$tingkat[$i] = $i+1;
+		}
+
+		for ($i=0; $i < 20; $i++) { 
+			array_push($additionalData['tahun_ajaran'], carbon::now()->subYear($i)->format('Y'));
+		}
+		return view('siswa.rekap_siswa.rekap_siswa',compact('sekolah','tingkat','additionalData','kelas'));
 	}
 
 	public function datatable_rekap_siswa(Request $req)
 	{
-		if (Auth::user()->akses('KONFIRMASI SISWA','global')) {
-			$data = $this->models->siswa_data_diri()->where('sdd_status','=','Setujui')->get();
+		// dd($req->all());
+		if ($req->sdd_sekolah != '') {
+          $sdd_sekolah = 'and sdd_sekolah = '."'$req->sdd_sekolah'";
+        }else{
+          $sdd_sekolah = '';
+        }
+
+        if ($req->sdd_kelas != '') {
+          $sdd_kelas = 'and sdd_kelas = '."'$req->sdd_kelas'";
+        }else{
+          $sdd_kelas = '';
+        }
+
+        if ($req->sdd_nama_kelas != '') {
+          $sdd_nama_kelas = 'and sdd_nama_kelas = '."'$req->sdd_nama_kelas'";
+        }else{
+          $sdd_nama_kelas = '';
+        }
+
+        if ($req->sdd_tahun_ajaran != '') {
+          $sdd_tahun_ajaran = 'and sdd_tahun_ajaran = '."'$req->sdd_tahun_ajaran'";
+        }else{
+          $sdd_tahun_ajaran = '';
+        }
+
+
+		if (Auth::user()->akses('REKAP SISWA','global')) {
+			$data = $this->models->siswa_data_diri()->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_sekolah")->get();
 		}else{
 			$sekolah = Auth::User()->sekolah_id;
-			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->where('sdd_status','Released')->get();
+			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran")->get();
 		}
+
+
+
 		$data = collect($data);
 		return Datatables::of($data)
 		                ->addColumn('aksi', function ($data) {
@@ -548,6 +588,7 @@ class penerimaan_controller extends Controller
 		                	$b = '';
 		                	$c = '';
 		                	$c1 = '';
+		                	$c2 = '';
 		                	$d = '</div>';
 		                
 
@@ -559,7 +600,11 @@ class penerimaan_controller extends Controller
 	                			$c1 = '<button type="button" onclick="cetak(\''.$data->sdd_id.'\')" class="btn btn-warning btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
 		                	}
 
-		                    return $a.$b.$c1.$c.$d;
+		                	if (Auth::user()->akses('REKAP SISWA','hapus')) {
+	                			$c2 = '<button type="button" onclick="hapus(\''.$data->sdd_id.'\')" class="btn btn-danger btn-lg" title="cetak"><label class="fa fa-trash"></label></button>';
+		                	}
+
+		                    return $a.$b.$c1.$c2.$c.$d;
 		                })->addColumn('image', function ($data) {
 	                          $thumb = asset('storage/uploads/data_siswa/original').'/'.$data->sdd_image;
 	                          return '<img style="width:150px;height:170px;border-radius:0" class="img-fluid img-thumbnail" src="'.$thumb.'">';
@@ -817,6 +862,19 @@ class penerimaan_controller extends Controller
 			}else{
 				return Response()->json(['status'=>1,'pesan'=>'Berhasil menonaktifkan siswa']); 
 			}
+		} catch (Exception $e) {
+			DB::rollBack();
+			dd($e);
+		}
+	}
+
+	public function hapus_rekap_siswa(Request $req)
+	{
+		DB::beginTransaction();
+		try {
+			$this->model->siswa_data_diri()->delete('sdd_id',$req->id);
+			DB::commit();
+			return Response()->json(['status'=>1,'pesan'=>'Berhasil Menghapus Data']); 
 		} catch (Exception $e) {
 			DB::rollBack();
 			dd($e);

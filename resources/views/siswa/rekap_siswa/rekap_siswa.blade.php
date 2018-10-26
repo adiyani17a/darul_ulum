@@ -22,6 +22,7 @@
         <div class="card-header">
           <h4 class="card-title">Data Siswa</h4>
         </div>
+
         <div class="card-body">
           @if (Session::has('message'))
             <div class="alert alert-success alert-dismissible" title="DP sudah Lunas">
@@ -30,6 +31,44 @@
               Simpan Data.
             </div>
           @endif
+          <div class="row">
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+             <label>Sekolah</label>
+             <select class="form-control sdd_sekolah" onchange="filter_data('search')">
+               <option value="">Semua</option>
+               @foreach ($sekolah as $i => $s)
+                <option value="{{ $s->s_id }}">{{ $s->s_nama }}</option>
+               @endforeach
+             </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+              <label>Tingkat Kelas</label>
+              <select class="form-control sdd_kelas" name="sdd_kelas" onchange="filter_data('search')">
+                <option value="">Semua</option>
+                @foreach ($tingkat as $i => $k)
+                  <option value="{{ $tingkat[$i] }}">{{ $tingkat[$i] }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+              <label>Nama Kelas</label>
+              <select class="form-control sdd_nama_kelas" name="sdd_nama_kelas" onchange="filter_data('search')">
+                <option value="">Semua</option>
+                @foreach ($kelas as $i => $k)
+                  <option value="{{ $k->k_id }}">{{ $k->k_nama }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+              <label>Tahun Ajaran</label>
+              <select class="form-control sdd_tahun_ajaran" name="sdd_tahun_ajaran" onchange="filter_data('search')">
+                <option value="">Semua</option>
+                @foreach ($additionalData['tahun_ajaran'] as $i => $th)
+                  <option value="{{ $additionalData['tahun_ajaran'][$i] }}">{{ $additionalData['tahun_ajaran'][$i] }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
           <div class="table-responsive">
               <table id="table_data" class="table table-hover" cellspacing="0">
                   <thead class="bg-gradient-info">
@@ -64,7 +103,10 @@ $(document).ready(function(){
         serverSide: true,
         ajax: {
             url:'{{ route('datatable_rekap_siswa') }}',
-            data:{_token:'{{ csrf_token() }}'},
+            data:{sdd_sekolah: function() { return $('.sdd_sekolah option:selected').val() },
+                  sdd_kelas: function() { return $('.sdd_kelas option:selected').val() },
+                  sdd_nama_kelas: function() { return $('.sdd_nama_kelas option:selected').val() },
+                  sdd_tahun_ajaran: function() { return $('.sdd_tahun_ajaran option:selected').val() }},
             error:function(){
               var table = $('#table_data').DataTable();
               table.ajax.reload(null, false);
@@ -99,6 +141,12 @@ $(document).ready(function(){
 
   });
 })
+
+function filter_data() {
+
+    var table = $('#table_data').DataTable();
+    table.ajax.reload(null, false);
+}
 
 $('.btn_modal').click(function(){
   $('#tambah-akun :input:not(input[name="_token"])').val('');
@@ -202,14 +250,14 @@ function hapus(id) {
             });
 
             $.ajax({
-                url:baseUrl +'/penerimaan/hapus_siswa',
+                url:baseUrl +'/penerimaan/hapus_rekap_siswa',
                 type:'get',
                 data:{id},
                 dataType:'json',
                 success:function(data){
                   $('#tambah-jabatan').modal('hide');
                   var table = $('#table_data').DataTable();
-                  table.ajax.reload(null, false);
+                  table.ajax.reload();
                   if (data.status == 1) {
                     iziToast.success({
                           icon: 'fa fa-trash',
@@ -248,6 +296,7 @@ function hapus(id) {
     ]
   });
 }
+
 
 function cetak(id) {
   window.open('{{  url('penerimaan/cetak_rekap_siswa') }}?id='+id)

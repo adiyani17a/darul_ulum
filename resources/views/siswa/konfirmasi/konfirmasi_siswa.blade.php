@@ -9,7 +9,7 @@
         <ol class="breadcrumb bg-info">
           <li class="breadcrumb-item"><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a></li>
           <li class="breadcrumb-item">Kesiswaan</li>
-          <li class="breadcrumb-item active" aria-current="page">Penerimaan Siswa Baru</li>
+          <li class="breadcrumb-item active" aria-current="page">Konfirmasi Siswa Baru</li>
         </ol>
       </nav>
     </div>
@@ -23,9 +23,9 @@
               Simpan Data.
             </div>
           @endif
-          <h4 class="card-title">Penerimaan Siswa Baru</h4>
+          <h4 class="card-title">Konfirmasi Siswa Baru</h4>
           <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 15px;">
-          	<a href="{{ url('penerimaan/konfirmasi') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a>
+          	{{-- <a href="{{ url('penerimaan/konfirmasi') }}"><button type="button" class="btn btn-info btn_modal" data-toggle="modal" data-target="#tambah-akun"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Data</button></a> --}}
           </div>
 
           <div class="table-responsive">
