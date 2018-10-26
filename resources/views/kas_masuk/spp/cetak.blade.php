@@ -14,7 +14,7 @@
 
 	@media print
 	{
-		body {margin-left: 0 !important;margin-right: 0 !important;height: 0px;background-color: grey !important}
+		body {margin-left: 0 !important;margin-right: 0 !important;height: 0px;background-color: grey  !important}
 	}
 	.printArea{
 		padding-right:50px;
