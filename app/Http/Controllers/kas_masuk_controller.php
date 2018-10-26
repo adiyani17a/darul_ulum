@@ -875,8 +875,8 @@ class kas_masuk_controller extends Controller
 		$siswa  = $this->model->siswa_data_diri()->cari('sdd_id',$req->id);
 		$history_spp = $this->models->history_spp()->where('hs_id',$req->id)->whereRaw("hs_bulan = '$req->filter_bulan' and hs_tahun = '$req->filter_tahun'")->first();
 		return view('kas_masuk.spp.cetak',compact('data','id','history_spp','siswa'));
-		$pdf = PDF::loadView('kas_masuk.spp.cetak',compact('data','id','history_spp','siswa'))
-					->setPaper('a4','potrait');;
-		return $pdf->stream('invoice.pdf');
+		// $pdf = PDF::loadView('kas_masuk.spp.cetak',compact('data','id','history_spp','siswa'))
+		// 			->setPaper('a4','potrait');;
+		// return $pdf->stream('invoice.pdf');
 	}
 }

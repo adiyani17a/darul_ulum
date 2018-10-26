@@ -7,11 +7,6 @@
   	<link rel="shortcut icon" href="{{asset('assets/images/logo1.png')}}" />
 </head>
 <style type="text/css">
-	@page {
-	   size: 21cm 29.7cm;
-   	 margin: 30mm 45mm 30mm 45mm;
-	}
-
 	@media print
 	{
 		body {margin-left: 0 !important;margin-right: 0 !important;height: 0px;background-color: white !important}
