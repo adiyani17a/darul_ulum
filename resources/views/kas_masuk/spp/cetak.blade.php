@@ -14,7 +14,7 @@
 
 	@media print
 	{
-		body {margin-left: 0 !important;margin-right: 0 !important;height: 0px;background-color: grey  !important}
+		body {margin-left: 0 !important;margin-right: 0 !important;height: 0px;background-color: white !important}
 	}
 	.printArea{
 		padding-right:50px;
@@ -22,6 +22,10 @@
 	}
 	td{
 		border:none !important;
+	}
+	.image-logo{
+		width: 140px;
+		height: 140px;
 	}
 </style>
 
@@ -31,7 +35,7 @@
 			<div style="background-color: white;" class="row printArea">
 				<div class="col-sm-12 row" style="margin-top: 15px;border-bottom: 2px solid black; " >
 					<div class="col-sm-2">
-						<img style="width: 100%;" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
+						<img class="image-logo" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
 					</div>
 					<div class="col-sm-8"  align="center" style="display: table;margin-top: 20px">
 						<h5 style="color: #3b734c">YAYASAN DARUL ULUM GRESIK</h5>
@@ -39,7 +43,7 @@
 						<p>{{ $siswa->sekolah->s_alamat }}</p>
 					</div>
 					<div class="col-sm-2">
-						<img style="width: 100%;" src="{{ asset('assets/sekolah_1_.png') }}">
+						<img class="image-logo" src="{{ asset('assets/sekolah_1_.png') }}">
 					</div>
 				</div>
 				<div class="col-sm-12" style="margin-top: 20px">
