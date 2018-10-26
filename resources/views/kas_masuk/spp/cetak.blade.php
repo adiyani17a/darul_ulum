@@ -7,14 +7,9 @@
   	<link rel="shortcut icon" href="{{asset('assets/images/logo1.png')}}" />
 </head>
 <style type="text/css">
-	@page {
-	   size: 21cm 29.7cm;
-   	 margin: 30mm 45mm 30mm 45mm;
-	}
-
 	@media print
 	{
-		body {background-color: white !important}
+		body {margin-left: 0 !important;margin-right: 0 !important;height: 0px;background-color: grey !important}
 	}
 	.printArea{
 		padding-right:50px;
@@ -23,19 +18,15 @@
 	td{
 		border:none !important;
 	}
-	.image-logo{
-		width: 140px;
-		height: 140px;
-	}
 </style>
 
-<body class="body" style="background-color: grey;">
+<body class="body" style="background-color: grey;margin-left: 200px;margin-right: 200px;">
 	<div class="container" >
 		<div class="row">
 			<div style="background-color: white;" class="row printArea">
 				<div class="col-sm-12 row" style="margin-top: 15px;border-bottom: 2px solid black; " >
 					<div class="col-sm-2">
-						<img class="image-logo" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
+						<img style="width: 100%;" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
 					</div>
 					<div class="col-sm-8"  align="center" style="display: table;margin-top: 20px">
 						<h5 style="color: #3b734c">YAYASAN DARUL ULUM GRESIK</h5>
@@ -43,7 +34,7 @@
 						<p>{{ $siswa->sekolah->s_alamat }}</p>
 					</div>
 					<div class="col-sm-2">
-						<img class="image-logo" src="{{ asset('assets/sekolah_1_.png') }}">
+						<img style="width: 100%;" src="{{ asset('assets/sekolah_1_.png') }}">
 					</div>
 				</div>
 				<div class="col-sm-12" style="margin-top: 20px">
