@@ -21,6 +21,7 @@
 	.logo{
 		width: 30px;
 		height: 30px;
+		margin-bottom: 4px;
 	}
 	th{
 		text-align: center;
@@ -47,8 +48,11 @@
 	<nav class="navbar transparency fixed-top navbar-dark bg-dark">
 		<div class="container">
 			<div class="col-md-8 nopad">
-				<a class="navbar-brand" href="#">
+				<a class="navbar-brand" href="{{ url('/') }}">
 					<img class="logo"  src="{{asset('assets/images/logo1.png')}}">
+				</a>
+				<a class="navbar-brand" href="{{ url('/') }}">
+					<h5>YAYASAN DARUL ULUM</h5>
 				</a>
 			</div>
 			<div class="col-md-4 nopad text-light">
