@@ -17,10 +17,10 @@
                   <input type="hidden" name="id" class="id">
                 </td>
               </tr>
-              <tr>
+           {{--    <tr>
                 <td>Gaji</td>
                 <td><input type="text" name="p_gaji" placeholder="Gaji" class="p_gaji huruf_besar form-control form-control-sm"></td>
-              </tr>
+              </tr> --}}
             </table>
         </div>
       </div>

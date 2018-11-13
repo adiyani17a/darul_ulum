@@ -253,6 +253,9 @@
                   @if (Auth::user()->akses('REKAP SISWA','aktif'))
                     <li class="nav-item" > <a href="{{ url('/penerimaan/rekap_siswa/') }}" class="nav-link {{Request::is('penerimaan/rekap_siswa') ? 'active' : '' || Request::is('penerimaan/rekap_siswa/*') ? 'active' : '' }}">Data Siswa</a></li>
                   @endif
+                  @if (Auth::user()->akses('KELAS','aktif'))
+                    <li class="nav-item" > <a href="{{ url('/penerimaan/kelas/') }}" class="nav-link {{Request::is('penerimaan/kelas') ? 'active' : '' || Request::is('penerimaan/kelas/*') ? 'active' : '' }}">Kelas</a></li>
+                  @endif
                 </ul>
                 </div>
             </li>

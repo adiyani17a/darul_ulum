@@ -63,6 +63,12 @@
                       </td>
                     </tr>
                     <tr>
+                      <th>NOMOR INDUK SISWA NASIONAL</th>
+                      <td>
+                        <input maxlength="10" type="text" name="sdd_nomor_induk_nasional" class="sdd_nomor_induk_nasional form-control wajib">
+                      </td>
+                    </tr>
+                    <tr>
                       <th>JENIS KELAMIN</th>
                       <td>
                         <select class="form-control option sdd_jenis_kelamin" name="sdd_jenis_kelamin">

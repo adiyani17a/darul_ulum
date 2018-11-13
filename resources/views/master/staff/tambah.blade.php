@@ -44,6 +44,26 @@
                 </td>
               </tr>
               <tr>
+                <th>PENDIDIKAN TERAKHIR</th>
+                <td>
+                  <select class="form-control option st_pendidikan" name="st_pendidikan">
+                    <option value="">Pilih - Data</option>
+                    <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
+                    <option value="TK">TK</option>
+                    <option value="SD">SD</option>
+                    <option value="SMP">SMP</option>
+                    <option value="SMA">SMA</option>
+                    <option value="SARJANA">SARJANA</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Nama Sekolah</td>
+                <td>
+                  <input type="text" name="st_nama_sekolah" placeholder="Nama sekolah" class="st_nama_sekolah wajib form-control form-control-sm">
+                </td>
+              </tr>
+              <tr>
                 <td>Posisi</td>
                 <td class="level_td">
                   <select class="st_posisi form-control option " name="st_posisi">

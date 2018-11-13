@@ -246,6 +246,8 @@ $('.simpan').click(function(){
           $('.st_telpon').val(res.data.st_telpon);
           $('.st_sekolah').val(res.data.st_sekolah).trigger('change');
           $('.st_posisi').val(res.data.st_posisi).trigger('change');
+          $('.st_pendidikan').val(res.data.st_pendidikan).trigger('change');
+          $('.st_nama_sekolah').val(res.data.st_nama_sekolah);
           $('#output').attr("src", '{{ asset('storage/uploads/staff/original') }}'+'/'+res.data.st_image+'?'+Math.random())
           $('.file-upload').addClass('active');
           $("#noFile").text(res.data.st_image); 

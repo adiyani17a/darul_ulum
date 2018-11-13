@@ -880,4 +880,33 @@ class penerimaan_controller extends Controller
 			dd($e);
 		}
 	}
+
+	public function kelas()
+	{
+		$sekolah = $this->model->sekolah()->all();
+		$kelas   = $this->model->kelas()->all();
+		$tingkat = [];
+		$additionalData['tahun_ajaran'] = [];
+		for ($i=0; $i < 12; $i++) { 
+			$tingkat[$i] = $i+1;
+		}
+
+		for ($i=0; $i < 20; $i++) { 
+			array_push($additionalData['tahun_ajaran'], carbon::now()->subYear($i)->format('Y'));
+		}
+		return view('siswa.kelas.kelas',compact('sekolah','tingkat','additionalData','kelas'));
+	}
+
+	public function update_kelas(Request $req)
+	{
+		DB::beginTransaction();
+		try {
+			
+			DB::commit();
+		} catch (Exception $e) {
+
+			DB::rollBack();
+			dd($e)
+		}
+	}
 }

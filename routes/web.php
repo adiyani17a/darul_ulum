@@ -129,6 +129,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/penerimaan/simpan_alumni', 'penerimaan_controller@simpan_alumni');
         Route::get('/penerimaan/hapus_alumni', 'penerimaan_controller@hapus_alumni');
         Route::get('/penerimaan/edit_alumni', 'penerimaan_controller@edit_alumni');
+        // UPDATE KELAS
+        Route::get('/penerimaan/kelas', 'penerimaan_controller@kelas');
+        Route::get('/penerimaan/update_kelas', 'penerimaan_controller@update_kelas');
     // KAS MASUK
         // DANA BOS
         Route::get('/kas_masuk/pemasukan_kas', 'kas_masuk_controller@pemasukan_kas');
