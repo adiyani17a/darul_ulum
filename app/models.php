@@ -160,6 +160,11 @@ class models extends Model
 		return $siswa_data_diri = new siswa_data_diri();
 	}
 
+	public function siswa_data_diri_copy()
+	{
+		return $siswa_data_diri_copy = new siswa_data_diri_copy();
+	}
+
 	public function siswa_kesehatan()
 	{
 		return $siswa_kesehatan = new siswa_kesehatan();

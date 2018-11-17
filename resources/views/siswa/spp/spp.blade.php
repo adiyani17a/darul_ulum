@@ -27,58 +27,29 @@
             <div class="col-md-8" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
               <div class="alert alert-info alert-dismissible" title="DP sudah Lunas">
                 <strong>Petunjuk!</strong> <br>
-                1. Pilih filter berdasarkan apa yang ingin dirubah.<br>
-                2. Bila tingkat kelas memilih semua, maka otomatis kelas akan ditingkatkan menjadi satu tingkat dari tingkatan sebelumnya.<br>
-                3. Bila tingkat kelas dipilih secara spesifik, maka dapat merubah tujuan tingkatan kelas di filter (ke tingkatan).<br>
-                4. Setelah selesai memilih filter, klik update dan tunggu proses hingga muncul notifikasi berhasil.<br>
+                1. Pilih filter group SPP awal dan akhir.<br>
+                2. Setelah itu klik simpan.<br>
               </div>
             </div>
             <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
-             <label>Sekolah</label>
-             <select class="form-control sdd_sekolah" onchange="filter_data('search')" name="sdd_sekolah">
-               <option value="">Semua</option>
-               @foreach ($sekolah as $i => $s)
-                <option value="{{ $s->s_id }}">{{ $s->s_nama }}</option>
-               @endforeach
-             </select>
-            </div>
-            <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
-              <label>Tingkat Kelas</label>
-              <select class="form-control sdd_kelas" name="sdd_kelas" onchange="filter_data('search')" name="sdd_kelas">
+              <label>Group SPP</label>
+              <select class="form-control sdd_group_spp option" name="sdd_group_spp" onchange="filter_data('search')" >
                 <option value="">Semua</option>
-                @foreach ($tingkat as $i => $k)
-                  <option value="{{ $tingkat[$i] }}">{{ $tingkat[$i] }}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
-              <label>Nama Kelas</label>
-              <select class="form-control sdd_nama_kelas" name="sdd_nama_kelas" onchange="filter_data('search')" name="sdd_nama_kelas">
-                <option value="">Semua</option>
-                @foreach ($kelas as $i => $k)
-                  <option value="{{ $k->k_id }}">{{ $k->k_nama }}</option>
+                @foreach ($group_spp as $i => $k)
+                  <option value="{{ $k->gs_id }}">{{ $k->gs_nama }}</option>
                 @endforeach
               </select>
             </div>
             <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
               <label>Ke Tingkatan</label>
-              <select class="form-control sdd_kelas" name="tingkatan" onchange="filter_data('search')" >
+              <select class="form-control group_spp_akhir option" name="group_spp_akhir" onchange="filter_data('search')" >
                 <option value="">Semua</option>
-                @foreach ($tingkat as $i => $k)
-                  <option value="{{ $tingkat[$i] }}">{{ $tingkat[$i] }}</option>
+                @foreach ($group_spp as $i => $k)
+                  <option value="{{ $k->gs_id }}">{{ $k->gs_nama }}</option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
-              <label>Tahun Ajaran</label>
-              <select class="form-control sdd_tahun_ajaran" name="sdd_tahun_ajaran" onchange="filter_data('search')" name="sdd_tahun_ajaran">
-                <option value="">Semua</option>
-                @foreach ($additionalData['tahun_ajaran'] as $i => $th)
-                  <option value="{{ $additionalData['tahun_ajaran'][$i] }}">{{ $additionalData['tahun_ajaran'][$i] }}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+            <div class="form-group col-md-8" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
               <button style="cursor: pointer;" type="button" class="btn btn-primary pull-right" onclick="update()">Update</button>
             </div>
           </div>
@@ -100,10 +71,8 @@ $(document).ready(function(){
         serverSide: true,
         ajax: {
             url:'{{ route('datatable_rekap_siswa') }}',
-            data:{sdd_sekolah: function() { return $('.sdd_sekolah option:selected').val() },
-                  sdd_kelas: function() { return $('.sdd_kelas option:selected').val() },
-                  sdd_nama_kelas: function() { return $('.sdd_nama_kelas option:selected').val() },
-                  sdd_tahun_ajaran: function() { return $('.sdd_tahun_ajaran option:selected').val() }},
+            data:{sdd_group_spp: function() { return $('.sdd_group_spp option:selected').val() },
+                  group_spp_akhir: function() { return $('.group_spp_akhir option:selected').val() }},
             error:function(){
               var table = $('#table_data').DataTable();
               table.ajax.reload(null, false);
@@ -225,8 +194,36 @@ function rekap_siswa(id,param) {
 }
 
 function update() {
+  var validator = [];
+  var validator_name = [];
+
+  $('.wajib').each(function(){
+    if ($(this).val() == '') {
+      $(this).addClass('error');
+      validator.push(0);
+    }
+  })
+
+  $('.option').each(function(){
+    if ($(this).val() == '') {
+      var par =$(this).parents('td');
+      par.find('span').eq(0).addClass('error');
+      validator.push(0);
+    }
+  })
+
+  var index = validator.indexOf(0);
+  if (index != -1) {
+    iziToast.warning({
+        icon: 'fa fa-times',
+        title: 'Terjadi Kesalahan',
+        message: 'Semua Inputan Harus Diisi',
+    });
+    return false;
+  }
+  
   $.ajax({
-      url:baseUrl +'/penerimaan/update_kelas',
+      url:baseUrl +'/penerimaan/update_spp',
       type:'get',
       data:$('.data select').serialize(),
       dataType:'json',

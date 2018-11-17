@@ -29,6 +29,7 @@ use App\child\siswa_ayah;
 use App\child\siswa_ibu;
 use App\child\siswa_wali;
 use App\child\siswa_data_diri;
+use App\child\siswa_data_diri_copy;
 use App\child\siswa_kesehatan;
 use App\child\siswa_pendidikan;
 use App\child\siswa_tempat_tinggal;
@@ -191,6 +192,12 @@ class all_model extends Model
 	{
 		$siswa_data_diri = new siswa_data_diri();
         return $siswa_data_diri = new TestRepo($siswa_data_diri);
+	}
+
+	public function siswa_data_diri_copy()
+	{
+		$siswa_data_diri_copy = new siswa_data_diri_copy();
+        return $siswa_data_diri_copy = new TestRepo($siswa_data_diri_copy);
 	}
 
 	public function siswa_kesehatan()

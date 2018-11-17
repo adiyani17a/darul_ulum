@@ -256,8 +256,11 @@
                   @if (Auth::user()->akses('KELAS','aktif'))
                     <li class="nav-item" > <a href="{{ url('/penerimaan/kelas/') }}" class="nav-link {{Request::is('penerimaan/kelas') ? 'active' : '' || Request::is('penerimaan/kelas/*') ? 'active' : '' }}">Kelas</a></li>
                   @endif
+                  @if (Auth::user()->akses('SPP','aktif'))
+                    <li class="nav-item" > <a href="{{ url('/penerimaan/spp/') }}" class="nav-link {{Request::is('penerimaan/spp') ? 'active' : '' || Request::is('penerimaan/spp/*') ? 'active' : '' }}">SPP</a></li>
+                  @endif
                 </ul>
-                </div>
+              </div>
             </li>
             {{-- KAS MASUK --}}
             <li class="nav-item   {{Request::is('kas_masuk') ? 'active' : '' || Request::is('kas_masuk/*') ? 'active' : '' }}">

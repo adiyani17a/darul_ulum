@@ -63,6 +63,21 @@
                       </td>
                     </tr>
                     <tr>
+                      <th>
+                        KARTU SOSIAL
+                      </th>
+                      <td>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <input type="checkbox" class="checkbox" aria-label="Checkbox for following text input">
+                            </div>
+                          </div>
+                          <input type="text" readonly="" class="form-control sdd_kartu_sosial" name="sdd_kartu_sosial" aria-label="Text input with checkbox">
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
                       <th>NOMOR INDUK SISWA NASIONAL</th>
                       <td>
                         <input maxlength="10" type="text" name="sdd_nomor_induk_nasional" class="sdd_nomor_induk_nasional form-control wajib">
@@ -674,6 +689,13 @@ $('#chooseFile').bind('change', function () {
   }
 });
 
+$('.checkbox').change(function(){
+  if ($(this).is(':checked') == true) {
+    $('.sdd_kartu_sosial').prop('readonly',false);
+  }else{
+    $('.sdd_kartu_sosial').prop('readonly',true);
+  }
+})
 
 var loadFile = function(event) {
   var fsize = $('#chooseFile')[0].files[0].size;
