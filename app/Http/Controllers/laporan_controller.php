@@ -21,42 +21,38 @@ use Jenssegers\Date\Date;
 
 class laporan_controller extends Controller
 {
+
+    protected $model;
+    protected $models;
+    // JABATAN]
+
+    public function __construct()
+    {
+      $this->model = new all_model();
+      $this->models = new models();
+    }
+
     public function register_jurnal(Request $req)
     {
+      if (!isset($req->min)) {
+        $req->min = carbon::now()->startOfMonth()->subMonth(1)->format('Y-m-d');
+      }
 
-  //   	if ($req->sdd_sekolah != '') {
-  //         $sdd_sekolah = 'and sdd_sekolah = '."'$req->sdd_sekolah'";
-  //       }else{
-  //         $sdd_sekolah = '';
-  //       }
+      if (!isset($req->max)) {
+        $req->max = carbon::now()->endOfMonth()->format('Y-m-d');
+      }
 
-  //       if ($req->sdd_kelas != '') {
-  //         $sdd_kelas = 'and sdd_kelas = '."'$req->sdd_kelas'";
-  //       }else{
-  //         $sdd_kelas = '';
-  //       }
+      if (Auth::user()->akses('LAPORAN REGISTER JURNAL','sekolah')) {
+        $data = $this->models->jurnal()->whereRaw("j_tanggal >= '$req->min' and j_tanggal <= '$req->max'")
+                                     ->get();
+      }else{
+        $sekolah = Auth::user()->sekolah;
+        $data = $this->models->jurnal()->whereRaw("j_tanggal >= '$req->min' and j_tanggal <= '$req->max' and j_sekolah = '$sekolah'")
+                                     ->get();
+      }
+      $min = $req->min;
+      $max = $req->max;
 
-  //       if ($req->sdd_nama_kelas != '') {
-  //         $sdd_nama_kelas = 'and sdd_nama_kelas = '."'$req->sdd_nama_kelas'";
-  //       }else{
-  //         $sdd_nama_kelas = '';
-  //       }
-
-  //       if ($req->sdd_tahun_ajaran != '') {
-  //         $sdd_tahun_ajaran = 'and sdd_tahun_ajaran = '."'$req->sdd_tahun_ajaran'";
-  //       }else{
-  //         $sdd_tahun_ajaran = '';
-  //       }
-
-
-		// if (Auth::user()->akses('LAPORAN REGISTER JURNAL','global')) {
-		// 	$data = $this->models->jurnal()->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran")->get();
-		// }else{
-		// 	$sekolah = Auth::User()->sekolah_id;
-		// 	$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran")->get();
-		// }
-
-
-    	return view('laporan.register_jurnal.register_jurnal');
+    	return view('laporan.register_jurnal.register_jurnal',compact('data','min','max'));
     }
 }

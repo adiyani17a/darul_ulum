@@ -191,6 +191,7 @@ class kas_masuk_controller extends Controller
 						   'j_keterangan'	=> strtoupper($req->km_keterangan),
 						   'j_sekolah'		=> $req->km_sekolah,
 						   'j_ref'			=> $req->km_nota,
+						   'j_type'			=> 'KAS MASUK',
 						   'j_detail'		=> 'PEMASUKAN KAS',
 						   'created_by'		=> Auth::user()->name,
 						   'updated_by'		=> Auth::user()->name,
@@ -324,6 +325,7 @@ class kas_masuk_controller extends Controller
 						   'j_keterangan'	=> strtoupper($req->km_keterangan),
 						   'j_sekolah'		=> $req->km_sekolah,
 						   'j_ref'			=> $req->km_nota,
+						   'j_type'			=> 'KAS MASUK',
 						   'j_detail'		=> 'PEMASUKAN KAS',
 						   'created_by'		=> Auth::user()->name,
 						   'updated_by'		=> Auth::user()->name,
@@ -436,7 +438,7 @@ class kas_masuk_controller extends Controller
 		$additionalData['tahun_ajaran'] = [];
 
 		$akun = $this->models->akun()->select('a_master_akun','a_master_nama')
-									 ->where('a_master_akun','like','4%')
+									 ->where('a_master_akun','like','4112%')
 									 ->groupBy('a_master_akun','a_master_nama')
 									 ->get();
 
@@ -453,8 +455,9 @@ class kas_masuk_controller extends Controller
 			array_push($additionalData['tahun_spp'], Date::now()->subYear($i)->format('Y'));
 		}
 
-		$sekolah = $this->model->sekolah()->all();
-		$kelas   = $this->model->kelas()->all();
+		$sekolah 	= $this->model->sekolah()->all();
+		$kelas   	= $this->model->kelas()->all();
+		$group_spp   = $this->model->group_spp()->all();
 		$tingkat = [];
 		for ($i=0; $i < 12; $i++) { 
 			$tingkat[$i] = $i+1;
@@ -463,7 +466,7 @@ class kas_masuk_controller extends Controller
 		for ($i=0; $i < 20; $i++) { 
 			array_push($additionalData['tahun_ajaran'], carbon::now()->subYear($i)->format('Y'));
 		}
-		return view('kas_masuk.spp.spp',compact('additionalData','akun','akun_kas','sekolah','tingkat','additionalData','kelas'));
+		return view('kas_masuk.spp.spp',compact('additionalData','akun','akun_kas','sekolah','tingkat','additionalData','kelas','group_spp'));
 	}
 
 	public function datatable_spp(Request $req)
@@ -493,12 +496,18 @@ class kas_masuk_controller extends Controller
           $sdd_tahun_ajaran = '';
         }
 
+        if ($req->sdd_group_spp != '') {
+          $sdd_group_spp = 'and sdd_group_spp = '."'$req->sdd_group_spp'";
+        }else{
+          $sdd_group_spp = '';
+        }
+
 
 		if (Auth::user()->akses('REKAP SISWA','global')) {
-			$data = $this->models->siswa_data_diri()->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran")->get();
+			$data = $this->models->siswa_data_diri()->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_group_spp")->get();
 		}else{
 			$sekolah = Auth::User()->sekolah_id;
-			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran")->get();
+			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_group_spp")->get();
 		}
 
 
@@ -506,7 +515,7 @@ class kas_masuk_controller extends Controller
 			$data = $this->models->siswa_data_diri()->where('sdd_nomor_induk','!=',null)
 													->where('sdd_nomor_induk_nasional','!=',null)
 													->where('sdd_group_spp','!=',null)
-													->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_sekolah")
+													->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_sekolah $sdd_group_spp")
 													->get();
 		}else{
 			$sekolah = Auth::User()->sekolah_id;
@@ -514,7 +523,7 @@ class kas_masuk_controller extends Controller
 													->where('sdd_nomor_induk_nasional','!=',null)
 													->where('sdd_sekolah','=',$sekolah)
 													->where('sdd_group_spp','!=',null)
-													->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran")
+													->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_group_spp")
 													->get();
 		}
 
@@ -682,6 +691,7 @@ class kas_masuk_controller extends Controller
 							   'j_sekolah'		=> $data->sdd_sekolah,
 							   'j_ref'			=> $req->hs_nota,
 							   'j_detail'		=> 'PEMBAYARAN SPP',
+							   'j_type'			=> 'KAS MASUK',
 							   'created_by'		=> Auth::user()->name,
 							   'updated_by'		=> Auth::user()->name,
 	            		);
@@ -787,6 +797,7 @@ class kas_masuk_controller extends Controller
 							   'j_keterangan'	=> strtoupper($req->hs_keterangan),
 							   'j_sekolah'		=> $data->sdd_sekolah,
 							   'j_ref'			=> $req->hs_nota,
+							   'j_type'			=> 'KAS MASUK',
 							   'j_detail'		=> 'PEMBAYARAN SPP',
 							   'created_by'		=> Auth::user()->name,
 							   'updated_by'		=> Auth::user()->name,

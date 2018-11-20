@@ -68,6 +68,15 @@
                 @endforeach
               </select>
             </div>
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+              <label>Group SPP</label>
+              <select class="form-control sdd_group_spp" name="sdd_group_spp" onchange="rubah()">
+                <option value="">Semua</option>
+                @foreach ($group_spp as $i => $gs)
+                  <option value="{{ $gs->gs_id }}">{{ $gs->gs_nama }}</option>
+                @endforeach
+              </select>
+            </div>
           </div>
           <div class="form-group col-sm-3" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
             <label>Bulan SPP</label>
@@ -131,6 +140,7 @@ $(document).ready(function(){
                   sdd_sekolah: function() { return $('.sdd_sekolah option:selected').val() },
                   sdd_kelas: function() { return $('.sdd_kelas option:selected').val() },
                   sdd_nama_kelas: function() { return $('.sdd_nama_kelas option:selected').val() },
+                  sdd_group_spp: function() { return $('.sdd_group_spp option:selected').val() },
                   sdd_tahun_ajaran: function() { return $('.sdd_tahun_ajaran option:selected').val() }},
             error:function(){
               var table = $('#table_data').DataTable();

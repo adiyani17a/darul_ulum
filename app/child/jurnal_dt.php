@@ -21,7 +21,7 @@ class jurnal_dt extends Model
 
 	public function akun()
     {
-        return $this->belongsTo('App\child\akun','jd_id','a_id');
+        return $this->belongsTo('App\child\akun','jd_akun','a_id');
     }
 
 	public function jurnal()

@@ -51,7 +51,7 @@
 		font-size: 12px;
 	}
 	.bg-secondary{
-		background-color: #9999 !important;
+		background-color: #777 !important;
 	}
 	th{
 		border:1px solid grey;
@@ -106,18 +106,21 @@
 			</div>
 		</div>
 	</nav>
-	<div class="container" id="printArea" style="margin-top: 100px;background-color: white">
+	<div class="container" id="printArea" style="margin-top: 100px;background-color: white;max-width: 1300px !important">
 	    <div class="row col-sm-12 body-jurnal" >
 			<div class="col-sm-12" style="margin-top: 20px" >
 				<h2 class="black"><b>REGISTER JURNAL</b></h2>
 				<h5 class="black">YAYASAN DARUL ULUM</h5>
-				<p class="black">SDN MEDOKAN AYU</p>
+				@if (!Auth::user()->akses('LAPORAN REGISTER JURNAL','sekolah'))
+				<p class="black">{{ Auth::user()->sekolah->s_nama }}</p>
+				@endif 
 				<hr class="black" style="border-bottom: 2px solid black">
 			</div>
 			<div class="col-sm-12 table-responsive" style="font-size: 10px">
-				<label>Transaksi : Bulan September - Oktober</label>
-	        	<table class="table table-bordered overflow">
-	        		<thead class="bg-secondary ">
+				<label>Jurnal : {{  }}</label>
+				<label>Transaksi : {{ carbon\carbon::parse($min)->format('d F Y') }} - {{ carbon\carbon::parse($max)->format('d F Y') }}</label>
+	        	<table class="table table-bordered overflow" >
+	        		<thead class="bg-secondary " style="color: white">
 	        			<th>Tanggal</th>
 	        			<th>No.Bukti</th>
 	        			<th>No.Perkiraan</th>
@@ -127,8 +130,52 @@
 	        			<th>Kredit</th>
 	        		</thead>
 	        		<tbody>
-	        			
+	        			@php
+	        				$dk = [];
+        					$dk['total_d'] = 0;
+        					$dk['total_k'] = 0;
+        				@endphp
+	        			@foreach($data as $i => $d)
+	        				@php
+	        					$dk['k'] = 0;
+	        					$dk['d'] = 0;
+	        				@endphp
+	        				@foreach($d->jurnal_dt as $i => $dt)
+		        				<tr >
+		        					<td style="font-size: 12px !important">{{ $d->j_tanggal }}</td>
+		        					<td style="font-size: 12px !important">{{ $d->j_ref }}</td>
+		        					<td style="font-size: 12px !important">{{ $dt->jd_akun }}</td>
+		        					<td style="font-size: 12px !important">{{ $dt->akun->a_nama }}</td>
+		        					<td style="font-size: 12px !important">{{ $dt->jd_keterangan }}</td>
+		        					@if ($dt->jd_statusdk == 'DEBET')
+		        					<td align="right" style="font-size: 12px !important">{{ number_format(abs($dt->jd_value),2,',','.') }}</td>
+		        					<td align="right" style="font-size: 12px !important">0</td>
+		        					@php
+			        				$dk['d'] += abs($dt->jd_value);
+			        				$dk['total_d'] += abs($dt->jd_value);
+			        				@endphp
+		        					@else
+		        					<td align="right" style="font-size: 12px !important">0</td>
+		        					<td align="right" style="font-size: 12px !important">{{ number_format(abs($dt->jd_value),2,',','.') }}</td>
+		        					@php
+			        				$dk['k'] += abs($dt->jd_value);
+			        				$dk['total_k'] += abs($dt->jd_value);
+			        				@endphp
+		        					@endif
+		        				</tr>
+	        				@endforeach
+	        				<tr style="background: #9999;font-size: 12px !important">
+		        				<th colspan="5"></th>
+		        				<td align="right" style="font-size: 12px !important">{{ number_format($dk['d'] ,2,',','.')}} </td>
+		        				<td align="right" style="font-size: 12px !important">{{ number_format($dk['k'] ,2,',','.')}}</td>
+		        			</tr>
+	        			@endforeach
 	        		</tbody>
+	        		<tfoot>
+	        			<th colspan="5"></th>
+        				<td align="right" style="font-size: 12px !important"><b>{{ number_format($dk['total_d'] ,2,',','.')}}</b> </td>
+        				<td align="right" style="font-size: 12px !important"><b>{{ number_format($dk['total_k'] ,2,',','.')}}</b></td>
+	        		</tfoot>
 	        	</table>
 	      	</div>
 	    </div>
