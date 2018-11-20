@@ -17,6 +17,9 @@
 			margin-left: 0px;
 			margin-top: 0px !important;
 		}
+		.bg-secondary{
+			color: black !important;
+		}
 	}
 	
 	.transparency{
@@ -100,7 +103,7 @@
 			</div>
 			<div class="col-md-4 nopad text-light">
 				<ul class="nav-ul">
-					<li><i class="fa fa-print"></i></li>
+					<li><i class="fa fa-print" onclick="print()"></i></li>
 					<li><i class="fa fa-sliders" onclick="openModal()"></i></li>
 				</ul>
 			</div>
@@ -117,7 +120,7 @@
 				<hr class="black" style="border-bottom: 2px solid black">
 			</div>
 			<div class="col-sm-12 table-responsive" style="font-size: 10px">
-				<label>Jurnal : {{  }}</label>
+				<label>Jurnal : {{ $j_type }}</label><br>
 				<label>Transaksi : {{ carbon\carbon::parse($min)->format('d F Y') }} - {{ carbon\carbon::parse($max)->format('d F Y') }}</label>
 	        	<table class="table table-bordered overflow" >
 	        		<thead class="bg-secondary " style="color: white">
@@ -193,20 +196,26 @@
       </div>
       <div class="modal-body">
         <div class="row">
-            <div class="col-md-4">
-            	<span>Jenis Kas</span>
+        	<div class="col-md-12 form-group">
+            	<label>Tanggal Awal</label>
+            	<input type="text" class="min date form-control" name="min">
             </div>
-            <div class="col-md-8">
-            	<select class="form-control">
-            		<option>asc</option>
-            		<option>asc</option>
-            		<option>ac</option>
+            <div class="col-md-12 form-group">
+            	<label>Tanggal Akhir</label>
+            	<input type="text" class="max date form-control" name="max">
+            </div>
+            <div class="col-md-12 form-group">
+            	<label>Jenis Jurnal</label>
+            	<select class="form-control j_type" name="j_type">
+            		<option value="">Semua Type</option>
+            		<option value="KAS MASUK">KAS MASUK</option>
+            		<option value="KAS KELUAR">KAS KELUAR</option>
             	</select>
             </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary simpan" >Save Data</button>
+        <button type="button" class="btn btn-primary filter" onclick="filter()">Filter</button>
         <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -220,6 +229,18 @@
 	
 <script type="text/javascript">
 	function openModal(argument) {
+		$('.date').val('');
 		$('#filterModal').modal('show');
 	}
+
+	function filter() {
+		var min = $('.min').val();
+		var max = $('.max').val();
+		var j_type = $('.j_type').val();
+		location.href =' {{ url('laporan/register_jurnal') }}'+'?min='+min+'&j_type='+j_type+'&max='+max;
+	}
+
+	$('.date').datepicker({
+		format:'yyyy-mm-dd'
+	});
 </script>
