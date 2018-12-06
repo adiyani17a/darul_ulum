@@ -135,7 +135,7 @@ function hapus(id) {
     close: false,
     timeout: 20000, 
     color: 'dark',
-    icon: 'fas fa-question-circle',
+    icon: 'fa fa-question-circle',
     title: 'Hapus Data!',
     message: 'Apakah Anda Yakin ?!',
     position: 'center',

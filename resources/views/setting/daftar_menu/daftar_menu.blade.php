@@ -71,17 +71,11 @@
                      targets: 2,
                      className: 'tengah gm_id'
                   },
-                  {
-                     targets: 4,
-                     className: 'tengah'
-                  }
                 ],
           columns: [
             {data: 'DT_Row_Index',      name: 'DT_Row_Index'},
             {data: 'dm_nama', name: 'dm_nama'},
             {data: 'gm_id', name: 'gm_id'},
-            {data: 'gm_nama', name: 'gm_nama'},
-            {data: 'aksi', name: 'aksi'}
           ]
 
     });
