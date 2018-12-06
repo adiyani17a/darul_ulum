@@ -20,68 +20,120 @@
     <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">kelas</h4>
+          <h4 class="card-title">Manajemen Siswa</h4>
         </div>
         <div class="card-body">
-          <div class="row data">
-            <div class="col-md-8" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
-              <div class="alert alert-info alert-dismissible" title="DP sudah Lunas">
-                <strong>Petunjuk!</strong> <br>
-                1. Pilih filter berdasarkan apa yang ingin dirubah.<br>
-                2. Bila tingkat kelas memilih semua, maka otomatis kelas akan ditingkatkan menjadi satu tingkat dari tingkatan sebelumnya.<br>
-                3. Bila tingkat kelas dipilih secara spesifik, maka dapat merubah tujuan tingkatan kelas di filter (ke tingkatan).<br>
-                4. Setelah selesai memilih filter, klik update dan tunggu proses hingga muncul notifikasi berhasil.<br>
-              </div>
-            </div>
-            <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+          <h4>FILTER</h4>
+          <hr>
+          <div class="row">
+            @if (Auth::user()->akses('KELAS','sekolah'))
+            <div class="form-group col-md-2" style="padding-bottom: 20px;margin-right: 10px;">
              <label>Sekolah</label>
-             <select class="form-control sdd_sekolah" onchange="filter_data('search')" name="sdd_sekolah">
-               <option value="">Semua</option>
+             <select class="form-control sdd_sekolah" onchange="filter_data('search')">
                @foreach ($sekolah as $i => $s)
                 <option value="{{ $s->s_id }}">{{ $s->s_nama }}</option>
                @endforeach
              </select>
             </div>
-            <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+            @else
+            <div class="form-group col-md-2 disabled" style="padding-bottom: 20px;margin-right: 10px;">
+             <label>Sekolah</label>
+             <select class="form-control sdd_sekolah" onchange="filter_data('search')">
+               @foreach ($sekolah as $i => $s)
+                <option @if (Auth::user()->sekolah_id == $s->s_id)
+                  selected="" 
+                @endif value="{{ $s->s_id }}">{{ $s->s_nama }}</option>
+               @endforeach
+             </select>
+            </div>
+            @endif
+            <div class="form-group col-md-2" style="padding-bottom: 20px;margin-right: 10px;">
               <label>Tingkat Kelas</label>
-              <select class="form-control sdd_kelas" name="sdd_kelas" onchange="filter_data('search')" name="sdd_kelas">
-                <option value="">Semua</option>
+              <select class="form-control sdd_kelas" name="sdd_kelas" onchange="filter_data('search')">
                 @foreach ($tingkat as $i => $k)
                   <option value="{{ $tingkat[$i] }}">{{ $tingkat[$i] }}</option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+            <div class="form-group col-md-2" style="padding-bottom: 20px;margin-right: 10px;">
               <label>Nama Kelas</label>
-              <select class="form-control sdd_nama_kelas" name="sdd_nama_kelas" onchange="filter_data('search')" name="sdd_nama_kelas">
-                <option value="">Semua</option>
+              <select class="form-control sdd_nama_kelas" name="sdd_nama_kelas" onchange="filter_data('search')">
                 @foreach ($kelas as $i => $k)
                   <option value="{{ $k->k_id }}">{{ $k->k_nama }}</option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
-              <label>Ke Tingkatan</label>
-              <select class="form-control sdd_kelas" name="tingkatan" onchange="filter_data('search')" >
+            <div class="form-group col-md-2" style="padding-bottom: 20px;margin-right: 10px;">
+              <label>Group SPP</label>
+              <select class="form-control sdd_group_spp" name="sdd_group_spp" onchange="filter_data('search')">
                 <option value="">Semua</option>
-                @foreach ($tingkat as $i => $k)
-                  <option value="{{ $tingkat[$i] }}">{{ $tingkat[$i] }}</option>
+                @foreach ($group_spp as $i => $k)
+                  <option value="{{ $k->gs_id }}">{{ $k->gs_nama }}</option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+            <div class="form-group col-md-2" style="padding-bottom: 20px;margin-right: 10px;">
               <label>Tahun Ajaran</label>
-              <select class="form-control sdd_tahun_ajaran" name="sdd_tahun_ajaran" onchange="filter_data('search')" name="sdd_tahun_ajaran">
+              <select class="form-control sdd_tahun_ajaran" name="sdd_tahun_ajaran" onchange="filter_data('search')">
                 <option value="">Semua</option>
                 @foreach ($additionalData['tahun_ajaran'] as $i => $th)
                   <option value="{{ $additionalData['tahun_ajaran'][$i] }}">{{ $additionalData['tahun_ajaran'][$i] }}</option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group col-md-4" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
-              <button style="cursor: pointer;" type="button" class="btn btn-primary pull-right" onclick="update()">Update</button>
+          </div>
+          <hr>
+          <h4>TUJUAN</h4>
+          <hr>
+          <div class="row tujuan">
+            <div class="form-group col-md-2" style="padding-bottom: 20px;margin-right: 10px;">
+              <label>Tingkat Kelas</label>
+              <select class="form-control sdd_kelas" name="sdd_kelas">
+                @foreach ($tingkat as $i => $k)
+                  <option value="{{ $tingkat[$i] }}">{{ $tingkat[$i] }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-bottom: 20px;margin-right: 10px;">
+              <label>Nama Kelas</label>
+              <select class="form-control sdd_nama_kelas" name="sdd_nama_kelas">
+                @foreach ($kelas as $i => $k)
+                  <option value="{{ $k->k_id }}">{{ $k->k_nama }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-bottom: 20px;margin-right: 10px;">
+              <label>Group SPP</label>
+              <select class="form-control sdd_group_spp" name="sdd_group_spp">
+                @foreach ($group_spp as $i => $k)
+                  <option value="{{ $k->gs_id }}">{{ $k->gs_nama }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-top: 24px">
+              <button type="button" class="btn btn-primary" onclick="update()"><i class="fa fa-check" ></i> Submit</button>
             </div>
           </div>
+          <table class="table table_data table-bordered" id="table_data">
+            <thead>
+              <tr>
+                <th>
+                  <label class="label">
+                    <input class="label__checkbox all_check" name="all_check" type="checkbox" />
+                    <span class="label__text">
+                      <span class="label__check">
+                        <i class="fa fa-check icon"></i>
+                      </span>
+                    </span>
+                  </label>
+                </th>
+                <th style="vertical-align: middle;">Gambar</th>
+                <th style="vertical-align: middle;">Data Siswa</th>
+                <th style="vertical-align: middle;">Pembuat</th>
+                <th style="vertical-align: middle;">Status</th>
+              </tr>
+            </thead>
+          </table>
         </div>
       </div>
     </div>
@@ -96,14 +148,16 @@
 $(document).ready(function(){
 
    $('#table_data').DataTable({
-        processing: true,
-        serverSide: true,
+        processing: false,
+        serverSide: false,
+        ordering: false,
         ajax: {
             url:'{{ route('datatable_rekap_siswa') }}',
             data:{sdd_sekolah: function() { return $('.sdd_sekolah option:selected').val() },
                   sdd_kelas: function() { return $('.sdd_kelas option:selected').val() },
                   sdd_nama_kelas: function() { return $('.sdd_nama_kelas option:selected').val() },
-                  sdd_tahun_ajaran: function() { return $('.sdd_tahun_ajaran option:selected').val() }},
+                  sdd_tahun_ajaran: function() { return $('.sdd_tahun_ajaran option:selected').val() },
+                  sdd_group_spp: function() { return $('.sdd_group_spp option:selected').val() }},
             error:function(){
               var table = $('#table_data').DataTable();
               table.ajax.reload(null, false);
@@ -120,20 +174,15 @@ $(document).ready(function(){
                 },
                 {
                    targets: 4 ,
-                   className: ' tengah'
-                },
-                {
-                   targets: 5 ,
-                   className: ' tengah'
+                   className: ' tengah disabled'
                 },
               ],
         columns: [
-          {data: 'DT_Row_Index', name: 'DT_Row_Index'},
+          {data: 'check', name: 'check'},
           {data: 'image', name: 'image'},
           {data: 'data_siswa', name: 'data_siswa'},
           {data: 'created_by', name: 'created_by'},
           {data: 'status', name: 'status'},
-          {data: 'aksi'}
         ]
 
   });
@@ -143,7 +192,20 @@ function filter_data() {
 
     var table = $('#table_data').DataTable();
     table.ajax.reload(null, false);
+
+    $('.all_check').prop('checked',false);
 }
+
+
+
+$('.all_check').change(function(){
+  var table = $('#table_data').DataTable();
+  if ($(this).is(':checked') == true) {
+    table.$('.check').prop('checked',true);
+  }else if (table.$(this).is(':checked') == false){
+    table.$('.check').prop('checked',false);
+  }
+});
 
 $('.btn_modal').click(function(){
   $('#tambah-akun :input:not(input[name="_token"])').val('');
@@ -154,81 +216,24 @@ function edit(id) {
  location.href = '{{  url('penerimaan/edit_rekap_siswa') }}?id='+id;
 }
 
-function rekap_siswa(id,param) {
-  iziToast.show({
-    overlay: true,
-    close: false,
-    timeout: 20000, 
-    color: 'dark',
-    icon: 'fas fa-question-circle',
-    title: param+' Data!',
-    message: 'Apakah Anda Yakin ?!',
-    position: 'center',
-    progressBarColor: 'rgb(0, 255, 184)',
-    buttons: [
-    [
-        '<button style="background-color:#32CD32;">Ya</button>',
-        function (instance, toast) {
-
-          $.ajaxSetup({
-              headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url:baseUrl +'/penerimaan/simpan_rekap_siswa',
-                type:'get',
-                data:{id,param},
-                dataType:'json',
-                success:function(data){
-                  $('#tambah-jabatan').modal('hide');
-                  var table = $('#table_data').DataTable();
-                  table.ajax.reload(null, false);
-                  if (data.status == 1) {
-                    iziToast.success({
-                          icon: 'fa fa-trash',
-                          title: 'Berhasil',
-                          color:'yellow',
-                          message: data.pesan,
-                    });
-                  }else{
-                    iziToast.warning({
-                          icon: 'fa fa-times',
-                          title: 'Oops,',
-                          message: data.pesan,
-                    });
-                  }
-                },
-                error:function(){
-                  iziToast.warning({
-                    icon: 'fa fa-times',
-                    message: 'Terjadi Kesalahan!',
-                  });
-                }
-            });
-            instance.hide({
-                transitionOut: 'fadeOutUp'
-            }, toast);
-        }
-    ],
-    [
-        '<button style="background-color:#44d7c9;">Cancel</button>',
-        function (instance, toast) {
-          instance.hide({
-            transitionOut: 'fadeOutUp'
-          }, toast);
-        }
-      ]
-    ]
-  });
-}
-
 function update() {
+  var sdd_id = [];
+  var table = $('#table_data').DataTable();
+
+  table.$('.check').each(function(){
+    if ($(this).is(':checked') == true) {
+      var par = $(this).parents('tr');
+      var id = $(par).find('.sdd_id').val();
+      sdd_id.push(id);
+    }
+  })
+
+
+  var tes = $('.tujuan select').serialize()
   $.ajax({
-      url:baseUrl +'/penerimaan/update_kelas',
-      type:'get',
-      data:$('.data select').serialize(),
+      url:baseUrl +'/penerimaan/update_kelas?'+$('.tujuan select').serialize()+'&'+'_token='+'{{ csrf_token() }}',
+      type:'post',
+      data:{sdd_id},
       dataType:'json',
       success:function(data){
         $('#tambah-jabatan').modal('hide');
@@ -248,6 +253,7 @@ function update() {
                 message: data.pesan,
           });
         }
+        $('.all_check').prop('checked',false);
       },
       error:function(){
         iziToast.warning({
