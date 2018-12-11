@@ -15,7 +15,6 @@ Auth::routes();
 
 
 Route::group(['middleware' => 'auth'], function () {
-
     // Route::get('/_debugbar/assets/javascript', [
     //     'as' => 'debugbar-js',
     //     'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@js'
