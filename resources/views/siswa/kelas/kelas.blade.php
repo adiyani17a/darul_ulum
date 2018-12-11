@@ -92,6 +92,7 @@
                 @foreach ($tingkat as $i => $k)
                   <option value="{{ $tingkat[$i] }}">{{ $tingkat[$i] }}</option>
                 @endforeach
+                  <option value="LULUS">LULUS</option>
               </select>
             </div>
             <div class="form-group col-md-2" style="padding-bottom: 20px;margin-right: 10px;">
@@ -152,7 +153,7 @@ $(document).ready(function(){
         serverSide: false,
         ordering: false,
         ajax: {
-            url:'{{ route('datatable_rekap_siswa') }}',
+            url:'{{ route('datatable_manajemen_siswa') }}',
             data:{sdd_sekolah: function() { return $('.sdd_sekolah option:selected').val() },
                   sdd_kelas: function() { return $('.sdd_kelas option:selected').val() },
                   sdd_nama_kelas: function() { return $('.sdd_nama_kelas option:selected').val() },

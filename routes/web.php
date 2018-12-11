@@ -132,6 +132,7 @@ Route::group(['middleware' => 'auth'], function () {
         // UPDATE KELAS
         Route::get('/penerimaan/kelas', 'penerimaan_controller@kelas');
         Route::post('/penerimaan/update_kelas', 'penerimaan_controller@update_kelas');
+        Route::get('/penerimaan/datatable_manajemen_siswa', 'penerimaan_controller@datatable_manajemen_siswa')->name('datatable_manajemen_siswa');
     // KAS MASUK
         // DANA BOS
         Route::get('/kas_masuk/pemasukan_kas', 'kas_masuk_controller@pemasukan_kas');

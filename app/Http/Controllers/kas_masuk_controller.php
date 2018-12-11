@@ -32,6 +32,35 @@ class kas_masuk_controller extends Controller
 		$additionalData = [];
 	}
 
+	public function penyebut($nilai=null) {
+        $_this = new self;
+		$nilai = abs($nilai);
+		$huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
+		$temp = "";
+		if ($nilai < 12) {
+			$temp = " ". $huruf[$nilai];
+		} else if ($nilai <20) {
+			$temp = $_this->penyebut($nilai - 10). " belas";
+		} else if ($nilai < 100) {
+			$temp = $_this->penyebut($nilai/10)." puluh". $_this->penyebut($nilai % 10);
+		} else if ($nilai < 200) {
+			$temp = " seratus" . $_this->penyebut($nilai - 100);
+		} else if ($nilai < 1000) {
+			$temp = $_this->penyebut($nilai/100) . " ratus" . $_this->penyebut($nilai % 100);
+		} else if ($nilai < 2000) {
+			$temp = " seribu" . $_this->penyebut($nilai - 1000);
+		} else if ($nilai < 1000000) {
+			$temp = $_this->penyebut($nilai/1000) . " ribu" . $_this->penyebut($nilai % 1000);
+		} else if ($nilai < 1000000000) {
+			$temp = $_this->penyebut($nilai/1000000) . " juta" . $_this->penyebut($nilai % 1000000);
+		} else if ($nilai < 1000000000000) {
+			$temp = $_this->penyebut($nilai/1000000000) . " milyar" . $_this->penyebut(fmod($nilai,1000000000));
+		} else if ($nilai < 1000000000000000) {
+			$temp = $_this->penyebut($nilai/1000000000000) . " trilyun" . $_this->penyebut(fmod($nilai,1000000000000));
+		}     
+		return $temp;
+    }
+
 	public function pemasukan_kas()
 	{
 		return view('kas_masuk.pemasukan_kas.pemasukan_kas');
@@ -885,9 +914,7 @@ class kas_masuk_controller extends Controller
 		$data   = $this->model->user()->cari('id',$id);
 		$siswa  = $this->model->siswa_data_diri()->cari('sdd_id',$req->id);
 		$history_spp = $this->models->history_spp()->where('hs_id',$req->id)->whereRaw("hs_bulan = '$req->filter_bulan' and hs_tahun = '$req->filter_tahun'")->first();
-		return view('kas_masuk.spp.cetak',compact('data','id','history_spp','siswa'));
-		// $pdf = PDF::loadView('kas_masuk.spp.cetak',compact('data','id','history_spp','siswa'))
-		// 			->setPaper('a4','potrait');;
-		// return $pdf->stream('invoice.pdf');
+        $terbilang = $this->penyebut($history_spp->hs_jumlah);
+		return view('kas_masuk.spp.cetak',compact('data','id','history_spp','siswa','terbilang'));
 	}
 }

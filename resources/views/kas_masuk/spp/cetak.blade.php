@@ -18,91 +18,101 @@
 	td{
 		border:none !important;
 	}
+	#trapezoid {
+		background-color: #e9ecef;
+    height: 50px;
+    width: 200px;
+    border-top-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+	}
+
+	.batik {
+
+    border: 25px solid transparent;
+    width: 100%;
+    height: 400px;
+    -webkit-border-image: url({{ asset('assets/images/border.png') }}) 30 round; /* Safari 3.1-5 */
+    -o-border-image: url({{ asset('assets/images/border.png') }}) 30 round; /* Opera 11-12.1 */
+    border-image: url({{ asset('assets/images/border.png') }}) 30 round;
+	}
+
+
+
+	.kop{
+		width: 400px;
+		margin-top: 150px;
+    font-family: sans-serif;
+ 
+    display: block;
+	}
 </style>
 
-<body class="body" style="background-color: grey;margin-left: 200px;margin-right: 200px;">
-	<div class="container" >
+<body class="body" style="background-color: #fff;">
+	<div class="container-fluid">
 		<div class="row">
-			<div style="background-color: white;" class="row printArea">
-				<div class="col-sm-12 row" style="margin-top: 15px;border-bottom: 2px solid black; " >
-					<div class="col-sm-2">
-						<img style="width: 100%;" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
-					</div>
-					<div class="col-sm-8"  align="center" style="display: table;>
-						<h5 style="color: #3b734c">YAYASAN DARUL ULUM GRESIK</h5>
-						<h4 style="color: #374a3d">{{ $siswa->sekolah->s_nama }}</h4>
-						<p>{{ $siswa->sekolah->s_alamat }}</p>
-					</div>
-					<div class="col-sm-2">
-						<img style="width: 100%;" src="{{ asset('assets/sekolah_1_.png') }}">
-					</div>
+			<div style="width: 30%; border-right: 1px dashed black;height: 400px;padding-top: 20px;">
+				<div class="col-md-12">
+					No.........................................
 				</div>
-				<div class="col-sm-12" style="margin-top: 20px">
-					<h4 class="text-center">KWITANSI</h4>
+				<div class="col-md-12" style="padding-top: 20px;">
+					<label>Telah Diterima dari</label><br>
+					<input type="text" readonly="" value="{{ $siswa->sdd_nama }}" style="border:none;border-bottom: 1px solid grey;width: 250px" name="">
 				</div>
-				<div class="col-sm-12 row">
-					<table class="table col-sm-4">
-						<tr>
-							<td>Nota</td>
-							<td>: {{ $history_spp->hs_nota }}</td>
-						</tr>	
-						<tr>
-							<td>Nama Siswa</td>
-							<td>: {{ $siswa->sdd_nama }}</td>
-						</tr>	
-						<tr>
-							<td>Kelas</td>
-							<td>: {{ $siswa->sdd_kelas }}</td>
-						</tr>	
-						<tr>
-							<td>Nama Kelas</td>
-							<td>: {{ $siswa->sdd_nama_kelas }}</td>
-						</tr>	
-						<tr>
-							<td>Jurusan</td>
-							<td>: {{ $siswa->sdd_jurusan }}</td>
-						</tr>		
-					</table>
-				</div>
-				<div class="col-sm-4">
-					
-				</div>
-				<div class="col-sm-8">
-					<table class="table ">
-						<tr>
-							<td>Telah Diterima Dari</td>
-							<td><b>: {{ $siswa->sdd_nama }}</b></td>
-						</tr>
-						<tr>
-							<td>Untuk</td>
-							<td><b>: Pembayaran SPP bulan {{ $history_spp->hs_bulan }} {{ $history_spp->hs_tahun }}</b></td>
-						</tr>
-						<tr>
-							<td>Sejumlah</td>
-							<td><b>: {{'Rp, '.  number_format($history_spp->hs_jumlah,0,',','.') }}</b></td>
-						</tr>
-					</table>
-					
-				</div>
-				<div class="col-sm-12">
-					<div class="col-sm-3" style="border:3px solid black;margin-top: 300px;margin-right: 100px!important">
-						<i><b>Kwitansi : Rp. {{ number_format($history_spp->hs_jumlah,0,',','.') }}</b></i>
+				<div class="col-md-12" style="padding-top: 20px;">
+					<label>Uang sejumlah</label><br>
+					<div class="input-group " style="border-top: 1px solid grey;border-bottom: 1px solid grey; width: 250px;">
+					  Rp.
+					  <div id="trapezoid">
+					  	&nbsp; &nbsp; <input type="text" readonly="" value="{{number_format($history_spp->hs_jumlah,0,',','.') }}" style="border: none;margin-top: 10px;pointer-events: none;background-color: #e9ecef;width: 160px;text-align: right;" name="">
+					  </div>
 					</div>
 				</div>
-				<div class="col-sm-12 row" style="margin-top: 100px">
-					<div class="col-sm-6">
-						
+				<div class="col-md-12" style="padding-top: 20px;">
+					<label>Untuk pembayaran</label><br>
+					<div style="border-bottom: 1px solid grey; width: 250px;margin-top: 30px;">
+						Pembayaran SPP Bulan {{ $history_spp->hs_bulan }}
 					</div>
-					<div class="col-sm-6 row d-flex">
-						<p style="width: 100%;text-align: center">ADMIN SEKOLAH</p>
-					</div>
+					<div style="border-bottom: 1px solid grey; width: 250px;margin-top: 30px;"></div>
 				</div>
-				<div class="col-sm-12 row" style="margin-top: 100px;">
-					<div class="col-sm-6">
-						
+			</div>
+			<div style="width: 70%;padding-left: 10px">
+				<div class="batik text-center">
+					<div style="width: 100%;padding: 20px;" class="row d-flex justify-content-around">
+						<div style="display: inline-block;">
+							<img style="width: 100px;display: inline-block;" src="{{ asset('storage/uploads/sekolah/original/'.$data->sekolah->s_logo.'') }}">
+						</div>
+						<div style="display: inline-block;">
+							<h4 style="color: #3b734c">YAYASAN DARUL ULUM GRESIK</h4>
+							<h3 style="color: #374a3d">{{ $data->sekolah->s_nama }}</h3>
+							<p>{{ $data->sekolah->s_alamat }}</p>
+						</div>
 					</div>
-					<div class="col-sm-6 row d-flex" style="padding-right: 120px;padding-left: 120px">
-						<p style="width: 100%;text-align: center;border-bottom: 1px solid black;"></p>
+					<div>
+						<table style="margin-left: 50px;">
+							<tr>
+								<th class="text-left">Telah Diterima Dari</th>
+								<td>: <input type="text" readonly="" value="{{ $siswa->sdd_nama }}" style="border:none;border-bottom: 1px solid grey;width: 250px" name=""></td>
+							</tr>
+							<tr>
+								<th class="text-left">Uang sejumlah</th>
+								<td>: <input  type="text" readonly="" value="{{$terbilang}} rupiah" style="border:none;border-bottom: 1px solid grey;width: 250px" name=""></td>
+							</tr>
+							<tr>
+								<th class="text-left">Untuk pembayaran</th>
+								<td>: <input type="text" readonly="" value="Pembayaran SPP Bulan {{ $history_spp->hs_bulan }}" style="border:none;border-bottom: 1px solid grey;width: 250px" name=""></td>
+							</tr>
+						</table>
+					</div>
+					<div class="col-md-12" style="padding-top: 20px;">
+						<div class="input-group " style="width: 100%;">
+						  Rp.
+						  <div id="trapezoid">
+						  	&nbsp; &nbsp; <input type="text" readonly="" value="{{number_format($history_spp->hs_jumlah,0,',','.') }}" style="border: none;margin-top: 10px;pointer-events: none;background-color: #e9ecef;width: 150px;text-align: right;" name="">
+						  </div>
+						</div>
+							<input type="text" readonly="" style="border:none;border-bottom: 1px solid grey;width: 150px;right: 50px;left: 180px;bottom: 40px;position: relative;" name="">
 					</div>
 				</div>
 			</div>
