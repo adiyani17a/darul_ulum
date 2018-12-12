@@ -915,7 +915,8 @@ class kas_masuk_controller extends Controller
 		$siswa  = $this->model->siswa_data_diri()->cari('sdd_id',$req->id);
 		$history_spp = $this->models->history_spp()->where('hs_id',$req->id)->whereRaw("hs_bulan = '$req->filter_bulan' and hs_tahun = '$req->filter_tahun'")->first();
 		if ($history_spp == null) {
-			return redirect()->back();
+			Session::flash('errors', '0');
+            return redirect()->back();
 		}
         $terbilang = $this->penyebut($history_spp->hs_jumlah);
 		return view('kas_masuk.spp.cetak',compact('data','id','history_spp','siswa','terbilang'));
