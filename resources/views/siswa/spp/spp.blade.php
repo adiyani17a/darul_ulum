@@ -24,13 +24,16 @@
         </div>
         <div class="card-body">
           <div class="row data">
-            @if(Session::has('errors'))
-              <div class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Gagal!</strong> Siswa belum membayar SPP
-              </div>
-            @endif  
+            
             <div class="col-md-8" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+
+              @if(Session::has('gagal'))
+              {{ dd(Session::all()) }}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <strong>Gagal!</strong> Siswa belum membayar SPP
+                </div>
+              @endif  
               <div class="alert alert-info alert-dismissible" title="DP sudah Lunas">
                 <strong>Petunjuk!</strong> <br>
                 1. Pilih filter group SPP awal dan akhir.<br>
