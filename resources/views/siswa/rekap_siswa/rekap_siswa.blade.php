@@ -77,6 +77,9 @@
                 @endforeach
               </select>
             </div>
+            <div class="col-md-1">
+              <button class="btn btn-primary bg-gradient-info text-light print_all"><i class="fa fa-print"></i></button>
+            </div>
           </div>
           <div class="table-responsive">
               <table id="table_data" class="table table-hover" cellspacing="0">
@@ -345,5 +348,18 @@ function ubah_status(id,param) {
       }
   });
 }
+
+$('.print_all').click(function(){
+
+  var sdd_sekolah =  $('.sdd_sekolah option:selected').val();
+  var sdd_kelas =  $('.sdd_kelas option:selected').val();
+  var sdd_nama_kelas =  $('.sdd_nama_kelas option:selected').val();
+  var sdd_tahun_ajaran =  $('.sdd_tahun_ajaran option:selected').val();
+  var sdd_group_spp =  $('.sdd_group_spp option:selected').val();
+  
+  window.open("{{ route('print_detail') }}"+'?sdd_sekolah='+sdd_sekolah+'&sdd_kelas='+sdd_kelas+'&sdd_nama_kelas='+sdd_nama_kelas+'&sdd_tahun_ajaran='+sdd_tahun_ajaran+'&sdd_group_spp='+sdd_group_spp) ;
+
+})
+
 </script>
 @endsection

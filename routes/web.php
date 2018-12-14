@@ -122,6 +122,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/penerimaan/cetak_rekap_siswa', 'penerimaan_controller@cetak_rekap_siswa');
         Route::post('/penerimaan/update_rekap_siswa', 'penerimaan_controller@update_rekap_siswa');
         Route::get('/penerimaan/ubah_status_rekap_siswa', 'penerimaan_controller@ubah_status_rekap_siswa');
+        Route::get('/penerimaan/print_detail', 'penerimaan_controller@print_detail')->name('print_detail');
         // ALUMNI
         Route::get('/penerimaan/alumni', 'penerimaan_controller@alumni');
         Route::get('/penerimaan/datatable_alumni', 'penerimaan_controller@datatable_alumni')->name('datatable_alumni');

@@ -706,6 +706,50 @@ class penerimaan_controller extends Controller
 		return view('siswa.rekap_siswa.cetak_rekap_siswa',compact('data','siswa','tanggal_lahir'));
 	}
 
+	public function print_detail(Request $req)
+	{
+
+		if ($req->sdd_sekolah != '') {
+          $sdd_sekolah = 'and sdd_sekolah = '."'$req->sdd_sekolah'";
+        }else{
+          $sdd_sekolah = '';
+        }
+
+        if ($req->sdd_kelas != '') {
+          $sdd_kelas = 'and sdd_kelas = '."'$req->sdd_kelas'";
+        }else{
+          $sdd_kelas = '';
+        }
+
+        if ($req->sdd_nama_kelas != '') {
+          $sdd_nama_kelas = 'and sdd_nama_kelas = '."'$req->sdd_nama_kelas'";
+        }else{
+          $sdd_nama_kelas = '';
+        }
+
+        if ($req->sdd_tahun_ajaran != '') {
+          $sdd_tahun_ajaran = 'and sdd_tahun_ajaran = '."'$req->sdd_tahun_ajaran'";
+        }else{
+          $sdd_tahun_ajaran = '';
+        }
+
+        if ($req->sdd_group_spp != '') {
+          $sdd_group_spp = 'and sdd_group_spp = '."'$req->sdd_group_spp'";
+        }else{
+          $sdd_group_spp = '';
+        }
+
+
+		if (Auth::user()->akses('REKAP SISWA','global')) {
+			$data = $this->models->siswa_data_diri()->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_sekolah $sdd_group_spp")->get();
+		}else{
+			$sekolah = Auth::User()->sekolah_id;
+			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_group_spp")->get();
+		}
+
+		return view('siswa.rekap_siswa.print_detail',compact('data','siswa','tanggal_lahir'));
+	}
+
 	public function edit_rekap_siswa(Request $req)
 	{
 		if (Auth::User()->akses('REKAP SISWA','ubah')) {
