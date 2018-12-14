@@ -265,7 +265,7 @@
 		      	</div>
 		      	<div class="col-sm-6 table-responsive" style="font-size: 10px">
 					<h5><b>LABA/RUGI</b></h5>
-					<div style="width: 100%;overflow-y: scroll;max-height: 40%;" >
+					<div style="width: 100%;overflow-y: scroll;max-height: 49%;" >
 						@foreach ($data['head'] as $z => $h)
 							@php
 								$total = [];
