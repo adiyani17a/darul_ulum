@@ -85,6 +85,11 @@ REPLACE INTO `d_akun` (`a_id`, `a_nama`, `a_sekolah`, `a_type_akun`, `a_akun_dka
 	('611403', 'BIAYA LAIN MTS DARUL ULUM GRESIK', 3, 'OCF', 'DEBET', 'Y', '61140', 'BIAYA LAIN', NULL, NULL, 0, '2018-11-01', 'DASD', 'DASD', '2018-11-20 12:03:22', '2018-11-20 12:03:22'),
 	('611404', 'BIAYA LAIN SMA DARUL ULUM GRESIK', 4, 'OCF', 'DEBET', 'Y', '61140', 'BIAYA LAIN', NULL, NULL, 0, '2018-11-01', 'DASD', 'DASD', '2018-11-20 12:03:22', '2018-11-20 12:03:22'),
 	('611405', 'BIAYA LAIN YAYASAN DARUL ULUM GRESIK', 5, 'OCF', 'DEBET', 'Y', '61140', 'BIAYA LAIN', NULL, NULL, 0, '2018-11-01', 'DASD', 'DASD', '2018-11-20 12:03:22', '2018-11-20 12:03:22'),
+	('611501', 'BIAYA GAJI KARYAWAN RA DARUL ULUM GRESIK', 1, 'OCF', 'DEBET', 'Y', '61150', 'BIAYA GAJI KARYAWAN', NULL, NULL, 0, '2018-12-01', 'DASD', 'DASD', '2018-12-14 20:28:56', '2018-12-14 20:28:56'),
+	('611502', 'BIAYA GAJI KARYAWAN MI DARUL ULUM GRESIK', 2, 'OCF', 'DEBET', 'Y', '61150', 'BIAYA GAJI KARYAWAN', NULL, NULL, 0, '2018-12-01', 'DASD', 'DASD', '2018-12-14 20:28:57', '2018-12-14 20:28:57'),
+	('611503', 'BIAYA GAJI KARYAWAN MTS DARUL ULUM GRESIK', 3, 'OCF', 'DEBET', 'Y', '61150', 'BIAYA GAJI KARYAWAN', NULL, NULL, 0, '2018-12-01', 'DASD', 'DASD', '2018-12-14 20:28:57', '2018-12-14 20:28:57'),
+	('611504', 'BIAYA GAJI KARYAWAN SMA DARUL ULUM GRESIK', 4, 'OCF', 'DEBET', 'Y', '61150', 'BIAYA GAJI KARYAWAN', NULL, NULL, 0, '2018-12-01', 'DASD', 'DASD', '2018-12-14 20:28:57', '2018-12-14 20:28:57'),
+	('611505', 'BIAYA GAJI KARYAWAN YAYASAN DARUL ULUM GRESIK', 5, 'OCF', 'DEBET', 'Y', '61150', 'BIAYA GAJI KARYAWAN', NULL, NULL, 0, '2018-12-01', 'DASD', 'DASD', '2018-12-14 20:28:57', '2018-12-14 20:28:57'),
 	('711101', 'DEPRESIASI ASET RA DARUL ULUM GRESIK', 1, 'OCF', 'DEBET', 'Y', '71110', 'DEPRESIASI ASET', NULL, NULL, 0, '2018-11-01', 'DASD', 'DASD', '2018-11-20 12:03:42', '2018-11-20 12:03:42'),
 	('711102', 'DEPRESIASI ASET MI DARUL ULUM GRESIK', 2, 'OCF', 'DEBET', 'Y', '71110', 'DEPRESIASI ASET', NULL, NULL, 0, '2018-11-01', 'DASD', 'DASD', '2018-11-20 12:03:42', '2018-11-20 12:03:42'),
 	('711103', 'DEPRESIASI ASET MTS DARUL ULUM GRESIK', 3, 'OCF', 'DEBET', 'Y', '71110', 'DEPRESIASI ASET', NULL, NULL, 0, '2018-11-01', 'DASD', 'DASD', '2018-11-20 12:03:42', '2018-11-20 12:03:42'),
@@ -515,10 +520,15 @@ CREATE TABLE IF NOT EXISTS `d_history_spp` (
 REPLACE INTO `d_history_spp` (`hs_id`, `hs_detail`, `hs_nota`, `hs_bulan`, `hs_tahun`, `hs_keterangan`, `hs_akun_kas`, `hs_akun`, `hs_jumlah`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
 	(3, 1, 'SPP-112018/2/00001', 'November', '2018', NULL, '11110', '41120', 300000, '2018-11-20 12:04:12', '2018-11-20 12:04:39', 'DASD', 'DASD'),
 	(3, 2, 'SPP-122018/2/00001', 'Desember', '2018', NULL, '11110', '41120', 300000, '2018-11-20 12:10:25', '2018-11-20 12:10:25', 'DASD', 'DASD'),
+	(3, 3, 'SPP-012018/2/00001', 'Januari', '2018', 'tes', '11110', '41120', 300000, '2018-12-14 20:26:00', '2018-12-14 20:26:00', 'DASD', 'DASD'),
 	(4, 1, 'SPP-112018/3/00002', 'November', '2018', NULL, '11110', '41120', 300000, '2018-11-20 12:04:16', '2018-11-20 12:04:36', 'DASD', 'DASD'),
 	(4, 2, 'SPP-122018/3/00002', 'Desember', '2018', NULL, '11110', '41120', 300000, '2018-11-20 12:10:31', '2018-11-20 12:10:31', 'DASD', 'DASD'),
+	(4, 3, 'SPP-012018/3/00002', 'Januari', '2018', NULL, '11110', '41120', 300000, '2018-12-14 20:26:09', '2018-12-14 20:26:09', 'DASD', 'DASD'),
 	(5, 1, 'SPP-112018/3/00003', 'November', '2018', NULL, '11110', '41120', 300000, '2018-11-20 12:04:20', '2018-11-20 12:04:42', 'DASD', 'DASD'),
-	(5, 2, 'SPP-122018/3/00003', 'Desember', '2018', NULL, '11110', '41120', 300000, '2018-11-20 12:10:35', '2018-11-20 12:10:35', 'DASD', 'DASD');
+	(5, 2, 'SPP-122018/3/00003', 'Desember', '2018', NULL, '11110', '41120', 300000, '2018-11-20 12:10:35', '2018-11-20 12:10:35', 'DASD', 'DASD'),
+	(5, 3, 'SPP-012018/3/00003', 'Januari', '2018', NULL, '11110', '41120', 300000, '2018-12-14 20:26:13', '2018-12-14 20:26:13', 'DASD', 'DASD'),
+	(6, 1, 'SPP-122018/2/00004', 'Desember', '2018', 'yrd', '11110', '41120', 300000, '2018-12-12 19:42:46', '2018-12-12 19:42:46', 'DASD', 'DASD'),
+	(6, 2, 'SPP-012018/2/00004', 'Januari', '2018', NULL, '11110', '41120', 300000, '2018-12-14 20:26:16', '2018-12-14 20:26:16', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_history_spp` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_jabatan
@@ -573,7 +583,13 @@ REPLACE INTO `d_jurnal` (`j_id`, `j_tahun`, `j_tanggal`, `j_keterangan`, `j_seko
 	(7, '2018', '2018-11-20', '', 3, 'PEMBAYARAN SPP', 'SPP-112018/3/00003', 'KAS MASUK', '2018-11-20 12:04:42', '2018-11-20 12:04:42', 'DASD', 'DASD'),
 	(8, '2018', '2018-11-20', '', 2, 'PEMBAYARAN SPP', 'SPP-122018/2/00001', 'KAS MASUK', '2018-11-20 12:10:25', '2018-11-20 12:10:25', 'DASD', 'DASD'),
 	(9, '2018', '2018-11-20', '', 3, 'PEMBAYARAN SPP', 'SPP-122018/3/00002', 'KAS MASUK', '2018-11-20 12:10:31', '2018-11-20 12:10:31', 'DASD', 'DASD'),
-	(10, '2018', '2018-11-20', '', 3, 'PEMBAYARAN SPP', 'SPP-122018/3/00003', 'KAS MASUK', '2018-11-20 12:10:35', '2018-11-20 12:10:35', 'DASD', 'DASD');
+	(10, '2018', '2018-11-20', '', 3, 'PEMBAYARAN SPP', 'SPP-122018/3/00003', 'KAS MASUK', '2018-11-20 12:10:35', '2018-11-20 12:10:35', 'DASD', 'DASD'),
+	(11, '2018', '2018-12-12', 'YRD', 2, 'PEMBAYARAN SPP', 'SPP-122018/2/00004', 'KAS MASUK', '2018-12-12 19:42:46', '2018-12-12 19:42:46', 'DASD', 'DASD'),
+	(12, '2018', '2018-12-14', 'BBM', 2, 'PETTY CASH', 'PC-122018/2/001', 'KAS KELUAR', '2018-12-14 19:39:58', '2018-12-14 19:39:58', 'DASD', 'DASD'),
+	(13, '2018', '2018-12-14', 'TES', 2, 'PEMBAYARAN SPP', 'SPP-012018/2/00001', 'KAS MASUK', '2018-12-14 20:26:00', '2018-12-14 20:26:00', 'DASD', 'DASD'),
+	(14, '2018', '2018-12-14', '', 3, 'PEMBAYARAN SPP', 'SPP-012018/3/00002', 'KAS MASUK', '2018-12-14 20:26:09', '2018-12-14 20:26:09', 'DASD', 'DASD'),
+	(15, '2018', '2018-12-14', '', 3, 'PEMBAYARAN SPP', 'SPP-012018/3/00003', 'KAS MASUK', '2018-12-14 20:26:13', '2018-12-14 20:26:13', 'DASD', 'DASD'),
+	(16, '2018', '2018-10-14', '', 2, 'PEMBAYARAN SPP', 'SPP-012018/2/00004', 'KAS MASUK', '2018-12-14 20:26:16', '2018-12-14 20:26:16', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_jurnal` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_jurnal_dt
@@ -602,7 +618,19 @@ REPLACE INTO `d_jurnal_dt` (`jd_id`, `jd_detail`, `jd_akun`, `jd_keterangan`, `j
 	(9, 1, '111103', 'KAS MTS DARUL ULUM GRESIK ', 'DEBET', 300000),
 	(9, 2, '411203', 'PENDAPATAN SPP MTS DARUL ULUM GRESIK ', 'KREDIT', 300000),
 	(10, 1, '111103', 'KAS MTS DARUL ULUM GRESIK ', 'DEBET', 300000),
-	(10, 2, '411203', 'PENDAPATAN SPP MTS DARUL ULUM GRESIK ', 'KREDIT', 300000);
+	(10, 2, '411203', 'PENDAPATAN SPP MTS DARUL ULUM GRESIK ', 'KREDIT', 300000),
+	(11, 1, '111102', 'KAS MI DARUL ULUM GRESIK YRD', 'DEBET', 300000),
+	(11, 2, '411202', 'PENDAPATAN SPP MI DARUL ULUM GRESIK YRD', 'KREDIT', 300000),
+	(12, 1, '111102', 'KAS MI DARUL ULUM GRESIK BBM', 'KREDIT', -50000),
+	(12, 2, '611402', 'BIAYA LAIN MI DARUL ULUM GRESIK BIAYA BBM', 'DEBET', 50000),
+	(13, 1, '111102', 'KAS MI DARUL ULUM GRESIK TES', 'DEBET', 300000),
+	(13, 2, '411202', 'PENDAPATAN SPP MI DARUL ULUM GRESIK TES', 'KREDIT', 300000),
+	(14, 1, '111103', 'KAS MTS DARUL ULUM GRESIK ', 'DEBET', 300000),
+	(14, 2, '411203', 'PENDAPATAN SPP MTS DARUL ULUM GRESIK ', 'KREDIT', 300000),
+	(15, 1, '111103', 'KAS MTS DARUL ULUM GRESIK ', 'DEBET', 300000),
+	(15, 2, '411203', 'PENDAPATAN SPP MTS DARUL ULUM GRESIK ', 'KREDIT', 300000),
+	(16, 1, '111102', 'KAS MI DARUL ULUM GRESIK ', 'DEBET', 300000),
+	(16, 2, '411202', 'PENDAPATAN SPP MI DARUL ULUM GRESIK ', 'KREDIT', 300000);
 /*!40000 ALTER TABLE `d_jurnal_dt` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_kas_masuk
@@ -686,6 +714,8 @@ CREATE TABLE IF NOT EXISTS `d_petty_cash` (
 
 -- Dumping data for table darul_ulum.d_petty_cash: ~0 rows (approximately)
 /*!40000 ALTER TABLE `d_petty_cash` DISABLE KEYS */;
+REPLACE INTO `d_petty_cash` (`pc_id`, `pc_nota`, `pc_akun_kas`, `pc_keterangan`, `pc_pemohon`, `pc_sekolah`, `pc_status`, `pc_tanggal`, `pc_total`, `pc_jenis`, `pc_ref`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
+	(1, 'PC-122018/2/001', '11110', 'BBM', 'SUPRI', 2, 'APPROVED', '2018-12-14', 50000, 'PETTY', NULL, '2018-12-14 19:37:36', '2018-12-14 19:39:58', 'DASD', 'DASD');
 /*!40000 ALTER TABLE `d_petty_cash` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_petty_cash_detail
@@ -704,6 +734,8 @@ CREATE TABLE IF NOT EXISTS `d_petty_cash_detail` (
 
 -- Dumping data for table darul_ulum.d_petty_cash_detail: ~0 rows (approximately)
 /*!40000 ALTER TABLE `d_petty_cash_detail` DISABLE KEYS */;
+REPLACE INTO `d_petty_cash_detail` (`pcd_id`, `pcd_detail`, `pcd_akun_biaya`, `pcd_keterangan`, `pcd_jumlah`, `pcd_qty`, `pcd_rpd_detail`, `pcd_barang`) VALUES
+	(1, 1, '61140', 'biaya bbm', 50000, 1, NULL, NULL);
 /*!40000 ALTER TABLE `d_petty_cash_detail` ENABLE KEYS */;
 
 -- Dumping structure for table darul_ulum.d_posisi
@@ -908,7 +940,7 @@ CREATE TABLE IF NOT EXISTS `d_siswa_data_diri` (
 -- Dumping data for table darul_ulum.d_siswa_data_diri: ~5 rows (approximately)
 /*!40000 ALTER TABLE `d_siswa_data_diri` DISABLE KEYS */;
 REPLACE INTO `d_siswa_data_diri` (`sdd_id`, `sdd_nomor_induk`, `sdd_kelas`, `sdd_nama_kelas`, `sdd_jurusan`, `sdd_nomor_induk_nasional`, `sdd_nama`, `sdd_panggilan`, `sdd_jenis_kelamin`, `sdd_golongan_darah`, `sdd_tempat_lahir`, `sdd_tanggal_lahir`, `sdd_tinggi`, `sdd_berat`, `sdd_agama`, `sdd_urutan_anak`, `sdd_saudara_kandung`, `sdd_saudara_tiri`, `sdd_saudara_angkat`, `sdd_bahasa`, `sdd_jenjang_sebelumnya`, `sdd_kewarganegaraan`, `sdd_image`, `sdd_sekolah`, `sdd_status`, `sdd_kartu_sosial`, `sdd_status_siswa`, `sdd_group_spp`, `sdd_tahun_ajaran`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
-	(3, '10000000000000000', '5', 1, '-', '23123123', 'ANYA', '345435435', 'L', 'B', '345454', '2018-10-29', 178, 45, 'ISLAM', 454, 45, 0, 0, 'HGGFH', 'TK', 'INDONESIA', 'data_siswa_3_.jpg', 2, 'Setujui', 'Released', 'ACTIVE', 2, '2018', '2018-12-04 19:49:33', '2018-12-04 19:49:33', 'DASD', 'DASD'),
+	(3, '10000000000000000', '6', 1, '-', '23123123', 'ANYA', '345435435', 'L', 'B', '345454', '2018-10-29', 178, 45, 'ISLAM', 454, 45, 0, 0, 'HGGFH', 'TK', 'INDONESIA', 'data_siswa_3_.jpg', 2, 'Setujui', 'Released', 'ACTIVE', 2, '2018', '2018-12-11 19:14:49', '2018-12-11 19:14:49', 'DASD', 'DASD'),
 	(4, '02323233', '5', 1, '-', '232323233', 'RINA PERMATASARI', 'RINA', 'P', 'B', 'SURABAYA', '2004-02-04', 165, 51, 'ISLAM', 2, 2, 0, 0, 'INDONESIA', 'SMP', 'INDONESIA', 'data_siswa_4_.jpg', 3, 'Setujui', 'RELEASED', 'ACTIVE', 2, '2018', '2018-12-04 20:11:53', '2018-12-04 20:11:53', 'DASD', 'DASD'),
 	(5, '0232323', '5', 1, '-', '02323232', 'TES', 'TES', 'P', 'TES', 'TES', '2018-11-05', 232, 2332, 'ISLAM', 1, 1, 0, 0, 'TES', 'SMP', 'TES', 'data_siswa_5_.jpg', 3, 'Setujui', 'Released', 'ACTIVE', 2, '2018', '2018-12-04 20:11:53', '2018-12-04 20:11:53', 'DASD', 'DASD'),
 	(6, '3223232', '4', 1, '-', 'FSDFSDFSDD', 'TESSDSDSDSDS', 'TESSDSDSDSDS', 'L', 'TESSDSDSDSDS', 'TESSDSDSDSDS', '2018-09-10', 12312312, 12312312, 'ISLAM', 12312312, 12312312, 0, 12312312, 'TESSDSDSDSDS', 'SMP', 'TESSDSDSDSDS', 'data_siswa_6_.jpg', 2, 'Setujui', 'RELEASED', 'ACTIVE', 1, '2018', '2018-12-04 19:49:34', '2018-12-04 19:49:34', 'DASD', 'DASD'),

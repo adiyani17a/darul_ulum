@@ -143,7 +143,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_masuk/hapus_pemasukan_kas', 'kas_masuk_controller@hapus_pemasukan_kas');
         Route::post('/kas_masuk/update_pemasukan_kas', 'kas_masuk_controller@update_pemasukan_kas');
         // PEMBAYARAN SPP
-        Route::get('/kas_masuk/spp', 'kas_masuk_controller@spp');
+        Route::get('/kas_masuk/spp', 'kas_masuk_controller@spp')->name('spp');
         Route::get('/kas_masuk/datatable_spp', 'kas_masuk_controller@datatable_spp')->name('datatable_spp');
         Route::post('/kas_masuk/simpan_spp', 'kas_masuk_controller@simpan_spp');
         Route::get('/kas_masuk/hapus_spp', 'kas_masuk_controller@hapus_spp');
@@ -200,6 +200,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_keluar/cetak_bukti_kas_keluar', 'kas_keluar_controller@cetak_bukti_kas_keluar');
     // LAPORAN
         Route::get('/laporan/register_jurnal', 'laporan_controller@register_jurnal');
+        Route::get('/laporan/laba_rugi', 'laporan_controller@laba_rugi');
+
 
 
 });

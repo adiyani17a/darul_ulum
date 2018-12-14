@@ -30,7 +30,7 @@ class akun extends Model
 
 	public function jurnal_dt()
 	{
-        return $this->hasMany('App\child\jurnal_dt','jd_id');
+        return $this->hasMany('App\child\jurnal_dt','jd_akun');
 	}
 
 	public function sekolah()

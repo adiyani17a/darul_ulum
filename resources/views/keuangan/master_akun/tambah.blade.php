@@ -14,7 +14,7 @@
               <tr>
                 <td>Kode Akun</td>
                 <td>
-                  <input type="text"  class="a_id1 form-control hanya_angka wajib tengah" name="a_id1">
+                  <input type="text"  class="a_id1 form-control hanya_angka wajib tengah" name="a_id1" maxlength="5">
                   <input type="hidden" class="id" name="id">
                 </td>
                 <td>

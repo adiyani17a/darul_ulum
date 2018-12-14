@@ -306,7 +306,7 @@
                   @if (Auth::user()->akses('PETTY CASH','aktif'))
                     <li class="nav-item" > <a href="{{ url('/kas_keluar/petty_cash/') }}" class="nav-link {{Request::is('kas_keluar/petty_cash') ? 'active' : '' || Request::is('kas_keluar/petty_cash/*') ? 'active' : '' }}">Petty Cash</a></li>
                   @endif
-                  @if (Auth::user()->akses('KONFIRMASI PENGELUARAN KAS','aktif'))
+                  @if (Auth::user()->akses('KONFIRMASI PENGELUARAN','aktif'))
                     <li class="nav-item" > <a href="{{ url('/kas_keluar/konfirmasi_pengeluaran_kas/') }}" class="nav-link {{Request::is('kas_keluar/konfirmasi_pengeluaran_kas') ? 'active' : '' || Request::is('kas_keluar/konfirmasi_pengeluaran_kas/*') ? 'active' : '' }}">Konfirmasi Pengeluaran Kas</a></li>
                   @endif
                   @if (Auth::user()->akses('BUKTI KAS KELUAR','aktif'))

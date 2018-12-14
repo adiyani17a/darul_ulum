@@ -24,6 +24,13 @@
         </div>
         
         <div class="card-body row">
+          @if(Session::has('gagal'))
+           <div class="alert alert-danger alert-dismissible" title="DP sudah Lunas">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>Gagal!</strong> <br>
+              SPP bulan ini belum terbayarkan.
+            </div>
+          @endif  
           @if (Session::has('message'))
             <div class="alert alert-success alert-dismissible" title="DP sudah Lunas">
               <button type="button" class="close" data-dismiss="alert">×</button>
