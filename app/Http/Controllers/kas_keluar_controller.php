@@ -53,7 +53,7 @@ class kas_keluar_controller extends Controller
 		                	}
 
 		                	if (Auth::user()->akses('RENCANA PEMBELIAN','hapus')) {
-		                		if ($data->rp_status != 'Selesai') {
+		                		if ($data->rp_status == 'Release') {
 		                			$c = '<button type="button" onclick="hapus(\''.$data->rp_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
 		                		}
 		                	}
@@ -64,9 +64,9 @@ class kas_keluar_controller extends Controller
 		                		}
 		                	}
 
-							if ($data->rp_status == 'Berjalan') {
-								$c1 = '<button type="button" onclick="cetak(\''.$data->rp_id.'\')" class="btn btn-info btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
-							}
+							// if ($data->rp_status == 'Berjalan') {
+							// 	$c1 = '<button type="button" onclick="cetak(\''.$data->rp_id.'\')" class="btn btn-info btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
+							// }
 
 		                    return $a.$b.$c.$c1.$c2.$d;
 		                })->addColumn('nota', function ($data) {
@@ -193,6 +193,14 @@ class kas_keluar_controller extends Controller
 		return Response::json(['status'=>1]);
 	}
 
+	public function cetak_rencana_pembelian(Request $req)
+	{
+		$data = $this->model->rencana_pembelian()->cari('rp_id',$req->id);
+		$sekolah = $this->model->sekolah()->all();
+		$barang = $this->model->barang()->all();
+		return view('kas_keluar.rencana_pembelian.cetak_rencana_pembelian',compact('data','sekolah','barang'));
+	}
+
 	public function detail_rencana_pembelian(Request $req)
 	{
 		$data = $this->model->rencana_pembelian()->cari('rp_id',$req->id);
@@ -236,11 +244,6 @@ class kas_keluar_controller extends Controller
 		                		}
 		                	}
 
-							if ($data->pc_status == 'APPROVED') {
-								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
-							}
-
-							
 
 		                    return $a.$b.$c.$c1.$d;
 		                })

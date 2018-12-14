@@ -267,5 +267,15 @@ function hapus(id) {
     ]
   });
 }
+
+function cetak(argument) {
+  var sdd_sekolah =  $('.sdd_sekolah option:selected').val();
+  var sdd_kelas =  $('.sdd_kelas option:selected').val();
+  var sdd_nama_kelas =  $('.sdd_nama_kelas option:selected').val();
+  var sdd_tahun_ajaran =  $('.sdd_tahun_ajaran option:selected').val();
+  var sdd_group_spp =  $('.sdd_group_spp option:selected').val();
+  
+  window.open("{{ route('print_detail') }}"+'?sdd_sekolah='+sdd_sekolah+'&sdd_kelas='+sdd_kelas+'&sdd_nama_kelas='+sdd_nama_kelas+'&sdd_tahun_ajaran='+sdd_tahun_ajaran+'&sdd_group_spp='+sdd_group_spp) ;
+}
 </script>
 @endsection
