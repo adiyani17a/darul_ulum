@@ -64,9 +64,7 @@ class kas_keluar_controller extends Controller
 		                		}
 		                	}
 
-							// if ($data->rp_status == 'Berjalan') {
-							// 	$c1 = '<button type="button" onclick="cetak(\''.$data->rp_id.'\')" class="btn btn-info btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
-							// }
+					
 
 		                    return $a.$b.$c.$c1.$c2.$d;
 		                })->addColumn('nota', function ($data) {
@@ -193,14 +191,6 @@ class kas_keluar_controller extends Controller
 		return Response::json(['status'=>1]);
 	}
 
-	public function cetak_rencana_pembelian(Request $req)
-	{
-		$data = $this->model->rencana_pembelian()->cari('rp_id',$req->id);
-		$sekolah = $this->model->sekolah()->all();
-		$barang = $this->model->barang()->all();
-		return view('kas_keluar.rencana_pembelian.cetak_rencana_pembelian',compact('data','sekolah','barang'));
-	}
-
 	public function detail_rencana_pembelian(Request $req)
 	{
 		$data = $this->model->rencana_pembelian()->cari('rp_id',$req->id);
@@ -244,6 +234,10 @@ class kas_keluar_controller extends Controller
 		                		}
 		                	}
 
+	                		if ($data->pc_status != 'RELEASED') {
+	                			$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-success btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
+	                		}
+
 
 		                    return $a.$b.$c.$c1.$d;
 		                })
@@ -267,6 +261,26 @@ class kas_keluar_controller extends Controller
 		                ->rawColumns(['aksi', 'none','sekolah','status','nota'])
 		                ->addIndexColumn()
 		                ->make(true);
+	}
+
+	public function cetak_pengeluaran_anggaran(Request $req)
+	{
+		$sekolah = $this->model->sekolah()->all();
+		$akun = $this->models->akun()->select('a_master_akun','a_master_nama')
+									 ->where('a_master_akun','like','5%')
+									 ->orWhere('a_master_akun','like','6%')
+									 ->orWhere('a_master_akun','like','7%')
+									 ->groupBy('a_master_akun','a_master_nama')
+									 ->get();
+
+		$akun_kas = $this->models->akun()->select('a_master_akun','a_master_nama')
+									 ->where('a_master_akun','like','11110%')
+									 ->groupBy('a_master_akun','a_master_nama')
+									 ->get();
+		$data     = $this->model->petty_cash()->cari('pc_nota',$req->id);
+
+		$rencana  = $this->model->rencana_pembelian()->cari('rp_kode',$data->pc_ref);
+		return view('kas_keluar.pengeluaran_anggaran.cetak_pengeluaran_anggaran',compact('sekolah','akun','akun_kas','data','rencana'));
 	}
 
 	public function create_pengeluaran_anggaran()
@@ -578,8 +592,8 @@ class kas_keluar_controller extends Controller
 		                		}
 		                	}
 
-							if ($data->pc_status == 'APPROVED') {
-								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
+							if ($data->pc_status != 'RELEASED') {
+								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-success btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
 							}
 
 							

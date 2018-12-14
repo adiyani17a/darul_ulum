@@ -198,5 +198,9 @@ function hapus(id) {
     ]
   });
 }
+
+function cetak(id) {
+  window.open("{{ route('cetak_pengeluaran_anggaran') }}"+'?id='+id) ;
+}
 </script>
 @endsection

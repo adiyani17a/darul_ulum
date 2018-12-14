@@ -111,36 +111,49 @@
 	<div class="container" id="printArea" style="margin-top: 100px;background-color: white;max-width: 1300px !important">
 	    <div class="row col-sm-12 body-jurnal" >
 			<div class="col-sm-12" style="margin-top: 20px" >
-				<h4 class="black text-center"><b>DAFTAR SISWA</b></h4>
+				<h4 class="black text-center"><b>PENGELUARAN ANGGARAN</b></h4>
 				<h5 class="black text-center">YAYASAN DARUL ULUM</h5>
-				@if (!Auth::user()->akses('LAPORAN REGISTER JURNAL','sekolah'))
-				<p class="black">{{ Auth::user()->sekolah->s_nama }}</p>
-				@endif 
 				<hr class="black" style="border-bottom: 2px solid black">
 			</div>
-			<div class="col-sm-12 table-responsive" style="font-size: 10px">
+			<div class="col-sm-12" style="font-size: 18px">
+				<table style="margin-bottom: 20px;">
+					<tr>
+						<td>Nota</td>
+						<td>: {{ $data->pc_nota }}</td>
+					</tr>
+					<tr>
+						<td>Tanggal</td>
+						<td>: {{ Jenssegers\Date\Date::parse($data->pc_tanggal)->format('d F Y') }}</td>
+					</tr>
+					<tr>
+						<td>Sekolah</td>
+						<td>: {{ $data->sekolah->s_nama }}</td>
+					</tr>
+					<tr>
+						<td>Pemohon</td>
+						<td>: {{ $data->pc_pemohon }}</td>
+					</tr>
+				</table>
 	        	<table class="table table-bordered overflow" >
 	        		<thead class="bg-secondary " style="color: white">
 	        			<th>No</th>
-	        			<th>Nama</th>
-	        			<th>KELAS</th>
-	        			<th>NIPD</th>
-	        			<th>JK</th>
-	        			<th>NISN</th>
-	        			<th>TEMPAT LAHIR</th>
-	        			<th>TANGGAL LAHIR</th>
+	        			<th>Nama Barang</th>
+	        			<th>Nominal</th>
+	        			<th>Qty</th>
+	        			<th>Keterangan</th>
 	        		</thead>
 	        		<tbody>
-	        			@foreach($data as $i => $d)
+	        			@foreach($data->petty_cash_detail as $i => $d)
 	        				<tr>
 	        					<td class="text-center">{{ $i+1 }}</td>
-	        					<td>{{ $d->sdd_nama }}</td>
-	        					<td class="text-center">{{ $d->sdd_kelas }}{{ $d->kelas->k_nama }}</td>
-	        					<td>{{ $d->sdd_nomor_induk }}</td>
-	        					<td class="text-center">{{ $d->sdd_jenis_kelamin }}</td>
-	        					<td>{{ $d->sdd_nomor_induk_nasional }}</td>
-	        					<td>{{ $d->sdd_tempat_lahir }}</td>
-	        					<td>{{ Jenssegers\Date\Date::parse($d->sdd_tanggal_lahir)->format('d F Y') }}</td>
+	        					@if ($data->pc_jenis == 'ANGGARAN')
+	        						<td>{{ $d->barang->b_nama }}</td>
+        						@else
+	        						<td>{{ $d->akun->a_master_nama}} - {{ $d->pcd_keterangan }}</td>
+	        					@endif
+	        					<td class="text-right">{{ number_format(abs($d->pcd_jumlah),2,',','.')}}</td>
+	        					<td>{{ $d->pcd_qty }}</td>
+	        					<td>{{ $d->pcd_keterangan }}</td>
 	        				</tr>
 	        			@endforeach
 	        			@if ($data == null)
@@ -150,6 +163,11 @@
 	        			@endif
 	        		</tbody>
 	        	</table>
+	        	<label>Harap membawa print out ini saat kembali.</label>
+	        	<div class="pull-right" style="margin-top: 100px;margin-bottom: 100px;">
+	        		<h6 style="margin-bottom: 100px;text-align: center;">ADMIN SEKOLAH</h6>
+	        		<p>___________________________</p>
+	        	</div>
 	      	</div>
 	    </div>
   	</div>
