@@ -265,7 +265,7 @@
 		      	</div>
 		      	<div class="col-sm-6 table-responsive" style="font-size: 10px">
 					<h5><b>LABA/RUGI</b></h5>
-					<div style="width: 100%;overflow-y: scroll;max-height: 32.8%;" >
+					<div style="width: 100%;overflow-y: scroll;max-height: 40%;" >
 						@foreach ($data['head'] as $z => $h)
 							@php
 								$total = [];
@@ -328,7 +328,7 @@
 				        									$data['total'] += $a1->jd_value;
 			        									}
 				        							}
-				        							
+
 				        							$data['persen'] = $data['total']/$total['pendapatan']*$total['persen'];
 				        						}
 				        						
