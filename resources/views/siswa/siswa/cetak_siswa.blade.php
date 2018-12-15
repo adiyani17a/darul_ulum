@@ -57,7 +57,7 @@
 							<tr>
 								<td width="10">3.</td>
 								<td>Jenis Kelamin</td>
-								<td>: {{ $siswa->sdd_panggilan }}</td>
+								<td>: {{ $siswa->sdd_jenis_kelamin }}</td>
 							</tr>
 							<tr>
 								<td width="10">4.</td>
