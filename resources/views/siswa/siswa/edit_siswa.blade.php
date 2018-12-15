@@ -284,6 +284,13 @@
                                   </tr>
                                 @endif
                               @endforeach
+                              @if($data->siswa_kesehatan == null)
+                                <tr class="tr_kesehatan">
+                                    <td><input value="" type="text" class="form-control sk_nama_penyakit" name="sk_nama_penyakit[]"></td>
+                                    <td><input value="" type="text" class="form-control sk_keterangan" name="sk_keterangan[]"></td>
+                                    <td align="center" class="append_button">-</td>
+                                  </tr>
+                              @endif
                           </tbody>
                         </table>
                       </td>
