@@ -177,6 +177,7 @@ class penerimaan_controller extends Controller
 	        	}
 	        }
 			$this->model->siswa_data_diri()->create($save);
+			$this->model->siswa_data_diri_copy()->create($save);
 
 	        // SAVE TEMPAT TINGGAL
 	        for ($i=0; $i < count($tes); $i++) { 
@@ -330,6 +331,7 @@ class penerimaan_controller extends Controller
 	        	}
 	        }
 			$this->model->siswa_data_diri()->update($save,'sdd_id',$id);
+			$this->model->siswa_data_diri_copy()->update($save,'sdd_id',$id);
 
 	        // SAVE TEMPAT TINGGAL
 			$save = [];
@@ -520,6 +522,7 @@ class penerimaan_controller extends Controller
 						'sdd_status' => $req->param
 					);
 			$this->model->siswa_data_diri()->update($save,'sdd_id',$req->id);
+			$this->model->siswa_data_diri_copy()->update($save,'sdd_id',$req->id);
 			DB::commit();
 			return Response()->json(['status'=>1,'pesan'=>'Data Berhasil Di '.$req->param]);
 		} catch (Exception $e) {
@@ -532,6 +535,7 @@ class penerimaan_controller extends Controller
 	{
 		$sekolah = $this->model->sekolah()->all();
 		$kelas   = $this->model->kelas()->all();
+		$group_spp   = $this->model->group_spp()->all();
 		$tingkat = [];
 		$additionalData['tahun_ajaran'] = [];
 		for ($i=0; $i < 12; $i++) { 
@@ -541,7 +545,7 @@ class penerimaan_controller extends Controller
 		for ($i=0; $i < 20; $i++) { 
 			array_push($additionalData['tahun_ajaran'], carbon::now()->subYear($i)->format('Y'));
 		}
-		return view('siswa.rekap_siswa.rekap_siswa',compact('sekolah','tingkat','additionalData','kelas'));
+		return view('siswa.rekap_siswa.rekap_siswa',compact('sekolah','tingkat','additionalData','kelas','group_spp'));
 	}
 
 	public function datatable_rekap_siswa(Request $req)
@@ -571,12 +575,18 @@ class penerimaan_controller extends Controller
           $sdd_tahun_ajaran = '';
         }
 
+        if ($req->sdd_group_spp != '') {
+          $sdd_group_spp = 'and sdd_group_spp = '."'$req->sdd_group_spp'";
+        }else{
+          $sdd_group_spp = '';
+        }
+
 
 		if (Auth::user()->akses('REKAP SISWA','global')) {
-			$data = $this->models->siswa_data_diri()->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_sekolah")->get();
+			$data = $this->models->siswa_data_diri()->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_sekolah $sdd_group_spp")->get();
 		}else{
 			$sekolah = Auth::User()->sekolah_id;
-			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran")->get();
+			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_group_spp")->get();
 		}
 
 
@@ -611,34 +621,53 @@ class penerimaan_controller extends Controller
 	                    })->addColumn('sekolah', function ($data) {
 		                    return $data->sekolah->s_nama;
 		                })->addColumn('data_siswa', function ($data) {
-		                    return '<table class="table">'.
+		                	if ($data->kelas != null) {
+			                    $nama_kelas = '<td> : '.$data->kelas->k_nama.'</td>';
+		                	}else{
+			                    $nama_kelas = '<td> : BELUM ADA KELAS</td>';
+		                	}
+
+		                	if ($data->group_spp != null) {
+			                    $group_spp = '<td> : '.$data->group_spp->gs_nama.'</td>';
+		                	}else{
+			                    $group_spp = '<td> : BELUM ADA GROUP SPP</td>';
+		                	}
+		                    return '<table class="table table-hover">'.
 			                    		'<tr>'.
-			                    			'<td>NAMA</td>'.
-			                    			'<td>'.$data->sdd_nama.'</td>'.
+			                    			'<td width="100px">NAMA</td>'.
+			                    			'<td> : '.$data->sdd_nama.'<input type="hidden" class="sdd_id" name="sdd_id" value='.$data->sdd_id.'></td>'.
 			                    		'</tr>'.
 			                    		'<tr>'.
-			                    			'<td>NISN</td>'.
-			                    			'<td>'.$data->sdd_nomor_induk_nasional.'</td>'.
+			                    			'<td width="100px">SEKOLAH</td>'.
+			                    			'<td> : '.$data->sekolah->s_nama.'</td>'.
 			                    		'</tr>'.
 			                    		'<tr>'.
-			                    			'<td>NIS</td>'.
-			                    			'<td>'.$data->sdd_nomor_induk.'</td>'.
+			                    			'<td width="100px">NISN</td>'.
+			                    			'<td> : '.$data->sdd_nomor_induk_nasional.'</td>'.
 			                    		'</tr>'.
 			                    		'<tr>'.
-			                    			'<td>TEMPAT LAHIR</td>'.
-			                    			'<td>'.$data->sdd_tempat_lahir.'</td>'.
+			                    			'<td width="100px">NIS</td>'.
+			                    			'<td> : '.$data->sdd_nomor_induk.'</td>'.
 			                    		'</tr>'.
 			                    		'<tr>'.
-			                    			'<td>TANGGAL LAHIR</td>'.
-			                    			'<td>'.carbon::parse($data->sdd_tanggal_lahir)->format('d M Y').'</td>'.
+			                    			'<td width="100px">TEMPAT LAHIR</td>'.
+			                    			'<td> : '.$data->sdd_tempat_lahir.'</td>'.
 			                    		'</tr>'.
 			                    		'<tr>'.
-			                    			'<td>NAMA IBU</td>'.
-			                    			'<td>'.$data->siswa_ibu[0]->si_nama.'</td>'.
+			                    			'<td width="100px">TANGGAL LAHIR</td>'.
+			                    			'<td> : '.carbon::parse($data->sdd_tanggal_lahir)->format('d M Y').'</td>'.
 			                    		'</tr>'.
 			                    		'<tr>'.
-			                    			'<td>NAMA AYAH</td>'.
-			                    			'<td>'.$data->siswa_ayah[0]->sa_nama.'</td>'.
+			                    			'<td width="100px">KELAS</td>'.
+			                    			'<td> : '.$data->sdd_kelas.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td width="100px">NAMA KELAS</td>'.
+			                    			$nama_kelas.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td width="100px">GROUP SPP</td>'.
+			                    			$group_spp.
 			                    		'</tr>'.
 			                    	'</table>';
 		                })->addColumn('status', function ($data) {
@@ -647,8 +676,17 @@ class penerimaan_controller extends Controller
 		                	}else{
 								return '<button type="button" class="btn btn-danger cursor" onclick="ubah_status(\''.$data->sdd_id.'\',\'ACTIVE\')">Tidak Aktif</button type="button">';
 		                	}
+		                })->addColumn('check', function ($data) {
+		                	return '<label class="label">
+					                    <input class="label__checkbox check" name="check" type="checkbox" />
+					                    <span class="label__text">
+					                      <span class="label__check">
+					                        <i class="fa fa-check icon"></i>
+					                      </span>
+					                    </span>
+					                  </label>';
 		                })
-		                ->rawColumns(['aksi','image','sekolah','data_siswa','status'])
+		                ->rawColumns(['aksi','image','sekolah','data_siswa','status','check'])
 		                ->addIndexColumn()
 		                ->make(true);
 	}
@@ -666,6 +704,50 @@ class penerimaan_controller extends Controller
 		$tanggal_lahir['ijazah']  = Date::parse($siswa->siswa_pendidikan[0]->sp_tanggal_ijazah)->format('d F Y');
 
 		return view('siswa.rekap_siswa.cetak_rekap_siswa',compact('data','siswa','tanggal_lahir'));
+	}
+
+	public function print_detail(Request $req)
+	{
+
+		if ($req->sdd_sekolah != '') {
+          $sdd_sekolah = 'and sdd_sekolah = '."'$req->sdd_sekolah'";
+        }else{
+          $sdd_sekolah = '';
+        }
+
+        if ($req->sdd_kelas != '') {
+          $sdd_kelas = 'and sdd_kelas = '."'$req->sdd_kelas'";
+        }else{
+          $sdd_kelas = '';
+        }
+
+        if ($req->sdd_nama_kelas != '') {
+          $sdd_nama_kelas = 'and sdd_nama_kelas = '."'$req->sdd_nama_kelas'";
+        }else{
+          $sdd_nama_kelas = '';
+        }
+
+        if ($req->sdd_tahun_ajaran != '') {
+          $sdd_tahun_ajaran = 'and sdd_tahun_ajaran = '."'$req->sdd_tahun_ajaran'";
+        }else{
+          $sdd_tahun_ajaran = '';
+        }
+
+        if ($req->sdd_group_spp != '') {
+          $sdd_group_spp = 'and sdd_group_spp = '."'$req->sdd_group_spp'";
+        }else{
+          $sdd_group_spp = '';
+        }
+
+
+		if (Auth::user()->akses('REKAP SISWA','global')) {
+			$data = $this->models->siswa_data_diri()->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_sekolah $sdd_group_spp")->get();
+		}else{
+			$sekolah = Auth::User()->sekolah_id;
+			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->whereRaw("sdd_status = 'Setujui' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_group_spp")->get();
+		}
+
+		return view('siswa.rekap_siswa.print_detail',compact('data','siswa','tanggal_lahir'));
 	}
 
 	public function edit_rekap_siswa(Request $req)
@@ -756,6 +838,7 @@ class penerimaan_controller extends Controller
 	        	}
 	        }
 			$this->model->siswa_data_diri()->update($save,'sdd_id',$id);
+			$this->model->siswa_data_diri_copy()->update($save,'sdd_id',$id);
 
 	        // SAVE TEMPAT TINGGAL
 			$save = [];
@@ -856,6 +939,7 @@ class penerimaan_controller extends Controller
 						'sdd_status_siswa' => $req->param
 					);
 			$this->model->siswa_data_diri()->update($save,'sdd_id',$req->id);
+			$this->model->siswa_data_diri_copy()->update($save,'sdd_id',$req->id);
 			DB::commit();
 			if ($req->param == 'ACTIVE') {
 				return Response()->json(['status'=>1,'pesan'=>'Berhasil Mengaktifkan siswa']); 
@@ -873,9 +957,197 @@ class penerimaan_controller extends Controller
 		DB::beginTransaction();
 		try {
 			$this->model->siswa_data_diri()->delete('sdd_id',$req->id);
+			$this->model->siswa_data_diri_copy()->delete('sdd_id',$req->id);
 			DB::commit();
 			return Response()->json(['status'=>1,'pesan'=>'Berhasil Menghapus Data']); 
 		} catch (Exception $e) {
+			DB::rollBack();
+			dd($e);
+		}
+	}
+
+	public function kelas()
+	{
+		$sekolah = $this->model->sekolah()->all();
+		$kelas   = $this->model->kelas()->all();
+		$group_spp   = $this->model->group_spp()->all();
+
+		$tingkat = [];
+		$additionalData['tahun_ajaran'] = [];
+		for ($i=0; $i < 12; $i++) { 
+			$tingkat[$i] = $i+1;
+		}
+
+		for ($i=0; $i < 20; $i++) { 
+			array_push($additionalData['tahun_ajaran'], carbon::now()->subYear($i)->format('Y'));
+		}
+		return view('siswa.kelas.kelas',compact('sekolah','tingkat','additionalData','kelas','group_spp'));
+	}
+
+	public function datatable_manajemen_siswa(Request $req)
+	{
+		// dd($req->all());
+		if ($req->sdd_sekolah != '') {
+          $sdd_sekolah = 'and sdd_sekolah = '."'$req->sdd_sekolah'";
+        }else{
+          $sdd_sekolah = '';
+        }
+
+        if ($req->sdd_kelas != '') {
+          $sdd_kelas = 'and sdd_kelas = '."'$req->sdd_kelas'";
+        }else{
+          $sdd_kelas = '';
+        }
+
+        if ($req->sdd_nama_kelas != '') {
+          $sdd_nama_kelas = 'and sdd_nama_kelas = '."'$req->sdd_nama_kelas'";
+        }else{
+          $sdd_nama_kelas = '';
+        }
+
+        if ($req->sdd_tahun_ajaran != '') {
+          $sdd_tahun_ajaran = 'and sdd_tahun_ajaran = '."'$req->sdd_tahun_ajaran'";
+        }else{
+          $sdd_tahun_ajaran = '';
+        }
+
+        if ($req->sdd_group_spp != '') {
+          $sdd_group_spp = 'and sdd_group_spp = '."'$req->sdd_group_spp'";
+        }else{
+          $sdd_group_spp = '';
+        }
+
+
+		if (Auth::user()->akses('REKAP SISWA','global')) {
+			$data = $this->models->siswa_data_diri()->whereRaw("sdd_status = 'Setujui' and sdd_status_siswa = 'ACTIVE' and sdd_kelas != 'LULUS' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_sekolah $sdd_group_spp")->get();
+		}else{
+			$sekolah = Auth::User()->sekolah_id;
+			$data = $this->models->siswa_data_diri()->where('sdd_sekolah',$sekolah)->whereRaw("sdd_status = 'Setujui' and sdd_status_siswa = 'ACTIVE' and sdd_kelas != 'LULUS' $sdd_kelas $sdd_nama_kelas $sdd_tahun_ajaran $sdd_group_spp")->get();
+		}
+
+
+
+		$data = collect($data);
+		return Datatables::of($data)
+		                ->addColumn('aksi', function ($data) {
+		                	$a = '<div class="btn-group">' ;
+		                	$b = '';
+		                	$c = '';
+		                	$c1 = '';
+		                	$c2 = '';
+		                	$d = '</div>';
+		                
+
+		                	if (Auth::user()->akses('REKAP SISWA','ubah')) {
+	                			$b = '<button type="button" onclick="edit(\''.$data->sdd_id.'\')" class="btn btn-info btn-lg" title="ubah"><label class="fa fa-pencil-alt"></label></button>';
+		                	}
+
+		                	if (Auth::user()->akses('REKAP SISWA','print')) {
+	                			$c1 = '<button type="button" onclick="cetak(\''.$data->sdd_id.'\')" class="btn btn-warning btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
+		                	}
+
+		                	if (Auth::user()->akses('REKAP SISWA','hapus')) {
+	                			$c2 = '<button type="button" onclick="hapus(\''.$data->sdd_id.'\')" class="btn btn-danger btn-lg" title="cetak"><label class="fa fa-trash"></label></button>';
+		                	}
+
+		                    return $a.$b.$c1.$c2.$c.$d;
+		                })->addColumn('image', function ($data) {
+	                          $thumb = asset('storage/uploads/data_siswa/original').'/'.$data->sdd_image;
+	                          return '<img style="width:150px;height:170px;border-radius:0" class="img-fluid img-thumbnail" src="'.$thumb.'">';
+	                    })->addColumn('sekolah', function ($data) {
+		                    return $data->sekolah->s_nama;
+		                })->addColumn('data_siswa', function ($data) {
+		                	if ($data->kelas != null) {
+			                    $nama_kelas = '<td> : '.$data->kelas->k_nama.'</td>';
+		                	}else{
+			                    $nama_kelas = '<td> : BELUM ADA KELAS</td>';
+		                	}
+
+		                	if ($data->group_spp != null) {
+			                    $group_spp = '<td> : '.$data->group_spp->gs_nama.'</td>';
+		                	}else{
+			                    $group_spp = '<td> : BELUM ADA GROUP SPP</td>';
+		                	}
+		                    return '<table class="table table-hover">'.
+			                    		'<tr>'.
+			                    			'<td width="100px">NAMA</td>'.
+			                    			'<td> : '.$data->sdd_nama.'<input type="hidden" class="sdd_id" name="sdd_id" value='.$data->sdd_id.'></td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td width="100px">SEKOLAH</td>'.
+			                    			'<td> : '.$data->sekolah->s_nama.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td width="100px">NISN</td>'.
+			                    			'<td> : '.$data->sdd_nomor_induk_nasional.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td width="100px">NIS</td>'.
+			                    			'<td> : '.$data->sdd_nomor_induk.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td width="100px">TEMPAT LAHIR</td>'.
+			                    			'<td> : '.$data->sdd_tempat_lahir.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td width="100px">TANGGAL LAHIR</td>'.
+			                    			'<td> : '.carbon::parse($data->sdd_tanggal_lahir)->format('d M Y').'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td width="100px">KELAS</td>'.
+			                    			'<td> : '.$data->sdd_kelas.'</td>'.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td width="100px">NAMA KELAS</td>'.
+			                    			$nama_kelas.
+			                    		'</tr>'.
+			                    		'<tr>'.
+			                    			'<td width="100px">GROUP SPP</td>'.
+			                    			$group_spp.
+			                    		'</tr>'.
+			                    	'</table>';
+		                })->addColumn('status', function ($data) {
+		                	if ($data->sdd_status_siswa == 'ACTIVE') {
+								return '<button type="button" class="btn btn-info cursor" onclick="ubah_status(\''.$data->sdd_id.'\',\'INACTIVE\')">Aktif</button type="button">';
+		                	}else{
+								return '<button type="button" class="btn btn-danger cursor" onclick="ubah_status(\''.$data->sdd_id.'\',\'ACTIVE\')">Tidak Aktif</button type="button">';
+		                	}
+		                })->addColumn('check', function ($data) {
+		                	return '<label class="label">
+					                    <input class="label__checkbox check" name="check" type="checkbox" />
+					                    <span class="label__text">
+					                      <span class="label__check">
+					                        <i class="fa fa-check icon"></i>
+					                      </span>
+					                    </span>
+					                  </label>';
+		                })
+		                ->rawColumns(['aksi','image','sekolah','data_siswa','status','check'])
+		                ->addIndexColumn()
+		                ->make(true);
+	}
+
+	public function update_kelas(Request $req)
+	{
+		DB::beginTransaction();
+		try {
+			$save = [];
+			if (!isset($req->sdd_id)) {
+				return Response()->json(['status'=>0,'pesan'=>'Tidak ada siswa yang diupdate, harap centang siswa']); 
+			}
+			for ($i=0; $i < count($req->sdd_id); $i++) { 
+				$save = array(
+								'sdd_kelas'			=>	$req->sdd_kelas,
+								'sdd_nama_kelas'	=>	$req->sdd_nama_kelas,
+								'sdd_group_spp'		=>	$req->sdd_group_spp
+							);
+				$this->model->siswa_data_diri()->update($save,'sdd_id',$req->sdd_id[$i]);
+			}
+
+			DB::commit();
+			return Response()->json(['status'=>1,'pesan'=>'Berhasil Mengupdate Data']); 
+		} catch (Exception $e) {
+
 			DB::rollBack();
 			dd($e);
 		}

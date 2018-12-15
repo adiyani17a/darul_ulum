@@ -32,6 +32,18 @@
                 </td>
               </tr>
               <tr>
+                <td>NSS</td>
+                <td>
+                  <input type="text" name="s_nss" placeholder="NSS" class="s_nss form-control wajib form-control-sm">
+                </td>
+              </tr>
+              <tr>
+                <td>NPSN</td>
+                <td>
+                  <input type="text" name="s_npsn" placeholder="NPSN" class="s_npsn form-control wajib form-control-sm">
+                </td>
+              </tr>
+              <tr>
                 <td>Logo</td>
                 <td>
                   <div class="file-upload">

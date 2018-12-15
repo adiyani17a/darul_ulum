@@ -15,7 +15,6 @@ Auth::routes();
 
 
 Route::group(['middleware' => 'auth'], function () {
-
     // Route::get('/_debugbar/assets/javascript', [
     //     'as' => 'debugbar-js',
     //     'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@js'
@@ -123,12 +122,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/penerimaan/cetak_rekap_siswa', 'penerimaan_controller@cetak_rekap_siswa');
         Route::post('/penerimaan/update_rekap_siswa', 'penerimaan_controller@update_rekap_siswa');
         Route::get('/penerimaan/ubah_status_rekap_siswa', 'penerimaan_controller@ubah_status_rekap_siswa');
+        Route::get('/penerimaan/print_detail', 'penerimaan_controller@print_detail')->name('print_detail');
         // ALUMNI
         Route::get('/penerimaan/alumni', 'penerimaan_controller@alumni');
         Route::get('/penerimaan/datatable_alumni', 'penerimaan_controller@datatable_alumni')->name('datatable_alumni');
         Route::post('/penerimaan/simpan_alumni', 'penerimaan_controller@simpan_alumni');
         Route::get('/penerimaan/hapus_alumni', 'penerimaan_controller@hapus_alumni');
         Route::get('/penerimaan/edit_alumni', 'penerimaan_controller@edit_alumni');
+        // UPDATE KELAS
+        Route::get('/penerimaan/kelas', 'penerimaan_controller@kelas');
+        Route::post('/penerimaan/update_kelas', 'penerimaan_controller@update_kelas');
+        Route::get('/penerimaan/datatable_manajemen_siswa', 'penerimaan_controller@datatable_manajemen_siswa')->name('datatable_manajemen_siswa');
     // KAS MASUK
         // DANA BOS
         Route::get('/kas_masuk/pemasukan_kas', 'kas_masuk_controller@pemasukan_kas');
@@ -140,7 +144,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_masuk/hapus_pemasukan_kas', 'kas_masuk_controller@hapus_pemasukan_kas');
         Route::post('/kas_masuk/update_pemasukan_kas', 'kas_masuk_controller@update_pemasukan_kas');
         // PEMBAYARAN SPP
-        Route::get('/kas_masuk/spp', 'kas_masuk_controller@spp');
+        Route::get('/kas_masuk/spp', 'kas_masuk_controller@spp')->name('spp');
         Route::get('/kas_masuk/datatable_spp', 'kas_masuk_controller@datatable_spp')->name('datatable_spp');
         Route::post('/kas_masuk/simpan_spp', 'kas_masuk_controller@simpan_spp');
         Route::get('/kas_masuk/hapus_spp', 'kas_masuk_controller@hapus_spp');
@@ -169,6 +173,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_keluar/edit_pengeluaran_anggaran', 'kas_keluar_controller@edit_pengeluaran_anggaran');
         Route::post('/kas_keluar/update_pengeluaran_anggaran', 'kas_keluar_controller@update_pengeluaran_anggaran');
         Route::get('/kas_keluar/hapus_pengeluaran_anggaran', 'kas_keluar_controller@hapus_pengeluaran_anggaran');
+        Route::get('/kas_keluar/cetak_pengeluaran_anggaran', 'kas_keluar_controller@cetak_pengeluaran_anggaran')->name('cetak_pengeluaran_anggaran');
 
         // PETTY CASH
         Route::get('/kas_keluar/petty_cash', 'kas_keluar_controller@petty_cash');
@@ -197,6 +202,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kas_keluar/cetak_bukti_kas_keluar', 'kas_keluar_controller@cetak_bukti_kas_keluar');
     // LAPORAN
         Route::get('/laporan/register_jurnal', 'laporan_controller@register_jurnal');
+        Route::get('/laporan/laba_rugi', 'laporan_controller@laba_rugi');
+
 
 
 });

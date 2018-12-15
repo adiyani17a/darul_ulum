@@ -135,7 +135,7 @@ function hapus(id) {
     close: false,
     timeout: 20000, 
     color: 'dark',
-    icon: 'fas fa-question-circle',
+    icon: 'fa fa-question-circle',
     title: 'Hapus Data!',
     message: 'Apakah Anda Yakin ?!',
     position: 'center',
@@ -197,6 +197,10 @@ function hapus(id) {
       ]
     ]
   });
+}
+
+function cetak(id) {
+  window.open("{{ route('cetak_pengeluaran_anggaran') }}"+'?id='+id) ;
 }
 </script>
 @endsection

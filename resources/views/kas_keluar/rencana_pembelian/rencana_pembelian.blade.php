@@ -267,5 +267,7 @@ function hapus(id) {
     ]
   });
 }
+
+
 </script>
 @endsection

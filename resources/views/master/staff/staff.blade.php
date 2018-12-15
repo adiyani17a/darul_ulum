@@ -152,81 +152,81 @@ $('.simpan').click(function(){
   var validator = [];
   var validator_name = [];
 
-      $('.wajib').each(function(){
-        if ($(this).val() == '') {
-          $(this).addClass('error');
-          validator.push(0);
-        }
-      })
+  $('.wajib').each(function(){
+    if ($(this).val() == '') {
+      $(this).addClass('error');
+      validator.push(0);
+    }
+  })
 
-      $('.option').each(function(){
-        if ($(this).val() == '') {
-          var par =$(this).parents('td');
-          par.find('span').eq(0).addClass('error');
-          validator.push(0);
-        }
-      })
+  $('.option').each(function(){
+    if ($(this).val() == '') {
+      var par =$(this).parents('td');
+      par.find('span').eq(0).addClass('error');
+      validator.push(0);
+    }
+  })
 
-      var index = validator.indexOf(0);
-      if (index != -1) {
-        iziToast.warning({
-            icon: 'fa fa-times',
-            title: 'Terjadi Kesalahan',
-            message: 'Semua Inputan Harus Diisi',
-        });
-        return false;
+  var index = validator.indexOf(0);
+  if (index != -1) {
+    iziToast.warning({
+        icon: 'fa fa-times',
+        title: 'Terjadi Kesalahan',
+        message: 'Semua Inputan Harus Diisi',
+    });
+    return false;
+  }
+
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
-
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-      });
+  });
 
 
-      var formdata = new FormData();  
-      formdata.append( 'files', $('#chooseFile')[0].files[0]);
-      $.ajax({
-         type: "POST",
-         url: baseUrl +'/master/simpan_staff?'+$('.tabel_modal :input').serialize(),
-         data: formdata,
-         dataType:'json',
-         processData: false,
-         contentType: false,
-         success: function(data){
-            if (data.status == 0) {
-              iziToast.warning({
-                  icon: 'fa fa-times',
-                  title: 'Terjadi Kesalahan',
-                  message: data.pesan,
-              });
-            }else if(data.status == 1){
-              iziToast.success({
-                  icon: 'fa fa-save',
-                  title: 'Berhasil',
-                  message: data.pesan,
-              });
-              $('#tambah-akun').modal('hide');
-            }else{
-              iziToast.success({
-                  icon: 'fa fa-pencil-alt',
-                  title: 'Berhasil',
-                  message: data.pesan,
-              });
-              $('#tambah-akun').modal('hide');
-            }
-
-            var table = $('#table_data').DataTable();
-            table.ajax.reload();
-         },
-         error: function(){
+  var formdata = new FormData();  
+  formdata.append( 'files', $('#chooseFile')[0].files[0]);
+  $.ajax({
+     type: "POST",
+     url: baseUrl +'/master/simpan_staff?'+$('.tabel_modal :input').serialize(),
+     data: formdata,
+     dataType:'json',
+     processData: false,
+     contentType: false,
+     success: function(data){
+        if (data.status == 0) {
           iziToast.warning({
-            icon: 'fa fa-times',
-            message: 'Terjadi Kesalahan!',
+              icon: 'fa fa-times',
+              title: 'Terjadi Kesalahan',
+              message: data.pesan,
           });
-         },
-         async: false
-       });
+        }else if(data.status == 1){
+          iziToast.success({
+              icon: 'fa fa-save',
+              title: 'Berhasil',
+              message: data.pesan,
+          });
+          $('#tambah-akun').modal('hide');
+        }else{
+          iziToast.success({
+              icon: 'fa fa-pencil-alt',
+              title: 'Berhasil',
+              message: data.pesan,
+          });
+          $('#tambah-akun').modal('hide');
+        }
+
+        var table = $('#table_data').DataTable();
+        table.ajax.reload();
+     },
+     error: function(){
+      iziToast.warning({
+        icon: 'fa fa-times',
+        message: 'Terjadi Kesalahan!',
+      });
+     },
+     async: false
+   });
   });
 
   function edit(id) {
@@ -246,6 +246,8 @@ $('.simpan').click(function(){
           $('.st_telpon').val(res.data.st_telpon);
           $('.st_sekolah').val(res.data.st_sekolah).trigger('change');
           $('.st_posisi').val(res.data.st_posisi).trigger('change');
+          $('.st_pendidikan').val(res.data.st_pendidikan).trigger('change');
+          $('.st_nama_sekolah').val(res.data.st_nama_sekolah);
           $('#output').attr("src", '{{ asset('storage/uploads/staff/original') }}'+'/'+res.data.st_image+'?'+Math.random())
           $('.file-upload').addClass('active');
           $("#noFile").text(res.data.st_image); 

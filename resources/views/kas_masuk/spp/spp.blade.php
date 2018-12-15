@@ -24,6 +24,13 @@
         </div>
         
         <div class="card-body row">
+          @if(Session::has('gagal'))
+           <div class="alert alert-danger alert-dismissible" title="DP sudah Lunas">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>Gagal!</strong> <br>
+              SPP bulan ini belum terbayarkan.
+            </div>
+          @endif  
           @if (Session::has('message'))
             <div class="alert alert-success alert-dismissible" title="DP sudah Lunas">
               <button type="button" class="close" data-dismiss="alert">×</button>
@@ -65,6 +72,15 @@
                 <option value="">Semua</option>
                 @foreach ($additionalData['tahun_ajaran'] as $i => $th)
                   <option value="{{ $additionalData['tahun_ajaran'][$i] }}">{{ $additionalData['tahun_ajaran'][$i] }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+              <label>Group SPP</label>
+              <select class="form-control sdd_group_spp" name="sdd_group_spp" onchange="rubah()">
+                <option value="">Semua</option>
+                @foreach ($group_spp as $i => $gs)
+                  <option value="{{ $gs->gs_id }}">{{ $gs->gs_nama }}</option>
                 @endforeach
               </select>
             </div>
@@ -131,6 +147,7 @@ $(document).ready(function(){
                   sdd_sekolah: function() { return $('.sdd_sekolah option:selected').val() },
                   sdd_kelas: function() { return $('.sdd_kelas option:selected').val() },
                   sdd_nama_kelas: function() { return $('.sdd_nama_kelas option:selected').val() },
+                  sdd_group_spp: function() { return $('.sdd_group_spp option:selected').val() },
                   sdd_tahun_ajaran: function() { return $('.sdd_tahun_ajaran option:selected').val() }},
             error:function(){
               var table = $('#table_data').DataTable();

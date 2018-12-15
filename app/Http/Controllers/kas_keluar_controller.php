@@ -53,7 +53,7 @@ class kas_keluar_controller extends Controller
 		                	}
 
 		                	if (Auth::user()->akses('RENCANA PEMBELIAN','hapus')) {
-		                		if ($data->rp_status != 'Selesai') {
+		                		if ($data->rp_status == 'Release') {
 		                			$c = '<button type="button" onclick="hapus(\''.$data->rp_id.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-trash"></label></button>';
 		                		}
 		                	}
@@ -64,9 +64,7 @@ class kas_keluar_controller extends Controller
 		                		}
 		                	}
 
-							if ($data->rp_status == 'Berjalan') {
-								$c1 = '<button type="button" onclick="cetak(\''.$data->rp_id.'\')" class="btn btn-info btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
-							}
+					
 
 		                    return $a.$b.$c.$c1.$c2.$d;
 		                })->addColumn('nota', function ($data) {
@@ -236,11 +234,10 @@ class kas_keluar_controller extends Controller
 		                		}
 		                	}
 
-							if ($data->pc_status == 'APPROVED') {
-								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
-							}
+	                		if ($data->pc_status != 'RELEASED') {
+	                			$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-success btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
+	                		}
 
-							
 
 		                    return $a.$b.$c.$c1.$d;
 		                })
@@ -264,6 +261,26 @@ class kas_keluar_controller extends Controller
 		                ->rawColumns(['aksi', 'none','sekolah','status','nota'])
 		                ->addIndexColumn()
 		                ->make(true);
+	}
+
+	public function cetak_pengeluaran_anggaran(Request $req)
+	{
+		$sekolah = $this->model->sekolah()->all();
+		$akun = $this->models->akun()->select('a_master_akun','a_master_nama')
+									 ->where('a_master_akun','like','5%')
+									 ->orWhere('a_master_akun','like','6%')
+									 ->orWhere('a_master_akun','like','7%')
+									 ->groupBy('a_master_akun','a_master_nama')
+									 ->get();
+
+		$akun_kas = $this->models->akun()->select('a_master_akun','a_master_nama')
+									 ->where('a_master_akun','like','11110%')
+									 ->groupBy('a_master_akun','a_master_nama')
+									 ->get();
+		$data     = $this->model->petty_cash()->cari('pc_nota',$req->id);
+
+		$rencana  = $this->model->rencana_pembelian()->cari('rp_kode',$data->pc_ref);
+		return view('kas_keluar.pengeluaran_anggaran.cetak_pengeluaran_anggaran',compact('sekolah','akun','akun_kas','data','rencana'));
 	}
 
 	public function create_pengeluaran_anggaran()
@@ -575,8 +592,8 @@ class kas_keluar_controller extends Controller
 		                		}
 		                	}
 
-							if ($data->pc_status == 'APPROVED') {
-								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-danger btn-lg" title="hapus"><label class="fa fa-print"></label></button>';
+							if ($data->pc_status != 'RELEASED') {
+								$c1 = '<button type="button" onclick="cetak(\''.$data->pc_nota.'\')" class="btn btn-success btn-lg" title="cetak"><label class="fa fa-print"></label></button>';
 							}
 
 							
@@ -796,6 +813,7 @@ class kas_keluar_controller extends Controller
 								   'j_keterangan'	=> strtoupper($cari->pc_keterangan),
 								   'j_sekolah'		=> $cari->pc_sekolah,
 								   'j_ref'			=> $cari->pc_nota,
+								   'j_type'			=> 'KAS KELUAR',
 								   'j_detail'		=> 'ANGGARAN',
 								   'created_by'		=> Auth::user()->name,
 								   'updated_by'		=> Auth::user()->name,
@@ -897,6 +915,7 @@ class kas_keluar_controller extends Controller
 								   'j_keterangan'	=> strtoupper($cari->pc_keterangan),
 								   'j_sekolah'		=> $cari->pc_sekolah,
 								   'j_ref'			=> $cari->pc_nota,
+								   'j_type'			=> 'KAS KELUAR',
 								   'j_detail'		=> 'PETTY CASH',
 								   'created_by'		=> Auth::user()->name,
 								   'updated_by'		=> Auth::user()->name,
@@ -1192,6 +1211,7 @@ class kas_keluar_controller extends Controller
 							   'j_keterangan'	=> strtoupper($req->pc_keterangan),
 							   'j_sekolah'		=> $req->pc_sekolah,
 							   'j_ref'			=> $req->pc_nota,
+							   'j_type'			=> 'KAS KELUAR',
 							   'j_detail'		=> 'BUKTI KAS KELUAR',
 							   'created_by'		=> Auth::user()->name,
 							   'updated_by'		=> Auth::user()->name,

@@ -98,10 +98,13 @@ class master_controller extends Controller
 
         $save = array(
                    's_id'		=> $id,
-				   's_nama'		=> strtoupper($req->s_nama),
-				   's_alamat'	=> strtoupper($req->s_alamat),
-				   's_telpon'	=> $req->s_telpon,
-				   's_logo'		=> $file_name,
+        				   's_nama'		=> strtoupper($req->s_nama),
+                   's_alamat' => strtoupper($req->s_alamat),
+                   's_nss'    => strtoupper($req->s_nss),
+                   's_npsn'   => strtoupper($req->s_npsn),
+        				   's_alamat'	=> strtoupper($req->s_alamat),
+        				   's_telpon'	=> $req->s_telpon,
+        				   's_logo'		=> $file_name,
                  );
         $this->model->sekolah()->create($save);
         DB::commit();
@@ -141,10 +144,12 @@ class master_controller extends Controller
           return Response::json(['status'=>0,'pesan'=>'Username Telah Digunakan']);
         }
         $save = array(
-				   's_nama'		=> strtoupper($req->s_nama),
-				   's_alamat'	=> strtoupper($req->s_alamat),
-				   's_telpon'	=> $req->s_telpon,
-				   's_logo'		=> $file_name,
+        				   's_nama'		=> strtoupper($req->s_nama),
+        				   's_alamat'	=> strtoupper($req->s_alamat),
+        				   's_telpon'	=> $req->s_telpon,
+        				   's_logo'		=> $file_name,
+                   's_nss'    => strtoupper($req->s_nss),
+                   's_npsn'   => strtoupper($req->s_npsn),
                  );
 
         $this->model->sekolah()->update($save,'s_id',$req->id);
@@ -211,7 +216,7 @@ class master_controller extends Controller
         $save = array(
                      'p_id'     => $id,
                      'p_nama'   => strtoupper($req->p_nama),
-                     'p_gaji'   => filter_var($req->p_gaji,FILTER_SANITIZE_NUMBER_INT),
+                     'p_gaji'   => 0,
                     );
         $this->model->posisi()->create($save);
         DB::commit();
@@ -221,7 +226,7 @@ class master_controller extends Controller
         $save = array(
                      'p_id'     => $id,
                      'p_nama'   => strtoupper($req->p_nama),
-                     'p_gaji'   => filter_var($req->p_gaji,FILTER_SANITIZE_NUMBER_INT),
+                     'p_gaji'   => 0,
                     );
         $this->model->posisi()->update($save,'p_id',$id);
         DB::commit();
@@ -318,6 +323,8 @@ class master_controller extends Controller
                    'st_image'           => $file_name,
                    'st_posisi'          => $req->st_posisi,
                    'st_sekolah'         => $req->st_sekolah,
+                   'st_pendidikan'      => $req->st_pendidikan,
+                   'st_nama_sekolah'    => $req->st_nama_sekolah,
                    'created_by'         => Auth::user()->name,
                    'updated_by'         => Auth::user()->name,
                  );
@@ -361,6 +368,8 @@ class master_controller extends Controller
                    'st_image'           => $file_name,
                    'st_posisi'          => $req->st_posisi,
                    'st_sekolah'         => $req->st_sekolah,
+                   'st_pendidikan'      => $req->st_pendidikan,
+                   'st_nama_sekolah'    => $req->st_nama_sekolah,
                    'updated_by'         => Auth::user()->name,
                  );
 

@@ -104,7 +104,6 @@
 			<div class="col-md-4 nopad text-light">
 				<ul class="nav-ul">
 					<li><i class="fa fa-print" onclick="print()"></i></li>
-					<li><i class="fa fa-sliders" onclick="openModal()"></i></li>
 				</ul>
 			</div>
 		</div>
@@ -112,74 +111,63 @@
 	<div class="container" id="printArea" style="margin-top: 100px;background-color: white;max-width: 1300px !important">
 	    <div class="row col-sm-12 body-jurnal" >
 			<div class="col-sm-12" style="margin-top: 20px" >
-				<h2 class="black"><b>REGISTER JURNAL</b></h2>
-				<h5 class="black">YAYASAN DARUL ULUM</h5>
-				@if (!Auth::user()->akses('LAPORAN REGISTER JURNAL','sekolah'))
-				<p class="black">{{ Auth::user()->sekolah->s_nama }}</p>
-				@endif 
+				<h4 class="black text-center"><b>PENGELUARAN ANGGARAN</b></h4>
+				<h5 class="black text-center">YAYASAN DARUL ULUM</h5>
 				<hr class="black" style="border-bottom: 2px solid black">
 			</div>
-			<div class="col-sm-12 table-responsive" style="font-size: 10px">
-				<label>Jurnal : {{ $j_type }}</label><br>
-				<label>Transaksi : {{ carbon\carbon::parse($min)->format('d F Y') }} - {{ carbon\carbon::parse($max)->format('d F Y') }}</label>
+			<div class="col-sm-12" style="font-size: 18px">
+				<table style="margin-bottom: 20px;">
+					<tr>
+						<td>Nota</td>
+						<td>: {{ $data->pc_nota }}</td>
+					</tr>
+					<tr>
+						<td>Tanggal</td>
+						<td>: {{ Jenssegers\Date\Date::parse($data->pc_tanggal)->format('d F Y') }}</td>
+					</tr>
+					<tr>
+						<td>Sekolah</td>
+						<td>: {{ $data->sekolah->s_nama }}</td>
+					</tr>
+					<tr>
+						<td>Pemohon</td>
+						<td>: {{ $data->pc_pemohon }}</td>
+					</tr>
+				</table>
 	        	<table class="table table-bordered overflow" >
 	        		<thead class="bg-secondary " style="color: white">
-	        			<th>Tanggal</th>
-	        			<th>No.Bukti</th>
-	        			<th>No.Perkiraan</th>
-	        			<th>Nama Perkiraan</th>
-	        			<th>Uraian</th>
-	        			<th>Debet</th>
-	        			<th>Kredit</th>
+	        			<th>No</th>
+	        			<th>Nama Barang</th>
+	        			<th>Nominal</th>
+	        			<th>Qty</th>
+	        			<th>Keterangan</th>
 	        		</thead>
 	        		<tbody>
-	        			@php
-	        				$dk = [];
-        					$dk['total_d'] = 0;
-        					$dk['total_k'] = 0;
-        				@endphp
-	        			@foreach($data as $i => $d)
-	        				@php
-	        					$dk['k'] = 0;
-	        					$dk['d'] = 0;
-	        				@endphp
-	        				@foreach($d->jurnal_dt as $i => $dt)
-		        				<tr >
-		        					<td style="font-size: 12px !important">{{ $d->j_tanggal }}</td>
-		        					<td style="font-size: 12px !important">{{ $d->j_ref }}</td>
-		        					<td style="font-size: 12px !important">{{ $dt->jd_akun }}</td>
-		        					<td style="font-size: 12px !important">{{ $dt->akun->a_nama }}</td>
-		        					<td style="font-size: 12px !important">{{ $dt->jd_keterangan }}</td>
-		        					@if ($dt->jd_statusdk == 'DEBET')
-		        					<td align="right" style="font-size: 12px !important">{{ number_format(abs($dt->jd_value),2,',','.') }}</td>
-		        					<td align="right" style="font-size: 12px !important">0</td>
-		        					@php
-			        				$dk['d'] += abs($dt->jd_value);
-			        				$dk['total_d'] += abs($dt->jd_value);
-			        				@endphp
-		        					@else
-		        					<td align="right" style="font-size: 12px !important">0</td>
-		        					<td align="right" style="font-size: 12px !important">{{ number_format(abs($dt->jd_value),2,',','.') }}</td>
-		        					@php
-			        				$dk['k'] += abs($dt->jd_value);
-			        				$dk['total_k'] += abs($dt->jd_value);
-			        				@endphp
-		        					@endif
-		        				</tr>
-	        				@endforeach
-	        				<tr style="background: #9999;font-size: 12px !important">
-		        				<th colspan="5"></th>
-		        				<td align="right" style="font-size: 12px !important">{{ number_format($dk['d'] ,2,',','.')}} </td>
-		        				<td align="right" style="font-size: 12px !important">{{ number_format($dk['k'] ,2,',','.')}}</td>
-		        			</tr>
+	        			@foreach($data->petty_cash_detail as $i => $d)
+	        				<tr>
+	        					<td class="text-center">{{ $i+1 }}</td>
+	        					@if ($data->pc_jenis == 'ANGGARAN')
+	        						<td>{{ $d->barang->b_nama }}</td>
+        						@else
+	        						<td>{{ $d->akun->a_master_nama}} - {{ $d->pcd_keterangan }}</td>
+	        					@endif
+	        					<td class="text-right">{{ number_format(abs($d->pcd_jumlah),2,',','.')}}</td>
+	        					<td>{{ $d->pcd_qty }}</td>
+	        					<td>{{ $d->pcd_keterangan }}</td>
+	        				</tr>
 	        			@endforeach
+	        			@if ($data == null)
+	        				<tr>
+	        					<td colspan="7"><b>TIDAK ADA DATA</b></td>
+	        				</tr>
+	        			@endif
 	        		</tbody>
-	        		<tfoot>
-	        			<th colspan="5"></th>
-        				<td align="right" style="font-size: 12px !important"><b>{{ number_format($dk['total_d'] ,2,',','.')}}</b> </td>
-        				<td align="right" style="font-size: 12px !important"><b>{{ number_format($dk['total_k'] ,2,',','.')}}</b></td>
-	        		</tfoot>
 	        	</table>
+	        	<label>Harap membawa print out ini saat kembali.</label>
+	        	<div class="pull-right" style="margin-top: 100px;margin-bottom: 100px;">
+	        		<h6 style="margin-bottom: 100px;text-align: center;">ADMIN SEKOLAH</h6>
+	        		<p>___________________________</p>
+	        	</div>
 	      	</div>
 	    </div>
   	</div>
@@ -223,25 +211,6 @@
 </div>
 @include('partials._script')
 <script type="text/javascript">
-	// window.print();
+	window.print();
 </script>
 </html>
-	
-<script type="text/javascript">
-	function openModal(argument) {
-		$('.date').val('');
-		$('#filterModal').modal('show');
-	}
-
-	function filter() {
-		var min = $('.min').val();
-		var max = $('.max').val();
-		var j_type = $('.j_type').val();
-		location.href =' {{ url('laporan/register_jurnal') }}'+'?min='+min+'&j_type='+j_type+'&max='+max;
-	}
-
-	$('.date').datepicker({
-		format:'yyyy-mm-dd',
-  		autoclose: true
-	});
-</script>

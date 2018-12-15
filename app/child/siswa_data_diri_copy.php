@@ -4,9 +4,9 @@ namespace App\child;
 
 use Illuminate\Database\Eloquent\Model;
 
-class siswa_data_diri extends Model
+class siswa_data_diri_copy extends Model
 {
-    protected $table = 'd_siswa_data_diri';
+    protected $table = 'd_siswa_data_diri_copy';
 	protected $primaryKey = 'sdd_id';
     const CREATED_AT = 'created_at';
 	const UPDATED_AT = 'updated_at';
@@ -93,7 +93,6 @@ class siswa_data_diri extends Model
 
     public function kelas()
     {
-        return $this->belongsTo('App\child\kelas','sdd_nama_kelas','k_id');
+        return $this->belongsTo('App\child\group_spp','sdd_nama_kelas','k_id');
     }
-
 }

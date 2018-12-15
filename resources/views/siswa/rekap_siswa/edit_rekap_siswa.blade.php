@@ -144,6 +144,25 @@
                       </td>
                     </tr>
                     <tr>
+                      <tr>
+                      <th>
+                        KARTU SOSIAL
+                      </th>
+                      <td>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              @if ($data->sdd_kartu_sosial == '' or $data->sdd_kartu_sosial == null )
+                                <input type="checkbox" class="checkbox" aria-label="Checkbox for following text input">
+                              @else
+                                <input checked="" type="checkbox" class="checkbox" aria-label="Checkbox for following text input">
+                              @endif
+                            </div>
+                          </div>
+                          <input type="text" readonly="" value="{{ $data->sdd_kartu_sosial }}" class="form-control sdd_kartu_sosial" name="sdd_kartu_sosial" aria-label="Text input with checkbox">
+                        </div>
+                      </td>
+                    </tr>
                       <th>JENIS KELAMIN</th>
                       <td>
                         <select class="form-control option sdd_jenis_kelamin" name="sdd_jenis_kelamin">
@@ -858,6 +877,14 @@ $('.date').datepicker({
   autoclose: true
 });
 
+window.onload = function(){
+  @if ($data->sdd_kartu_sosial == '' or $data->sdd_kartu_sosial == null )
+    $('.sdd_kartu_sosial').prop('readonly',true);
+  @else
+    $('.sdd_kartu_sosial').prop('readonly',false);
+  @endif
+}
+
 $('.penghasilan').maskMoney({thousands:'.',allowZero:true,defaultZero:true,precision:0});
 
 $('#chooseFile').bind('change', function () {
@@ -926,6 +953,14 @@ $(document).on('click','.hapus_riwayat',function(){
   var par = $(this).parents('.tr_kesehatan');
   console.log(par);
   $(par).remove();
+})
+
+$('.checkbox').change(function(){
+  if ($(this).is(':checked') == true) {
+    $('.sdd_kartu_sosial').prop('readonly',false);
+  }else{
+    $('.sdd_kartu_sosial').prop('readonly',true);
+  }
 })
 
 

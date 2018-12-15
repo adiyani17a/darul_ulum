@@ -60,6 +60,15 @@
               </select>
             </div>
             <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
+              <label>Group SPP</label>
+              <select class="form-control sdd_group_spp" name="sdd_group_spp" onchange="filter_data('search')">
+                <option value="">Semua</option>
+                @foreach ($group_spp as $i => $k)
+                  <option value="{{ $k->gs_id }}">{{ $k->gs_nama }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group col-md-2" style="padding-right: 0px;padding-left: 0px;padding-bottom: 20px;margin-right: 10px;">
               <label>Tahun Ajaran</label>
               <select class="form-control sdd_tahun_ajaran" name="sdd_tahun_ajaran" onchange="filter_data('search')">
                 <option value="">Semua</option>
@@ -67,6 +76,9 @@
                   <option value="{{ $additionalData['tahun_ajaran'][$i] }}">{{ $additionalData['tahun_ajaran'][$i] }}</option>
                 @endforeach
               </select>
+            </div>
+            <div class="col-md-1">
+              <button class="btn btn-primary bg-gradient-info text-light print_all"><i class="fa fa-print"></i></button>
             </div>
           </div>
           <div class="table-responsive">
@@ -106,7 +118,8 @@ $(document).ready(function(){
             data:{sdd_sekolah: function() { return $('.sdd_sekolah option:selected').val() },
                   sdd_kelas: function() { return $('.sdd_kelas option:selected').val() },
                   sdd_nama_kelas: function() { return $('.sdd_nama_kelas option:selected').val() },
-                  sdd_tahun_ajaran: function() { return $('.sdd_tahun_ajaran option:selected').val() }},
+                  sdd_tahun_ajaran: function() { return $('.sdd_tahun_ajaran option:selected').val() },
+                  sdd_group_spp: function() { return $('.sdd_group_spp option:selected').val() }},
             error:function(){
               var table = $('#table_data').DataTable();
               table.ajax.reload(null, false);
@@ -335,5 +348,18 @@ function ubah_status(id,param) {
       }
   });
 }
+
+$('.print_all').click(function(){
+
+  var sdd_sekolah =  $('.sdd_sekolah option:selected').val();
+  var sdd_kelas =  $('.sdd_kelas option:selected').val();
+  var sdd_nama_kelas =  $('.sdd_nama_kelas option:selected').val();
+  var sdd_tahun_ajaran =  $('.sdd_tahun_ajaran option:selected').val();
+  var sdd_group_spp =  $('.sdd_group_spp option:selected').val();
+  
+  window.open("{{ route('print_detail') }}"+'?sdd_sekolah='+sdd_sekolah+'&sdd_kelas='+sdd_kelas+'&sdd_nama_kelas='+sdd_nama_kelas+'&sdd_tahun_ajaran='+sdd_tahun_ajaran+'&sdd_group_spp='+sdd_group_spp) ;
+
+})
+
 </script>
 @endsection

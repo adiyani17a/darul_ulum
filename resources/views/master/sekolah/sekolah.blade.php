@@ -228,6 +228,8 @@ $('.simpan').click(function(){
           $('.s_nama').val(res.data.s_nama);
           $('.s_alamat').val(res.data.s_alamat);
           $('.s_telpon').val(res.data.s_telpon);
+          $('.s_nss').val(res.data.s_nss);
+          $('.s_npsn').val(res.data.s_npsn);
           $('#output').attr("src", '{{ asset('storage/uploads/sekolah/thumbnail') }}'+'/'+res.data.s_logo+'?'+Math.random())
           $('.file-upload').addClass('active');
           $("#noFile").text(res.data.s_logo); 

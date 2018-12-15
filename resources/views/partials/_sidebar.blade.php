@@ -253,8 +253,11 @@
                   @if (Auth::user()->akses('REKAP SISWA','aktif'))
                     <li class="nav-item" > <a href="{{ url('/penerimaan/rekap_siswa/') }}" class="nav-link {{Request::is('penerimaan/rekap_siswa') ? 'active' : '' || Request::is('penerimaan/rekap_siswa/*') ? 'active' : '' }}">Data Siswa</a></li>
                   @endif
+                  @if (Auth::user()->akses('KELAS','aktif'))
+                    <li class="nav-item" > <a href="{{ url('/penerimaan/kelas/') }}" class="nav-link {{Request::is('penerimaan/kelas') ? 'active' : '' || Request::is('penerimaan/kelas/*') ? 'active' : '' }}">Manajemen Siswa</a></li>
+                  @endif
                 </ul>
-                </div>
+              </div>
             </li>
             {{-- KAS MASUK --}}
             <li class="nav-item   {{Request::is('kas_masuk') ? 'active' : '' || Request::is('kas_masuk/*') ? 'active' : '' }}">
@@ -303,7 +306,7 @@
                   @if (Auth::user()->akses('PETTY CASH','aktif'))
                     <li class="nav-item" > <a href="{{ url('/kas_keluar/petty_cash/') }}" class="nav-link {{Request::is('kas_keluar/petty_cash') ? 'active' : '' || Request::is('kas_keluar/petty_cash/*') ? 'active' : '' }}">Petty Cash</a></li>
                   @endif
-                  @if (Auth::user()->akses('KONFIRMASI PENGELUARAN KAS','aktif'))
+                  @if (Auth::user()->akses('KONFIRMASI PENGELUARAN','aktif'))
                     <li class="nav-item" > <a href="{{ url('/kas_keluar/konfirmasi_pengeluaran_kas/') }}" class="nav-link {{Request::is('kas_keluar/konfirmasi_pengeluaran_kas') ? 'active' : '' || Request::is('kas_keluar/konfirmasi_pengeluaran_kas/*') ? 'active' : '' }}">Konfirmasi Pengeluaran Kas</a></li>
                   @endif
                   @if (Auth::user()->akses('BUKTI KAS KELUAR','aktif'))
