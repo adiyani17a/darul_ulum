@@ -15,8 +15,8 @@
                 <td>
                   {{ csrf_field() }}
                   {{-- <input type="hidden" name="_token" class="token" value=""> --}}
-                  <input type="text" name="username"  placeholder="username" class="username wajib form-control form-control-sm">
-                  <input type="hidden" name="id" class="id " >
+                  <input type="text" name="username" style="text-transform: lowercase;"  placeholder="username" class="username wajib form-control form-control-sm">
+                  <input type="hidden" name="id" class="id" >
                 </td>
               </tr>
               <tr>
